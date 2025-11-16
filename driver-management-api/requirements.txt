@@ -1,0 +1,2 @@
+aiomysql==0.2.0
+asyncmy==0.2.9
