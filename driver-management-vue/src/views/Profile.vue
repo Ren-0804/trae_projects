@@ -10,33 +10,33 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
           <p class="text-lg text-gray-900">{{ user.username }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
           <p class="text-lg text-gray-900">{{ user.email || '未设置' }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">角色</label>
           <p class="text-lg text-gray-900">{{ getRoleText(user.role) }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">状态</label>
           <p class="text-lg text-gray-900">{{ user.is_active ? '活跃' : '禁用' }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">最后登录时间</label>
           <p class="text-lg text-gray-900">{{ formatDate(user.last_login_at) }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">注册时间</label>
           <p class="text-lg text-gray-900">{{ formatDate(user.created_at) }}</p>
         </div>
       </div>
-      
+
       <div class="mt-8 pt-6 border-t border-gray-200">
         <button
           @click="showPasswordModal = true"
@@ -48,7 +48,10 @@
     </div>
 
     <!-- 修改密码模态框 -->
-    <div v-if="showPasswordModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div
+      v-if="showPasswordModal"
+      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50"
+    >
       <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
           <h3 class="text-lg font-medium text-gray-900 mb-4">修改密码</h3>
@@ -133,7 +136,7 @@ const loading = ref(false)
 const passwordForm = ref({
   old_password: '',
   new_password: '',
-  confirm_password: ''
+  confirm_password: '',
 })
 
 const getRoleText = (role: string) => {
@@ -156,10 +159,10 @@ const fetchUserInfo = async () => {
   try {
     const response = await fetch('http://localhost:8000/api/v1/auth/me', {
       headers: {
-        'Authorization': `Bearer ${authStore.token}`
-      }
+        Authorization: `Bearer ${authStore.token}`,
+      },
     })
-    
+
     if (response.ok) {
       user.value = await response.json()
     }
@@ -173,7 +176,7 @@ const handleChangePassword = async () => {
     alert('新密码和确认密码不匹配')
     return
   }
-  
+
   loading.value = true
   try {
     // TODO: 实现修改密码API
@@ -182,7 +185,7 @@ const handleChangePassword = async () => {
     passwordForm.value = {
       old_password: '',
       new_password: '',
-      confirm_password: ''
+      confirm_password: '',
     }
   } catch (error) {
     console.error('修改密码失败:', error)

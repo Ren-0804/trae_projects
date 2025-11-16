@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Driver, DriverCreate, DriverUpdate, DriverQuery, DriverListResponse } from '@/api/drivers'
+import type {
+  Driver,
+  DriverCreate,
+  DriverUpdate,
+  DriverQuery,
+  DriverListResponse,
+} from '@/api/drivers'
 import { getDrivers, getDriver, createDriver, updateDriver, deleteDriver } from '@/api/drivers'
 
 export const useDriverStore = defineStore('drivers', () => {
@@ -22,7 +28,7 @@ export const useDriverStore = defineStore('drivers', () => {
       const response: DriverListResponse = await getDrivers({
         page: currentPage.value,
         page_size: pageSize.value,
-        ...query
+        ...query,
       })
       drivers.value = response.data
       total.value = response.total
@@ -70,7 +76,7 @@ export const useDriverStore = defineStore('drivers', () => {
     loading.value = true
     try {
       const updatedDriver = await updateDriver(id, data)
-      const index = drivers.value.findIndex(d => d.id === id)
+      const index = drivers.value.findIndex((d) => d.id === id)
       if (index !== -1) {
         drivers.value[index] = updatedDriver
       }
@@ -91,7 +97,7 @@ export const useDriverStore = defineStore('drivers', () => {
     loading.value = true
     try {
       await deleteDriver(id)
-      drivers.value = drivers.value.filter(d => d.id !== id)
+      drivers.value = drivers.value.filter((d) => d.id !== id)
       total.value--
       if (currentDriver.value?.id === id) {
         currentDriver.value = null
@@ -132,11 +138,11 @@ export const useDriverStore = defineStore('drivers', () => {
     total,
     currentPage,
     pageSize,
-    
+
     // 计算属性
     hasDrivers,
     totalPages,
-    
+
     // 方法
     fetchDrivers,
     fetchDriver,
@@ -145,6 +151,6 @@ export const useDriverStore = defineStore('drivers', () => {
     removeDriver,
     setPage,
     setPageSize,
-    reset
+    reset,
   }
 })

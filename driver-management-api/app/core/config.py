@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str = "admin"
     ADMIN_EMAIL: str = "admin@example.com"
     ADMIN_PASSWORD: str = "admin123"
+    DEFAULT_ADMIN_PASSWORD: str | None = None
     
     class Config:
         env_file = ".env"

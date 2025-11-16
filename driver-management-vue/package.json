@@ -16,6 +16,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@heroicons/vue": "^2.2.0",
     "@heroui/avatar": "^2.2.22",
     "@heroui/badge": "^2.2.17",
@@ -23,13 +24,13 @@
     "@heroui/card": "^2.2.25",
     "@heroui/input": "^2.4.28",
     "@heroui/modal": "^2.2.24",
-
     "@heroui/select": "^2.4.28",
     "@heroui/table": "^2.2.27",
     "@heroui/tabs": "^2.2.24",
     "@heroui/theme": "^2.4.23",
     "@heroui/toast": "^2.0.17",
     "@vueuse/core": "^14.0.0",
+    "ant-design-vue": "^4.2.6",
     "axios": "^1.13.2",
     "framer-motion": "^12.23.24",
     "pinia": "^3.0.3",

@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.database import get_db
 from app.core.deps import get_current_active_user, get_current_admin_user
 from app.core.security import create_access_token, verify_password, get_password_hash
+from app.crud import create_operation_log
 from app.models import User
 from app.crud import (
     get_user_by_username, get_user_by_email, create_user, 
@@ -88,11 +89,10 @@ async def login(
     
     # 创建访问令牌
     access_token = create_access_token(data={"sub": user.username})
-    
+    await create_operation_log(db, user.id, "login", "users", user.id)
     return {
-        "access_token": access_token,
-        "token_type": "bearer",
-        "expires_in": 1800,  # 30分钟
+        "token": access_token,
+        "expires_in": 1800,
         "user": user
     }
 
@@ -183,3 +183,40 @@ async def delete_user(
     
     await update_user(db, user_id=user_id, is_active=False)
     return {"message": "用户已禁用"}
+@router.post("/change-password")
+async def change_password(
+    payload: dict,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    current = payload.get("current_password")
+    new = payload.get("new_password")
+    if not current or not new:
+        raise HTTPException(status_code=400, detail="当前密码和新密码不能为空")
+    if not verify_password(current, current_user.password_hash):
+        raise HTTPException(status_code=400, detail="当前密码不正确")
+    current_user.password_hash = get_password_hash(new)
+    await db.commit()
+    await db.refresh(current_user)
+    await create_operation_log(db, current_user.id, "password_change", "users", current_user.id)
+    return {"message": "密码修改成功"}
+
+
+@router.post("/reset-password")
+async def reset_password(
+    payload: dict,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_admin_user)
+):
+    username = payload.get("username")
+    new_password = payload.get("new_password")
+    if not username or not new_password:
+        raise HTTPException(status_code=400, detail="用户名和新密码不能为空")
+    user = await get_user_by_username(db, username=username)
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    user.password_hash = get_password_hash(new_password)
+    await db.commit()
+    await db.refresh(user)
+    await create_operation_log(db, current_user.id, "password_reset", "users", user.id)
+    return {"message": "密码已重置"}

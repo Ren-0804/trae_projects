@@ -9,9 +9,10 @@ export const useStatisticsStore = defineStore('statistics', () => {
     active_drivers: 0,
     new_drivers_this_month: 0,
     drivers_by_route: [],
-    drivers_by_user: []
+    drivers_by_user: [],
   })
   const loading = ref(false)
+  const lastUpdatedAt = ref<string | null>(null)
 
   // 计算属性
   const activeRate = computed(() => {
@@ -20,11 +21,11 @@ export const useStatisticsStore = defineStore('statistics', () => {
   })
 
   const maxRouteCount = computed(() => {
-    return Math.max(...statistics.value.drivers_by_route.map(item => item.count), 1)
+    return Math.max(...statistics.value.drivers_by_route.map((item) => item.count), 1)
   })
 
   const maxUserCount = computed(() => {
-    return Math.max(...statistics.value.drivers_by_user.map(item => item.count), 1)
+    return Math.max(...statistics.value.drivers_by_user.map((item) => item.count), 1)
   })
 
   // 获取统计数据
@@ -33,6 +34,7 @@ export const useStatisticsStore = defineStore('statistics', () => {
     try {
       const data = await getStatistics()
       statistics.value = data
+      lastUpdatedAt.value = new Date().toLocaleString('zh-CN')
     } catch (error) {
       console.error('获取统计数据失败:', error)
       throw error
@@ -45,13 +47,14 @@ export const useStatisticsStore = defineStore('statistics', () => {
     // 状态
     statistics,
     loading,
-    
+    lastUpdatedAt,
+
     // 计算属性
     activeRate,
     maxRouteCount,
     maxUserCount,
-    
+
     // 方法
-    fetchStatistics
+    fetchStatistics,
   }
 })

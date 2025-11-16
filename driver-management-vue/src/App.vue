@@ -1,15 +1,16 @@
 <template>
-  <div id="app">
+  <ErrorBoundary>
     <router-view />
-  </div>
+  </ErrorBoundary>
 </template>
 
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
+import ErrorBoundary from '@/components/ErrorBoundary.vue'
 </script>
 
 <style scoped>
-#app {
+.app-container {
   min-height: 100vh;
   background-color: #f5f5f5;
 }

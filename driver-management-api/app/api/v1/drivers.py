@@ -218,7 +218,7 @@ async def get_driver_photos(
     if current_user.role != "admin" and driver.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="权限不足")
     
-    photos = await get_driver_photos(db, driver_id=driver_id)
+    photos = await get_driver_photos(db=db, driver_id=driver_id)
     return photos
 
 

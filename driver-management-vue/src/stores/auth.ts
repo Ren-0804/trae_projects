@@ -6,10 +6,14 @@ import { login as apiLogin, getCurrentUser } from '@/api/auth'
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
   const token = ref<string | null>(localStorage.getItem('token'))
-  
+
   const isAuthenticated = computed(() => !!token.value)
-  const isAdmin = computed(() => user.value?.role === 'admin')
-  
+  const isAdmin = computed(() => {
+    const role = user.value?.role
+    const flag = (user.value as any)?.is_admin
+    return (typeof role === 'string' && role.toLowerCase() === 'admin') || flag === true
+  })
+
   async function login(username: string, password: string) {
     try {
       const response = await apiLogin({ username, password })
@@ -21,25 +25,25 @@ export const useAuthStore = defineStore('auth', () => {
       throw error
     }
   }
-  
+
   async function fetchUser() {
     if (!token.value) return
-    
+
     try {
-      const response = await getCurrentUser()
-      user.value = response.user
+      const response = await getCurrentUser() as any
+      user.value = response?.user ?? response
     } catch (error) {
       logout()
       throw error
     }
   }
-  
+
   function logout() {
     token.value = null
     user.value = null
     localStorage.removeItem('token')
   }
-  
+
   return {
     user,
     token,
@@ -47,6 +51,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAdmin,
     login,
     fetchUser,
-    logout
+    logout,
   }
 })

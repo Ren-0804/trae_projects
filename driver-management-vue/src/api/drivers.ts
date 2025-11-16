@@ -95,15 +95,19 @@ export async function deleteDriver(id: number): Promise<void> {
   await api.delete(`/drivers/${id}`)
 }
 
-export async function uploadDriverPhoto(driverId: number, photoType: string, file: File): Promise<any> {
+export async function uploadDriverPhoto(
+  driverId: number,
+  photoType: string,
+  file: File,
+): Promise<any> {
   const formData = new FormData()
   formData.append('photo_type', photoType)
   formData.append('file', file)
-  
+
   const response = await api.post(`/drivers/${driverId}/photos`, formData, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   })
   return response.data
 }

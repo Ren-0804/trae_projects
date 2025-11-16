@@ -1,8 +1,8 @@
 # Driver Management System - API Documentation
 
 ## Base URL
-- Development: `http://localhost:8001/api/v1`
-- Production: `https://your-domain.com/api/v1`
+- Development: `http://localhost:8001/api`
+- Production: `https://your-domain.com/api`
 
 ## Authentication
 All API endpoints (except login) require JWT authentication. Include the token in the Authorization header:
@@ -50,23 +50,17 @@ User login endpoint.
 **Response:**
 ```json
 {
-  "code": 0,
-  "message": "success",
-  "data": {
-    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "token_type": "bearer",
-    "expires_in": 1800,
-    "user": {
-      "id": 1,
-      "username": "admin",
-      "email": "admin@example.com",
-      "role": "admin",
-      "is_active": true,
-      "created_at": "2025-11-16T11:58:20",
-      "last_login_at": "2025-11-16T12:29:35.594318"
-    }
-  },
-  "timestamp": 1699123456
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expires_in": 1800,
+  "user": {
+    "id": 1,
+    "username": "admin",
+    "email": "admin@example.com",
+    "role": "admin",
+    "is_active": true,
+    "created_at": "2025-11-16T11:58:20",
+    "last_login_at": "2025-11-16T12:29:35.594318"
+  }
 }
 ```
 

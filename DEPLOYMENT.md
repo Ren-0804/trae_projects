@@ -54,7 +54,7 @@ docker-compose exec backend python init_db.py
 
 ### 4. Access the Application
 - Frontend: http://localhost:3000
-- Backend API: http://localhost:8001
+- Backend API: http://localhost:8001/api
 - API Documentation: http://localhost:8001/docs
 
 ## Configuration
@@ -65,6 +65,7 @@ Key environment variables in `.env`:
 - `REDIS_URL`: Redis connection string
 - `SECRET_KEY`: JWT secret key (change in production!)
 - `CORS_ORIGINS`: Allowed frontend origins
+ - `DEFAULT_ADMIN_PASSWORD`: If set, admin password will be reset at startup
 
 ### Database Configuration
 The PostgreSQL database is automatically initialized with:
