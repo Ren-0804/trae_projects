@@ -585,3 +585,27 @@ Test the API using the interactive documentation:
 
 ## Support
 For API support and questions, please contact the development team.
+## Region Information Endpoints
+
+### GET /regions/china/meta
+Fetch cached China GeoJSON meta information.
+
+### GET /regions/china/provinces
+List provinces. Query params: `q` for fuzzy search by name/code.
+
+### GET /regions/china/cities
+List cities for a province. Query params: `province_code` (required), `q` for fuzzy search.
+
+### GET /regions/china/search
+Search provinces by `name`, `code`, optional `lat`, `lon`.
+
+### GET /regions/central-asia/countries
+List five Central Asia countries with divisions and major cities. Query param `q` for fuzzy search by country or city.
+
+## Driver Region Type Endpoints
+
+### GET /drivers/{id}/region-type
+Get region type for a driver.
+
+### PUT /drivers/{id}/region-type
+Update region type. Body: `{ "region_type": "国内" | "国外" }`

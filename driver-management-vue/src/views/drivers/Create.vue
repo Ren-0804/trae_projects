@@ -41,7 +41,30 @@
           </a-form-item>
 
           <a-form-item name="main_route" label="主要线路" required>
-            <a-input v-model:value="form.main_route" placeholder="例如：北京-上海" />
+            <template v-if="!manualRouteInput">
+              <a-tree-select
+                v-model:value="routeValue"
+                :treeData="routeTreeData"
+                :showSearch="true"
+                treeNodeFilterProp="title"
+                allowClear
+                :placeholder="'请选择国家/省份'"
+                treeDefaultExpandAll
+                @search="handleRouteSearch"
+                @change="handleRouteChange"
+                style="width:100%"
+              />
+              <div class="text-xs text-gray-500 mt-2">
+                若列表为空或无法选择，可
+                <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+              </div>
+            </template>
+            <template v-else>
+              <a-input v-model:value="form.main_route" placeholder="例如：中国-北京 或 北京-上海" />
+              <div class="text-xs text-gray-500 mt-2">
+                <a-button type="link" size="small" @click="manualRouteInput = false">返回选择列表</a-button>
+              </div>
+            </template>
           </a-form-item>
 
           <a-form-item name="vehicle_type" label="车辆类型" required>
@@ -91,13 +114,10 @@
           </a-form-item>
 
         <div class="flex justify-end gap-4">
-          <router-link
-            to="/drivers"
-            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            取消
+          <router-link to="/drivers">
+            <a-button size="large">取消</a-button>
           </router-link>
-          <a-button type="primary" :loading="loading" @click="handleSubmit">保存</a-button>
+          <a-button size="large" type="primary" :loading="loading" :disabled="loading" @click="handleSubmit">保存</a-button>
         </div>
       </div>
     </a-form>
@@ -111,6 +131,7 @@ import type { Rule } from 'ant-design-vue/es/form'
 import { useRouter } from 'vue-router'
 import { useDriverStore } from '@/stores/drivers'
 import { message } from 'ant-design-vue'
+import { getCountries, getProvinces } from '@/api/regions'
 
 const router = useRouter()
 const driverStore = useDriverStore()
@@ -150,6 +171,64 @@ const form = ref({
   emergency_contact: '',
   emergency_phone: '',
   remark: '',
+})
+
+const routeValue = ref<string>('')
+const countries = ref<string[]>([])
+const provinces = ref<Record<string, string[]>>({})
+const routeTreeData = ref<any[]>([])
+const regionsLoading = ref(false)
+const manualRouteInput = ref(false)
+
+const buildTree = () => {
+  routeTreeData.value = countries.value.map((c) => ({
+    title: c,
+    value: c,
+    key: c,
+    children: (provinces.value[c] || []).map((p) => ({ title: p, value: `${c}-${p}`, key: `${c}-${p}` })),
+  }))
+}
+
+const initRegions = async () => {
+  try {
+    regionsLoading.value = true
+    countries.value = await getCountries()
+    for (const c of countries.value) {
+      provinces.value[c] = await getProvinces(c)
+    }
+    buildTree()
+  } catch (e) {
+    message.error('主要路线数据加载失败，请稍后重试')
+  } finally {
+    regionsLoading.value = false
+  }
+}
+
+const handleRouteSearch = async (q: string) => {
+  if (!q || q.trim() === '') {
+    await initRegions()
+    return
+  }
+  for (const c of countries.value) {
+    provinces.value[c] = await getProvinces(c, q)
+  }
+  buildTree()
+}
+
+const handleRouteChange = (val: string) => {
+  routeValue.value = val
+  form.value.main_route = val
+}
+
+initRegions()
+// 也在挂载时尝试加载，确保数据可用
+import { onMounted } from 'vue'
+onMounted(() => {
+  initRegions()
+  // 若初始化后没有数据，则启用手动输入作为回退
+  setTimeout(() => {
+    if (routeTreeData.value.length === 0) manualRouteInput.value = true
+  }, 300)
 })
 
 const handleSubmit = async () => {

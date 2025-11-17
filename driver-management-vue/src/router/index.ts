@@ -53,6 +53,96 @@ const router = createRouter({
           meta: { title: '编辑司机' },
         },
         {
+          path: '/vehicles',
+          name: 'VehicleList',
+          component: () => import('@/views/vehicles/List.vue'),
+          meta: { title: '车辆列表' },
+        },
+        {
+          path: '/vehicles/new',
+          name: 'VehicleCreate',
+          component: () => import('@/views/vehicles/Create.vue'),
+          meta: { title: '新增车辆' },
+        },
+        {
+          path: '/vehicles/:id',
+          name: 'VehicleDetail',
+          component: () => import('@/views/vehicles/Detail.vue'),
+          meta: { title: '车辆详情' },
+        },
+        {
+          path: '/vehicles/:id/edit',
+          name: 'VehicleEdit',
+          component: () => import('@/views/vehicles/Edit.vue'),
+          meta: { title: '编辑车辆' },
+        },
+        {
+          path: '/vehicles/:id/assign-driver',
+          name: 'VehicleAssignDriver',
+          component: () => import('@/views/vehicles/AssignDriver.vue'),
+          meta: { title: '分配司机' },
+        },
+        {
+          path: '/vehicles/maintenance-reminders',
+          name: 'VehicleMaintenanceReminders',
+          component: () => import('@/views/vehicles/MaintenanceReminders.vue'),
+          meta: { title: '维护提醒' },
+        },
+        {
+          path: '/schedules',
+          name: 'ScheduleList',
+          component: () => import('@/views/schedules/List.vue'),
+          meta: { title: '排班管理' },
+        },
+        {
+          path: '/schedules/new',
+          name: 'ScheduleCreate',
+          component: () => import('@/views/schedules/Create.vue'),
+          meta: { title: '新增排班' },
+        },
+        {
+          path: '/schedules/calendar',
+          name: 'ScheduleCalendar',
+          component: () => import('@/views/schedules/Calendar.vue'),
+          meta: { title: '排班日历' },
+        },
+        {
+          path: '/certificates',
+          name: 'CertificateList',
+          component: () => import('@/views/certificates/List.vue'),
+          meta: { title: '证书管理' },
+        },
+        {
+          path: '/certificates/new',
+          name: 'CertificateCreate',
+          component: () => import('@/views/certificates/Create.vue'),
+          meta: { title: '新增证书' },
+        },
+        {
+          path: '/certificates/:id',
+          name: 'CertificateDetail',
+          component: () => import('@/views/certificates/Detail.vue'),
+          meta: { title: '证书详情' },
+        },
+        {
+          path: '/safety',
+          name: 'SafetyDashboard',
+          component: () => import('@/views/safety/Dashboard.vue'),
+          meta: { title: '安全监控' },
+        },
+        {
+          path: '/safety/alerts',
+          name: 'SafetyAlerts',
+          component: () => import('@/views/safety/Alerts.vue'),
+          meta: { title: '安全预警' },
+        },
+        {
+          path: '/safety/emergency',
+          name: 'EmergencyAlerts',
+          component: () => import('@/views/safety/Emergency.vue'),
+          meta: { title: '紧急报警' },
+        },
+        {
           path: '/statistics',
           name: 'Statistics',
           component: Statistics,
@@ -100,6 +190,16 @@ router.beforeEach(async (to, from, next) => {
       await authStore.fetchUser()
     } catch {
       // ignore
+    }
+  }
+
+  // 司机ID路由参数校验
+  if (to.name === 'DriverDetail' || to.name === 'DriverEdit') {
+    const rawId = String(to.params.id ?? '')
+    const idNum = Number(rawId)
+    if (!Number.isFinite(idNum) || rawId.trim() === '') {
+      next('/drivers')
+      return
     }
   }
 

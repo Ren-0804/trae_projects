@@ -19,90 +19,51 @@
           <a-descriptions-item label="数据更新时间">{{ statisticsStore.lastUpdatedAt || '-' }}</a-descriptions-item>
         </a-descriptions>
       </a-card>
-      <!-- 统计卡片 -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-600">司机总数</p>
-              <p class="text-3xl font-bold text-gray-900">
-                {{ statisticsStore.statistics.total_drivers }}
-              </p>
-            </div>
-            <div class="text-blue-600">
-              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-600">活跃司机</p>
-              <p class="text-3xl font-bold text-gray-900">
-                {{ statisticsStore.statistics.active_drivers }}
-              </p>
-            </div>
-            <div class="text-green-600">
-              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-600">本月新增</p>
-              <p class="text-3xl font-bold text-gray-900">
-                {{ statisticsStore.statistics.new_drivers_this_month }}
-              </p>
-            </div>
-            <div class="text-purple-600">
-              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow">
-          <div class="flex items-center">
-            <div class="flex-1">
-              <p class="text-sm font-medium text-gray-600">活跃率</p>
-              <p class="text-3xl font-bold text-gray-900">{{ activeRate }}%</p>
-            </div>
-            <div class="text-orange-600">
-              <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- 统计卡片（Ant Design Statistic） -->
+  <a-row :gutter="16" class="mb-8">
+    <a-col :xs="24" :md="12" :lg="6">
+      <a-card>
+        <a-statistic
+          title="司机总数"
+          :value="statisticsStore.statistics.total_drivers"
+          :valueStyle="valueStyle(totalChange)"
+          :prefix="changePrefix(totalChange)"
+        />
+      </a-card>
+    </a-col>
+    <a-col :xs="24" :md="12" :lg="6">
+      <a-card>
+        <a-statistic
+          title="活跃司机"
+          :value="statisticsStore.statistics.active_drivers"
+          :valueStyle="valueStyle(activeChange)"
+          :prefix="changePrefix(activeChange)"
+        />
+      </a-card>
+    </a-col>
+    <a-col :xs="24" :md="12" :lg="6">
+      <a-card>
+        <a-statistic
+          title="本月新增"
+          :value="statisticsStore.statistics.new_drivers_this_month"
+          :valueStyle="valueStyle(monthChange)"
+          :prefix="changePrefix(monthChange)"
+        />
+      </a-card>
+    </a-col>
+    <a-col :xs="24" :md="12" :lg="6">
+      <a-card>
+        <a-statistic
+          title="活跃率"
+          :value="activeRate"
+          suffix="%"
+          :precision="0"
+          :valueStyle="valueStyle(activeRateChange)"
+          :prefix="changePrefix(activeRateChange)"
+        />
+      </a-card>
+    </a-col>
+  </a-row>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow p-6">
@@ -115,56 +76,39 @@
         </div>
       </div>
 
-      <!-- 详细列表 -->
+      <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">最近司机照片</h3>
+        <a-skeleton :loading="photosLoading" :active="true">
+          <a-row :gutter="16">
+            <a-col v-for="p in recentPhotos" :key="p.id" :xs="12" :md="8" :lg="6">
+              <a-image :src="getPhotoUrl(p.id)" :preview="true" :style="photoStyle" />
+              <a-statistic :title="p.photo_type" :value="p.id" prefix="#" style="margin-top:8px" />
+            </a-col>
+          </a-row>
+        </a-skeleton>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div class="bg-white rounded-lg shadow p-6">
           <h3 class="text-lg font-medium text-gray-900 mb-4">热门线路详细数据</h3>
-          <div class="space-y-3 max-h-80 overflow-y-auto">
-            <div
-              v-for="(item, index) in statisticsStore.statistics.drivers_by_route"
-              :key="index"
-              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div class="flex items-center">
-                <span class="text-sm font-bold text-gray-500 w-8">{{ index + 1 }}.</span>
-                <span class="text-sm font-medium text-gray-900">{{ item.route }}</span>
-              </div>
-              <div class="flex items-center">
-                <div class="w-20 bg-gray-200 rounded-full h-2 mr-3">
-                  <div
-                    class="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                    :style="{ width: `${(item.count / maxRouteCount) * 100}%` }"
-                  ></div>
-                </div>
-                <span class="text-sm font-bold text-gray-700 w-8 text-right">{{ item.count }}</span>
-              </div>
-            </div>
-          </div>
+          <a-row :gutter="12">
+            <a-col v-for="(item, index) in statisticsStore.statistics.drivers_by_route" :key="index" :xs="12" :md="8" :lg="6">
+              <a-card size="small">
+                <a-statistic :title="item.route" :value="item.count" />
+              </a-card>
+            </a-col>
+          </a-row>
         </div>
 
         <div class="bg-white rounded-lg shadow p-6">
           <h3 class="text-lg font-medium text-gray-900 mb-4">员工司机数量详细数据</h3>
-          <div class="space-y-3 max-h-80 overflow-y-auto">
-            <div
-              v-for="(item, index) in statisticsStore.statistics.drivers_by_user"
-              :key="index"
-              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              <div class="flex items-center">
-                <span class="text-sm font-bold text-gray-500 w-8">{{ index + 1 }}.</span>
-                <span class="text-sm font-medium text-gray-900">{{ item.username }}</span>
-              </div>
-              <div class="flex items-center">
-                <div class="w-20 bg-gray-200 rounded-full h-2 mr-3">
-                  <div
-                    class="bg-green-600 h-2 rounded-full transition-all duration-300"
-                    :style="{ width: `${(item.count / maxUserCount) * 100}%` }"
-                  ></div>
-                </div>
-                <span class="text-sm font-bold text-gray-700 w-8 text-right">{{ item.count }}</span>
-              </div>
-            </div>
-          </div>
+          <a-row :gutter="12">
+            <a-col v-for="(item, index) in statisticsStore.statistics.drivers_by_user" :key="index" :xs="12" :md="8" :lg="6">
+              <a-card size="small">
+                <a-statistic :title="item.username" :value="item.count" />
+              </a-card>
+            </a-col>
+          </a-row>
         </div>
       </div>
     </div>
@@ -172,14 +116,35 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, onBeforeUnmount, computed, ref } from 'vue'
 import { useStatisticsStore } from '@/stores/statistics'
 import { toast } from 'sonner'
 import { useWindowSize } from '@vueuse/core'
+import { useDriverStore } from '@/stores/drivers'
+import { getDriverPhotos, getDriverPhotoBlob } from '@/api/drivers'
+import { UpOutlined, DownOutlined } from '@ant-design/icons-vue'
 
 const statisticsStore = useStatisticsStore()
+const driverStore = useDriverStore()
 
 const activeRate = computed(() => statisticsStore.activeRate)
+const previousActiveRate = computed(() => statisticsStore.previousActiveRate)
+const totalChange = computed(() => {
+  const prev = statisticsStore.previous
+  if (!prev) return 0
+  return statisticsStore.statistics.total_drivers - prev.total_drivers
+})
+const activeChange = computed(() => {
+  const prev = statisticsStore.previous
+  if (!prev) return 0
+  return statisticsStore.statistics.active_drivers - prev.active_drivers
+})
+const monthChange = computed(() => {
+  const prev = statisticsStore.previous
+  if (!prev) return 0
+  return statisticsStore.statistics.new_drivers_this_month - prev.new_drivers_this_month
+})
+const activeRateChange = computed(() => activeRate.value - previousActiveRate.value)
 const maxRouteCount = computed(() => statisticsStore.maxRouteCount)
 const maxUserCount = computed(() => statisticsStore.maxUserCount)
 const { width } = useWindowSize()
@@ -205,4 +170,69 @@ const fetchStatistics = async () => {
 onMounted(() => {
   fetchStatistics()
 })
+
+const recentPhotos = ref<any[]>([])
+const photoUrls = ref<Record<number, string>>({})
+const photosLoading = ref(false)
+const hydratorRunning = ref(false)
+const imageFallback =
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="%23ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>'
+const photoStyle = { width: '100%', height: '120px', objectFit: 'cover', borderRadius: '8px' } as any
+
+const hydratePhotoUrls = async () => {
+  if (hydratorRunning.value) return
+  hydratorRunning.value = true
+  try {
+    for (const p of recentPhotos.value) {
+      if (!photoUrls.value[p.id]) {
+        try {
+          const blob = await getDriverPhotoBlob(p.id)
+          photoUrls.value[p.id] = blob && blob.size > 0 ? URL.createObjectURL(blob) : imageFallback
+        } catch {
+          photoUrls.value[p.id] = imageFallback
+        }
+      }
+    }
+  } finally {
+    hydratorRunning.value = false
+  }
+}
+
+const getPhotoUrl = (id: number) => {
+  const url = photoUrls.value[id]
+  return url && url.length > 0 ? url : imageFallback
+}
+
+const fetchRecentDriverPhotos = async () => {
+  photosLoading.value = true
+  try {
+    await driverStore.fetchDrivers({ page: 1, page_size: 6 })
+    const drivers = driverStore.drivers.slice(0, 6)
+    const photos: any[] = []
+    for (const d of drivers) {
+      try {
+        const list = await getDriverPhotos(d.id)
+        const vehicle = list.find((x: any) => x.photo_type === 'vehicle')
+        const picked = vehicle || list[0]
+        if (picked) photos.push(picked)
+      } catch {
+      }
+    }
+    recentPhotos.value = photos
+    await hydratePhotoUrls()
+  } finally {
+    photosLoading.value = false
+  }
+}
+
+onMounted(() => {
+  fetchRecentDriverPhotos()
+})
+
+onBeforeUnmount(() => {
+  Object.values(photoUrls.value).forEach((u) => u && URL.revokeObjectURL(u))
+})
+
+const valueStyle = (delta: number) => ({ color: delta > 0 ? '#16a34a' : delta < 0 ? '#dc2626' : '#0f172a' }) as any
+const changePrefix = (delta: number) => (delta > 0 ? UpOutlined : delta < 0 ? DownOutlined : undefined)
 </script>

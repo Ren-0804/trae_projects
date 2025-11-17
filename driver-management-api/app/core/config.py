@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD: str = "admin123"
     DEFAULT_ADMIN_PASSWORD: str | None = None
     
+    # 邮件配置 (可选)
+    SMTP_SERVER: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str = ""
+    SMTP_PASSWORD: str = ""
+    FROM_EMAIL: str = ""
+    
     class Config:
         env_file = ".env"
         case_sensitive = True

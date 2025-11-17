@@ -8,11 +8,13 @@ from app.models import User, Driver
 from app.crud import (
     create_driver as crud_create_driver, get_drivers as crud_get_drivers, get_drivers_count, get_driver_by_id,
     update_driver as crud_update_driver, delete_driver as crud_delete_driver, get_driver_by_id_card, get_driver_by_license_number,
-    create_driver_photo, get_driver_photos, delete_driver_photo
+    create_driver_photo, get_driver_photos as crud_get_driver_photos, delete_driver_photo as crud_delete_driver_photo,
+    create_operation_log
 )
 from app.schemas import DriverCreate, DriverUpdate, DriverResponse, DriverListResponse, DriverPhotoResponse
 from app.core.config import settings
 from app.utils.file import save_upload_file
+from fastapi import Query
 
 router = APIRouter()
 
@@ -70,10 +72,12 @@ async def get_driver(
     """获取司机详情"""
     driver = await get_driver_by_id(db, driver_id=driver_id)
     if not driver:
+        await create_operation_log(db, current_user.id, "fetch_driver_failed", "drivers", driver_id, None, "获取司机信息失败:")
         raise HTTPException(status_code=404, detail="司机不存在")
     
     # 权限控制：普通员工只能查看自己的司机
     if current_user.role != "admin" and driver.user_id != current_user.id:
+        await create_operation_log(db, current_user.id, "fetch_driver_forbidden", "drivers", driver_id, None, "获取司机信息失败:")
         raise HTTPException(status_code=403, detail="权限不足")
     
     return driver
@@ -204,7 +208,7 @@ async def upload_driver_photo(
 
 
 @router.get("/{driver_id}/photos", response_model=List[DriverPhotoResponse])
-async def get_driver_photos(
+async def list_driver_photos(
     driver_id: int,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
@@ -218,7 +222,7 @@ async def get_driver_photos(
     if current_user.role != "admin" and driver.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="权限不足")
     
-    photos = await get_driver_photos(db=db, driver_id=driver_id)
+    photos = await crud_get_driver_photos(db=db, driver_id=driver_id)
     return photos
 
 
@@ -245,3 +249,63 @@ async def serve_driver_photo(
         raise HTTPException(status_code=403, detail="权限不足")
     
     return FileResponse(photo.file_path)
+@router.get("/regions")
+async def get_regions():
+    countries = [
+        "中国",
+        "哈萨克斯坦",
+        "乌兹别克斯坦",
+        "土库曼斯坦",
+        "吉尔吉斯斯坦",
+        "塔吉克斯坦",
+    ]
+    return {"countries": countries}
+
+
+@router.get("/regions/provinces")
+async def get_provinces(country: str = Query(...), q: Optional[str] = Query(None)):
+    data = {
+        "中国": [
+            "北京","上海","天津","重庆","河北","山西","辽宁","吉林","黑龙江","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","海南","四川","贵州","云南","陕西","甘肃","青海","台湾","内蒙古","广西","西藏","宁夏","新疆"
+        ],
+        "哈萨克斯坦": ["阿拉木图","努尔苏丹","奇姆肯特"],
+        "乌兹别克斯坦": ["塔什干","撒马尔罕","布哈拉"],
+        "土库曼斯坦": ["阿什哈巴德","土库曼纳巴特"],
+        "吉尔吉斯斯坦": ["比什凯克","奥什"],
+        "塔吉克斯坦": ["杜尚别","苦盏"],
+    }
+    provinces = data.get(country, [])
+    if q:
+        provinces = [p for p in provinces if q.lower() in p.lower()]
+    return {"country": country, "provinces": provinces}
+@router.get("/{driver_id}/region-type")
+async def get_driver_region_type(
+    driver_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    driver = await get_driver_by_id(db, driver_id=driver_id)
+    if not driver:
+        raise HTTPException(status_code=404, detail="司机不存在")
+    if current_user.role != "admin" and driver.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="权限不足")
+    return {"driver_id": driver_id, "region_type": driver.region_type}
+
+
+@router.put("/{driver_id}/region-type")
+async def update_driver_region_type(
+    driver_id: int,
+    payload: dict,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_active_user)
+):
+    rt = payload.get("region_type")
+    if rt not in ("国内", "国外"):
+        raise HTTPException(status_code=400, detail="region_type取值无效")
+    driver = await get_driver_by_id(db, driver_id=driver_id)
+    if not driver:
+        raise HTTPException(status_code=404, detail="司机不存在")
+    if current_user.role != "admin" and driver.user_id != current_user.id:
+        raise HTTPException(status_code=403, detail="权限不足")
+    driver = await crud_update_driver(db, driver_id=driver_id, region_type=rt)
+    return {"driver_id": driver_id, "region_type": driver.region_type}

@@ -8,6 +8,7 @@ A comprehensive full-stack driver management system built with Vue 3, Python Fas
 - **User Authentication**: JWT-based authentication with role-based access control
 - **Driver Management**: Complete CRUD operations for driver records
 - **File Upload**: Support for driver photos (ID cards, licenses, vehicle photos)
+- **Route Selection**: Tree-based country/province selector with search (China + Central Asia)
 - **Statistics Dashboard**: Interactive data visualization with charts and analytics
 - **Search & Filtering**: Advanced search capabilities for drivers
 - **Responsive Design**: Mobile-friendly interface using HeroUI components
@@ -297,3 +298,7 @@ For support and questions:
 ---
 
 **Built with ❤️ using modern web technologies**
+### UI Updates
+- 移除司机详情页底部的编辑/删除按钮，统一通过页面顶部操作入口进行管理
+- 新增司机与编辑司机页面的“主要线路”支持使用 Ant Design TreeSelect 进行国家-省份两级选择，并支持省份模糊搜索
+- 统一创建与编辑页面的保存/取消按钮尺寸、类型、布局与禁用状态，保持一致的交互体验

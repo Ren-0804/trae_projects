@@ -6,6 +6,18 @@
         <a-menu-item key="drivers">
           <router-link to="/drivers">司机管理</router-link>
         </a-menu-item>
+        <a-menu-item key="vehicles">
+          <router-link to="/vehicles">车辆管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="schedules">
+          <router-link to="/schedules">排班调度</router-link>
+        </a-menu-item>
+        <a-menu-item key="certificates">
+          <router-link to="/certificates">证书管理</router-link>
+        </a-menu-item>
+        <a-menu-item key="safety">
+          <router-link to="/safety">安全管理</router-link>
+        </a-menu-item>
         <a-menu-item v-if="authStore.isAdmin" key="statistics">
           <router-link to="/statistics">数据统计</router-link>
         </a-menu-item>
@@ -56,6 +68,10 @@ const selectedKeys = ref<string[]>([])
 const updateSelected = () => {
   const p = route.path
   if (p.startsWith('/drivers')) selectedKeys.value = ['drivers']
+  else if (p.startsWith('/vehicles')) selectedKeys.value = ['vehicles']
+  else if (p.startsWith('/schedules')) selectedKeys.value = ['schedules']
+  else if (p.startsWith('/certificates')) selectedKeys.value = ['certificates']
+  else if (p.startsWith('/safety')) selectedKeys.value = ['safety']
   else if (p === '/statistics') selectedKeys.value = ['statistics']
   else if (p === '/users') selectedKeys.value = ['users']
   else if (p === '/profile') selectedKeys.value = ['profile']

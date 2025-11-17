@@ -77,22 +77,52 @@ export async function getDrivers(query?: DriverQuery): Promise<DriverListRespons
 }
 
 export async function getDriver(id: number): Promise<Driver> {
-  const response = await api.get(`/drivers/${id}`)
+  const driverId = Number(id)
+  if (!Number.isFinite(driverId)) throw new Error('Invalid driver id')
+  const response = await api.get(`/drivers/${driverId}`)
   return response.data
 }
 
 export async function createDriver(data: DriverCreate): Promise<Driver> {
-  const response = await api.post('/drivers/', data)
+  const payload: any = { ...data }
+  Object.keys(payload).forEach((k) => {
+    const v = (payload as any)[k]
+    if (typeof v === 'string' && v.trim() === '') {
+      delete (payload as any)[k]
+    }
+  })
+  if (typeof payload.emergency_phone === 'string') {
+    const digits = payload.emergency_phone.replace(/\D/g, '')
+    if (digits.length === 11) payload.emergency_phone = digits
+    else delete payload.emergency_phone
+  }
+  const response = await api.post('/drivers/', payload)
   return response.data
 }
 
 export async function updateDriver(id: number, data: DriverUpdate): Promise<Driver> {
-  const response = await api.put(`/drivers/${id}`, data)
+  const payload: any = { ...data }
+  Object.keys(payload).forEach((k) => {
+    const v = (payload as any)[k]
+    if (typeof v === 'string' && v.trim() === '') {
+      delete (payload as any)[k]
+    }
+  })
+  if (typeof payload.emergency_phone === 'string') {
+    const digits = payload.emergency_phone.replace(/\D/g, '')
+    if (digits.length === 11) payload.emergency_phone = digits
+    else delete payload.emergency_phone
+  }
+  const driverId = Number(id)
+  if (!Number.isFinite(driverId)) throw new Error('Invalid driver id')
+  const response = await api.put(`/drivers/${driverId}`, payload)
   return response.data
 }
 
 export async function deleteDriver(id: number): Promise<void> {
-  await api.delete(`/drivers/${id}`)
+  const driverId = Number(id)
+  if (!Number.isFinite(driverId)) throw new Error('Invalid driver id')
+  await api.delete(`/drivers/${driverId}`)
 }
 
 export async function uploadDriverPhoto(
@@ -100,11 +130,13 @@ export async function uploadDriverPhoto(
   photoType: string,
   file: File,
 ): Promise<any> {
+  const idNum = Number(driverId)
+  if (!Number.isFinite(idNum)) throw new Error('Invalid driver id')
   const formData = new FormData()
   formData.append('photo_type', photoType)
   formData.append('file', file)
 
-  const response = await api.post(`/drivers/${driverId}/photos`, formData, {
+  const response = await api.post(`/drivers/${idNum}/photos`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -113,6 +145,17 @@ export async function uploadDriverPhoto(
 }
 
 export async function getDriverPhotos(driverId: number): Promise<any[]> {
-  const response = await api.get(`/drivers/${driverId}/photos`)
+  const idNum = Number(driverId)
+  if (!Number.isFinite(idNum)) throw new Error('Invalid driver id')
+  const response = await api.get(`/drivers/${idNum}/photos`)
   return response.data
+}
+
+export async function getDriverPhotoBlob(photoId: number): Promise<Blob> {
+  const idNum = Number(photoId)
+  if (!Number.isFinite(idNum)) throw new Error('Invalid photo id')
+  const response = await api.get(`/drivers/photos/${idNum}`, {
+    responseType: 'blob',
+  })
+  return response.data as Blob
 }

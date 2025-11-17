@@ -34,3 +34,7 @@ def setup_logging():
     error_handler.setFormatter(logging.Formatter(log_format))
     error_logger.addHandler(error_handler)
     error_logger.setLevel(logging.ERROR)
+
+
+# 全局日志记录器
+logger = logging.getLogger(__name__)

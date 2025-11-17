@@ -50,7 +50,12 @@
             </a-descriptions>
             <div style="height:12px"></div>
             <a-card size="small" title="车辆图片">
-              <img v-if="getPhotoByType('vehicle')" :src="`http://localhost:8000/api/v1/drivers/photos/${getPhotoByType('vehicle')?.id}`" style="width:100%;max-width:360px;height:200px;object-fit:cover;border-radius:4px" />
+              <a-image
+                v-if="getPhotoByType('vehicle')"
+                :src="getPhotoUrlByType('vehicle')"
+                :preview="true"
+                :style="photoStyle"
+              />
               <div v-else style="height:200px;border:1px dashed #d9d9d9;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999">暂无车辆图片</div>
             </a-card>
           </a-card>
@@ -79,15 +84,17 @@
       <!-- 照片管理 -->
       <div class="mt-6 pt-6 border-t border-gray-200">
         <h3 class="text-lg font-medium text-gray-900 mb-4">照片管理</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a-skeleton :loading="photosLoading" :active="true">
+          <a-row :gutter="16">
           <!-- 身份证正面 -->
+          <a-col :xs="24" :md="12" :lg="6">
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <div class="mb-2">
               <div v-if="getPhotoByType('id_card_front')" class="mb-2">
                 <img
-                  :src="`http://localhost:8000/api/v1/drivers/photos/${getPhotoByType('id_card_front')?.id}`"
+                  :src="getPhotoUrlByType('id_card_front')"
                   alt="身份证正面"
-                  class="w-full h-32 object-cover rounded"
+                  :style="photoStyle"
                 />
               </div>
               <div v-else>
@@ -117,16 +124,17 @@
               }}</a-button>
             </a-upload>
           </div>
+          </a-col>
 
           <!-- 身份证背面 -->
+          <a-col :xs="24" :md="12" :lg="6">
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <div class="mb-2">
               <div v-if="getPhotoByType('id_card_back')" class="mb-2">
                 <a-image
-                  :src="`http://localhost:8000/api/v1/drivers/photos/${getPhotoByType('id_card_back')?.id}`"
-                  :width="160"
-                  :height="128"
+                  :src="getPhotoUrlByType('id_card_back')"
                   :preview="true"
+                  :style="photoStyle"
                 />
               </div>
               <div v-else>
@@ -156,16 +164,17 @@
               }}</a-button>
             </a-upload>
           </div>
+          </a-col>
 
           <!-- 驾驶证 -->
+          <a-col :xs="24" :md="12" :lg="6">
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <div class="mb-2">
               <div v-if="getPhotoByType('license')" class="mb-2">
                 <a-image
-                  :src="`http://localhost:8000/api/v1/drivers/photos/${getPhotoByType('license')?.id}`"
-                  :width="160"
-                  :height="128"
+                  :src="getPhotoUrlByType('license')"
                   :preview="true"
+                  :style="photoStyle"
                 />
               </div>
               <div v-else>
@@ -195,16 +204,17 @@
               }}</a-button>
             </a-upload>
           </div>
+          </a-col>
 
           <!-- 车辆照片 -->
+          <a-col :xs="24" :md="12" :lg="6">
           <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
             <div class="mb-2">
               <div v-if="getPhotoByType('vehicle')" class="mb-2">
                 <a-image
-                  :src="`http://localhost:8000/api/v1/drivers/photos/${getPhotoByType('vehicle')?.id}`"
-                  :width="160"
-                  :height="128"
+                  :src="getPhotoUrlByType('vehicle')"
                   :preview="true"
+                  :style="photoStyle"
                 />
               </div>
               <div v-else>
@@ -234,35 +244,24 @@
               }}</a-button>
             </a-upload>
           </div>
-        </div>
+          </a-col>
+          </a-row>
+        </a-skeleton>
       </div>
 
-      <div class="mt-6 pt-6 border-t border-gray-200 flex justify-end gap-4">
-        <button
-          @click="handleEdit"
-          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          编辑
-        </button>
-        <button
-          @click="handleDelete"
-          class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-        >
-          删除
-        </button>
-      </div>
+      
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useDriverStore } from '@/stores/drivers'
 import { toast } from 'sonner'
 import { Modal, message } from 'ant-design-vue'
 import type { Driver } from '@/api/drivers'
-import { uploadDriverPhoto, getDriverPhotos } from '@/api/drivers'
+import { uploadDriverPhoto, getDriverPhotos, getDriverPhotoBlob } from '@/api/drivers'
 import { useWindowSize } from '@vueuse/core'
 
 const route = useRoute()
@@ -276,6 +275,11 @@ const descColumns = computed(() => (width.value >= 768 ? 2 : 1))
 
 // 照片数据
 const photos = ref<any[]>([])
+const photosLoading = ref(false)
+const photoUrls = ref<Record<number, string>>({})
+const hydratorRunning = ref(false)
+const imageFallback =
+  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 24 24" fill="none" stroke="%23ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>'
 
 // 文件上传引用
 
@@ -307,13 +311,23 @@ const statusColor = (status: string) => {
 
 const fetchDriver = async () => {
   try {
-    driver.value = await driverStore.fetchDriver(Number(route.params.id))
+    const driverId = Number(String(route.params.id))
+    if (!Number.isFinite(driverId)) {
+      toast.error('无效的司机ID')
+      router.push('/drivers')
+      return
+    }
+    driver.value = await driverStore.fetchDriver(driverId)
     if (driver.value) {
+      photosLoading.value = true
       photos.value = await getDriverPhotos(driver.value.id)
+      await hydratePhotoUrls()
+      photosLoading.value = false
     }
   } catch (error) {
     console.error('获取司机信息失败:', error)
     toast.error('获取司机信息失败')
+    photosLoading.value = false
   }
 }
 
@@ -326,15 +340,48 @@ const handleUpload = async (photoType: string, file: File) => {
   try {
     await uploadDriverPhoto(driver.value.id, photoType, file)
     toast.success('照片上传成功')
+    photosLoading.value = true
     photos.value = await getDriverPhotos(driver.value.id)
+    await hydratePhotoUrls()
+    photosLoading.value = false
   } catch {
     toast.error('照片上传失败')
+    photosLoading.value = false
   }
   return false
 }
 
 const getPhotoByType = (photoType: string) => {
   return photos.value.find((photo) => photo.photo_type === photoType)
+}
+
+const getPhotoUrlByType = (photoType: string) => {
+  const p = getPhotoByType(photoType)
+  const url = p ? photoUrls.value[p.id] : undefined
+  return url && url.length > 0 ? url : imageFallback
+}
+
+const hydratePhotoUrls = async () => {
+  if (hydratorRunning.value) return
+  hydratorRunning.value = true
+  try {
+    for (const p of photos.value) {
+      if (!photoUrls.value[p.id]) {
+        try {
+          const blob = await getDriverPhotoBlob(p.id)
+          if (blob && blob.size > 0) {
+            photoUrls.value[p.id] = URL.createObjectURL(blob)
+          } else {
+            photoUrls.value[p.id] = imageFallback
+          }
+        } catch (e) {
+          photoUrls.value[p.id] = imageFallback
+        }
+      }
+    }
+  } finally {
+    hydratorRunning.value = false
+  }
 }
 
 const handleDelete = async () => {
@@ -359,4 +406,11 @@ const handleDelete = async () => {
 onMounted(() => {
   fetchDriver()
 })
+
+onBeforeUnmount(() => {
+  Object.values(photoUrls.value).forEach((url) => {
+    if (url) URL.revokeObjectURL(url)
+  })
+})
+const photoStyle = { width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px' } as any
 </script>

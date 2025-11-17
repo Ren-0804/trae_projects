@@ -10,7 +10,7 @@ from app.crud import create_operation_log
 from app.models import User
 from app.crud import (
     get_user_by_username, get_user_by_email, create_user, 
-    get_user_by_id, get_users, update_user
+    get_user_by_id, get_users as crud_get_users, update_user as crud_update_user
 )
 from app.schemas import UserCreate, UserUpdate, UserResponse
 
@@ -113,7 +113,7 @@ async def get_users(
     current_user: User = Depends(get_current_admin_user)
 ):
     """获取用户列表（管理员权限）"""
-    users = await get_users(db, skip=skip, limit=limit)
+    users = await crud_get_users(db, skip=skip, limit=limit)
     return users
 
 
@@ -157,7 +157,7 @@ async def update_user(
                 detail="邮箱已存在"
             )
     
-    user = await update_user(db, user_id=user_id, **user_in.dict(exclude_unset=True))
+    user = await crud_update_user(db, user_id=user_id, **user_in.dict(exclude_unset=True))
     return user
 
 
@@ -181,7 +181,7 @@ async def delete_user(
             detail="用户不存在"
         )
     
-    await update_user(db, user_id=user_id, is_active=False)
+    await crud_update_user(db, user_id=user_id, is_active=False)
     return {"message": "用户已禁用"}
 @router.post("/change-password")
 async def change_password(

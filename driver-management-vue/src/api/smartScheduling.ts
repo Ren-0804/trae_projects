@@ -1,0 +1,18 @@
+import request from '@/utils/request'
+import type { AxiosResponse } from 'axios'
+
+export interface SmartScheduleParams {
+  schedule_date: string
+  shift_start: string
+  shift_end: string
+  task_type: 'delivery' | 'pickup' | 'transport'
+  required_drivers: number
+  prefer_experienced?: boolean
+  prefer_high_rating?: boolean
+}
+
+export interface ScheduleOption {
+  driver: {
+    id: number
+    name: string
+    phone: string

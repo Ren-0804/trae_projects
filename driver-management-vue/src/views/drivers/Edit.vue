@@ -48,7 +48,30 @@
             </a-select>
           </a-descriptions-item>
           <a-descriptions-item label="主要线路">
-            <a-input v-model:value="form.main_route" placeholder="例如：北京-上海" />
+            <template v-if="!manualRouteInput">
+              <a-tree-select
+                v-model:value="routeValue"
+                :treeData="routeTreeData"
+                :showSearch="true"
+                treeNodeFilterProp="title"
+                allowClear
+                :placeholder="'请选择国家/省份'"
+                treeDefaultExpandAll
+                @search="handleRouteSearch"
+                @change="handleRouteChange"
+                style="width:100%"
+              />
+              <div class="text-xs text-gray-500 mt-2">
+                若列表为空或无法选择，可
+                <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+              </div>
+            </template>
+            <template v-else>
+              <a-input v-model:value="form.main_route" placeholder="例如：中国-北京 或 北京-上海" />
+              <div class="text-xs text-gray-500 mt-2">
+                <a-button type="link" size="small" @click="manualRouteInput = false">返回选择列表</a-button>
+              </div>
+            </template>
           </a-descriptions-item>
           <a-descriptions-item label="车辆类型">
             <a-select v-model:value="form.vehicle_type" placeholder="请选择车辆类型">
@@ -96,13 +119,10 @@
         </a-descriptions>
 
         <div class="flex justify-end gap-4 mt-6">
-          <router-link
-            :to="`/drivers/${route.params.id}`"
-            class="px-6 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-          >
-            取消
+          <router-link :to="`/drivers/${route.params.id}`">
+            <a-button size="large">取消</a-button>
           </router-link>
-          <a-button type="primary" :loading="loading" @click="handleSubmit">保存</a-button>
+          <a-button size="large" type="primary" :loading="loading" :disabled="loading" @click="handleSubmit">保存</a-button>
         </div>
       </a-form>
     </a-card>
@@ -117,6 +137,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useDriverStore } from '@/stores/drivers'
 import { toast } from 'sonner'
 import type { Driver, DriverUpdate } from '@/api/drivers'
+import { getCountries, getProvinces } from '@/api/regions'
 
 const route = useRoute()
 const router = useRouter()
@@ -126,6 +147,44 @@ const loading = ref(false)
 const driver = ref<Driver | null>(null)
 
 const form = ref<DriverUpdate>({})
+const routeValue = ref<string>('')
+const countries = ref<string[]>([])
+const provinces = ref<Record<string, string[]>>({})
+const routeTreeData = ref<any[]>([])
+const manualRouteInput = ref(false)
+
+const buildTree = () => {
+  routeTreeData.value = countries.value.map((c) => ({
+    title: c,
+    value: c,
+    key: c,
+    children: (provinces.value[c] || []).map((p) => ({ title: p, value: `${c}-${p}`, key: `${c}-${p}` })),
+  }))
+}
+
+const initRegions = async () => {
+  countries.value = await getCountries()
+  for (const c of countries.value) {
+    provinces.value[c] = await getProvinces(c)
+  }
+  buildTree()
+}
+
+const handleRouteSearch = async (q: string) => {
+  if (!q || q.trim() === '') {
+    await initRegions()
+    return
+  }
+  for (const c of countries.value) {
+    provinces.value[c] = await getProvinces(c, q)
+  }
+  buildTree()
+}
+
+const handleRouteChange = (val: string) => {
+  routeValue.value = val
+  form.value.main_route = val
+}
 
 const formRef = ref<FormInstance>()
 const rules: Record<string, Rule[]> = {
@@ -160,7 +219,13 @@ const rules: Record<string, Rule[]> = {
 
 const fetchDriver = async () => {
   try {
-    driver.value = await driverStore.fetchDriver(Number(route.params.id))
+    const driverId = Number(String(route.params.id))
+    if (!Number.isFinite(driverId)) {
+      toast.error('无效的司机ID')
+      router.push('/drivers')
+      return
+    }
+    driver.value = await driverStore.fetchDriver(driverId)
     if (driver.value) {
       // 使用对象展开来确保只包含有效的更新字段
       form.value = {
@@ -180,6 +245,10 @@ const fetchDriver = async () => {
         remark: driver.value.remark || undefined,
       }
     }
+    routeValue.value = driver.value?.main_route || ''
+    await initRegions()
+    // 若初始化后没有数据，则启用手动输入作为回退
+    if (routeTreeData.value.length === 0) manualRouteInput.value = true
   } catch (error) {
     console.error('获取司机信息失败:', error)
     toast.error('获取司机信息失败')
@@ -199,7 +268,13 @@ const handleSubmit = async () => {
       }
     })
 
-    await driverStore.modifyDriver(Number(route.params.id), updateData)
+    const driverId = Number(String(route.params.id))
+    if (!Number.isFinite(driverId)) {
+      toast.error('无效的司机ID')
+      router.push('/drivers')
+      return
+    }
+    await driverStore.modifyDriver(driverId, updateData)
     toast.success('司机信息更新成功')
     router.push(`/drivers/${route.params.id}`)
   } catch (error: unknown) {
