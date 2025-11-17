@@ -34,7 +34,40 @@
       
       <a-divider />
       
-      <h3>司机分配记录</h3>
+      <h3>司机使用记录概览</h3>
+      <a-row :gutter="16" style="margin-bottom: 16px;">
+        <a-col :span="6">
+          <a-statistic
+            title="总使用司机数"
+            :value="usageStatistics.total_drivers"
+            :precision="0"
+          />
+        </a-col>
+        <a-col :span="6">
+          <a-statistic
+            title="当前活跃司机"
+            :value="usageStatistics.active_assignments"
+            :precision="0"
+          />
+        </a-col>
+        <a-col :span="6">
+          <a-statistic
+            title="平均使用时长"
+            :value="usageStatistics.avg_duration_days"
+            :precision="1"
+            suffix="天"
+          />
+        </a-col>
+        <a-col :span="6">
+          <a-statistic
+            title="最长使用记录"
+            :value="usageStatistics.longest_duration_days"
+            :precision="0"
+            suffix="天"
+          />
+        </a-col>
+      </a-row>
+      
       <a-table
         :columns="assignmentColumns"
         :data-source="driverAssignments"
@@ -62,6 +95,12 @@
         </template>
       </a-table>
       
+      <div style="margin-top: 16px; text-align: center;">
+        <router-link :to="`/vehicles/${vehicleId}/usage-history`">
+          <a-button type="link">查看详细使用记录 →</a-button>
+        </router-link>
+      </div>
+      
       <a-divider />
       
       <h3>维护记录</h3>
@@ -85,7 +124,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { message } from 'ant-design-vue'
 import { getVehicle, getVehicleMaintenanceRecords } from '@/api/vehicles'
@@ -100,6 +139,13 @@ const assignmentsLoading = ref(false)
 const vehicle = ref<Vehicle | null>(null)
 const maintenanceRecords = ref<MaintenanceRecord[]>([])
 const driverAssignments = ref<any[]>([])
+
+const usageStatistics = reactive({
+  total_drivers: 0,
+  active_assignments: 0,
+  avg_duration_days: 0,
+  longest_duration_days: 0
+})
 
 const assignmentColumns = [
   {
@@ -229,6 +275,36 @@ const formatAssignmentDuration = (startDate: string, endDate: string | null) => 
   return `${Math.floor(diffDays / 365)}年`
 }
 
+const calculateUsageStatistics = (assignments: any[]) => {
+  if (!assignments || assignments.length === 0) {
+    usageStatistics.total_drivers = 0
+    usageStatistics.active_assignments = 0
+    usageStatistics.avg_duration_days = 0
+    usageStatistics.longest_duration_days = 0
+    return
+  }
+
+  // 计算总司机数（去重）
+  const uniqueDrivers = new Set(assignments.map(a => a.driver_id))
+  usageStatistics.total_drivers = uniqueDrivers.size
+
+  // 计算活跃分配数
+  usageStatistics.active_assignments = assignments.filter(a => a.status === 'active').length
+
+  // 计算平均使用时长
+  const durations = assignments.map(a => {
+    const start = new Date(a.start_date)
+    const end = a.end_date ? new Date(a.end_date) : new Date()
+    return Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))
+  })
+  
+  const totalDays = durations.reduce((sum, days) => sum + days, 0)
+  usageStatistics.avg_duration_days = totalDays / assignments.length
+
+  // 计算最长使用时长
+  usageStatistics.longest_duration_days = Math.max(...durations)
+}
+
 const fetchVehicle = async () => {
   loading.value = true
   try {
@@ -237,6 +313,7 @@ const fetchVehicle = async () => {
     // 假设后端返回的数据中包含 assignments 字段
     if (response.assignments) {
       driverAssignments.value = response.assignments
+      calculateUsageStatistics(response.assignments)
     }
   } catch (error) {
     message.error('获取车辆信息失败')
