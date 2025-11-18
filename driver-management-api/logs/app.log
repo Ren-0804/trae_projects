@@ -33437,3 +33437,681 @@ WHERE users.username = ?
 2025-11-18 13:53:44,288 - sqlalchemy.engine.Engine - INFO - ROLLBACK
 2025-11-18 13:53:44,289 - app.core.logging - INFO - 用户 admin 请求安全统计
 2025-11-18 13:53:44,289 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:54:31,273 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:54:31,274 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:54:31,274 - sqlalchemy.engine.Engine - INFO - [cached since 1904s ago] ('admin',)
+2025-11-18 13:54:31,275 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:54:31,276 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:54:31,278 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:54:31,278 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:54:31,279 - sqlalchemy.engine.Engine - INFO - [cached since 1904s ago] ('admin',)
+2025-11-18 13:54:31,280 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:54:31,281 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:54:31,286 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:54:31,286 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:54:31,287 - sqlalchemy.engine.Engine - INFO - [cached since 1904s ago] ('admin',)
+2025-11-18 13:54:31,288 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:54:31,288 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:54:31,290 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:54:31,290 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:54:31,290 - sqlalchemy.engine.Engine - INFO - [cached since 1904s ago] ('admin',)
+2025-11-18 13:54:31,291 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:54:31,292 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:55:31,906 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:55:31,907 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:55:31,908 - sqlalchemy.engine.Engine - INFO - [cached since 1965s ago] ('admin',)
+2025-11-18 13:55:31,908 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:55:31,908 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:55:31,908 - sqlalchemy.engine.Engine - INFO - [cached since 1965s ago] ('admin',)
+2025-11-18 13:55:31,909 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:55:31,910 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:55:31,912 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:55:31,913 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:55:31,914 - sqlalchemy.engine.Engine - INFO - [cached since 1965s ago] ('admin',)
+2025-11-18 13:55:31,915 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:55:31,916 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:55:31,919 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:55:31,919 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:55:31,921 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:55:31,921 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:55:31,922 - sqlalchemy.engine.Engine - INFO - [cached since 1965s ago] ('admin',)
+2025-11-18 13:55:31,922 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:55:31,923 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:56:31,274 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:56:31,275 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:56:31,275 - sqlalchemy.engine.Engine - INFO - [cached since 2024s ago] ('admin',)
+2025-11-18 13:56:31,275 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:56:31,275 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:56:31,276 - sqlalchemy.engine.Engine - INFO - [cached since 2024s ago] ('admin',)
+2025-11-18 13:56:31,276 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:56:31,277 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:56:31,278 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:56:31,278 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:56:31,281 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:56:31,281 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:56:31,281 - sqlalchemy.engine.Engine - INFO - [cached since 2024s ago] ('admin',)
+2025-11-18 13:56:31,282 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:56:31,282 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:56:31,282 - sqlalchemy.engine.Engine - INFO - [cached since 2024s ago] ('admin',)
+2025-11-18 13:56:31,283 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:56:31,284 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:56:31,284 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:56:31,285 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:57:31,279 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:57:31,279 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:57:31,280 - sqlalchemy.engine.Engine - INFO - [cached since 2084s ago] ('admin',)
+2025-11-18 13:57:31,281 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:57:31,281 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:57:31,281 - sqlalchemy.engine.Engine - INFO - [cached since 2084s ago] ('admin',)
+2025-11-18 13:57:31,282 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:57:31,283 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:57:31,283 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:57:31,284 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:57:31,287 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:57:31,287 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:57:31,287 - sqlalchemy.engine.Engine - INFO - [cached since 2084s ago] ('admin',)
+2025-11-18 13:57:31,287 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:57:31,288 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:57:31,288 - sqlalchemy.engine.Engine - INFO - [cached since 2084s ago] ('admin',)
+2025-11-18 13:57:31,289 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:57:31,289 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:57:31,290 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:57:31,290 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:58:31,283 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:58:31,283 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:58:31,283 - sqlalchemy.engine.Engine - INFO - [cached since 2144s ago] ('admin',)
+2025-11-18 13:58:31,284 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:58:31,285 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:58:31,285 - sqlalchemy.engine.Engine - INFO - [cached since 2144s ago] ('admin',)
+2025-11-18 13:58:31,286 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:58:31,287 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:58:31,288 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:58:31,289 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:58:31,292 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:58:31,292 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:58:31,292 - sqlalchemy.engine.Engine - INFO - [cached since 2144s ago] ('admin',)
+2025-11-18 13:58:31,293 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:58:31,293 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:58:31,293 - sqlalchemy.engine.Engine - INFO - [cached since 2144s ago] ('admin',)
+2025-11-18 13:58:31,294 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:58:31,295 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:58:31,296 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:58:31,297 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:59:31,273 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:59:31,273 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:59:31,274 - sqlalchemy.engine.Engine - INFO - [cached since 2204s ago] ('admin',)
+2025-11-18 13:59:31,274 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:59:31,274 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:59:31,274 - sqlalchemy.engine.Engine - INFO - [cached since 2204s ago] ('admin',)
+2025-11-18 13:59:31,275 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:59:31,276 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:59:31,276 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:59:31,277 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:59:31,279 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:59:31,280 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:59:31,281 - sqlalchemy.engine.Engine - INFO - [cached since 2204s ago] ('admin',)
+2025-11-18 13:59:31,281 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 13:59:31,281 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 13:59:31,281 - sqlalchemy.engine.Engine - INFO - [cached since 2204s ago] ('admin',)
+2025-11-18 13:59:31,282 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 13:59:31,283 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 13:59:31,284 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 13:59:31,284 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:00:31,278 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:00:31,278 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:00:31,278 - sqlalchemy.engine.Engine - INFO - [cached since 2264s ago] ('admin',)
+2025-11-18 14:00:31,279 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:00:31,279 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:00:31,279 - sqlalchemy.engine.Engine - INFO - [cached since 2264s ago] ('admin',)
+2025-11-18 14:00:31,280 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:00:31,280 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:00:31,282 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:00:31,282 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:00:31,283 - sqlalchemy.engine.Engine - INFO - [cached since 2264s ago] ('admin',)
+2025-11-18 14:00:31,284 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:00:31,284 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:00:31,286 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:00:31,288 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:00:31,292 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:00:31,293 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:00:31,293 - sqlalchemy.engine.Engine - INFO - [cached since 2264s ago] ('admin',)
+2025-11-18 14:00:31,294 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:00:31,294 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:01:31,268 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:01:31,268 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:01:31,268 - sqlalchemy.engine.Engine - INFO - [cached since 2324s ago] ('admin',)
+2025-11-18 14:01:31,269 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:01:31,270 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:01:31,273 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:01:31,274 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:01:31,274 - sqlalchemy.engine.Engine - INFO - [cached since 2324s ago] ('admin',)
+2025-11-18 14:01:31,275 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:01:31,276 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:01:31,279 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:01:31,279 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:01:31,280 - sqlalchemy.engine.Engine - INFO - [cached since 2324s ago] ('admin',)
+2025-11-18 14:01:31,280 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:01:31,281 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:01:31,283 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:01:31,283 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:01:31,283 - sqlalchemy.engine.Engine - INFO - [cached since 2324s ago] ('admin',)
+2025-11-18 14:01:31,285 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:01:31,286 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:02:31,280 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:02:31,281 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:02:31,281 - sqlalchemy.engine.Engine - INFO - [cached since 2384s ago] ('admin',)
+2025-11-18 14:02:31,282 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:02:31,282 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:02:31,283 - sqlalchemy.engine.Engine - INFO - [cached since 2384s ago] ('admin',)
+2025-11-18 14:02:31,284 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:02:31,285 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:02:31,287 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:02:31,289 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:02:31,294 - sqlalchemy.engine.Engine - INFO - [cached since 2384s ago] ('admin',)
+2025-11-18 14:02:31,295 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:02:31,296 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:02:31,299 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:02:31,299 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:02:31,300 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:02:31,300 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:02:31,300 - sqlalchemy.engine.Engine - INFO - [cached since 2384s ago] ('admin',)
+2025-11-18 14:02:31,302 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:02:31,303 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:03:31,599 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:03:31,600 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:03:31,600 - sqlalchemy.engine.Engine - INFO - [cached since 2445s ago] ('admin',)
+2025-11-18 14:03:31,600 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:03:31,601 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:03:31,601 - sqlalchemy.engine.Engine - INFO - [cached since 2445s ago] ('admin',)
+2025-11-18 14:03:31,616 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:03:31,618 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:03:31,619 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:03:31,620 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:03:31,631 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:03:31,632 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:03:31,633 - sqlalchemy.engine.Engine - INFO - [cached since 2445s ago] ('admin',)
+2025-11-18 14:03:31,633 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:03:31,634 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:03:31,634 - sqlalchemy.engine.Engine - INFO - [cached since 2445s ago] ('admin',)
+2025-11-18 14:03:31,635 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:03:31,636 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:03:31,636 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:03:31,637 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:04:31,263 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:04:31,264 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:04:31,264 - sqlalchemy.engine.Engine - INFO - [cached since 2504s ago] ('admin',)
+2025-11-18 14:04:31,265 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:04:31,265 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:04:31,265 - sqlalchemy.engine.Engine - INFO - [cached since 2504s ago] ('admin',)
+2025-11-18 14:04:31,266 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:04:31,266 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:04:31,267 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:04:31,267 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:04:31,270 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:04:31,271 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:04:31,271 - sqlalchemy.engine.Engine - INFO - [cached since 2504s ago] ('admin',)
+2025-11-18 14:04:31,272 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:04:31,272 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:04:31,272 - sqlalchemy.engine.Engine - INFO - [cached since 2504s ago] ('admin',)
+2025-11-18 14:04:31,273 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:04:31,274 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:04:31,274 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:04:31,275 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:05:31,578 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:05:31,579 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:05:31,579 - sqlalchemy.engine.Engine - INFO - [cached since 2565s ago] ('admin',)
+2025-11-18 14:05:31,580 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:05:31,580 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:05:31,580 - sqlalchemy.engine.Engine - INFO - [cached since 2565s ago] ('admin',)
+2025-11-18 14:05:31,581 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:05:31,581 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:05:31,584 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:05:31,585 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:05:31,587 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:05:31,587 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:05:31,588 - sqlalchemy.engine.Engine - INFO - [cached since 2565s ago] ('admin',)
+2025-11-18 14:05:31,589 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:05:31,589 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:05:31,589 - sqlalchemy.engine.Engine - INFO - [cached since 2565s ago] ('admin',)
+2025-11-18 14:05:31,590 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:05:31,591 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:05:31,592 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:05:31,592 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:18,911 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:18,912 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:18,912 - sqlalchemy.engine.Engine - INFO - [cached since 2612s ago] ('admin',)
+2025-11-18 14:06:18,913 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:19,118 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:19,119 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:19,119 - sqlalchemy.engine.Engine - INFO - [cached since 2612s ago] ('admin',)
+2025-11-18 14:06:19,122 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:19,124 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:19,124 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:19,125 - sqlalchemy.engine.Engine - INFO - [cached since 2612s ago] ('admin',)
+2025-11-18 14:06:19,127 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:06:19,128 - sqlalchemy.engine.Engine - INFO - [cached since 2612s ago] (20, 0)
+2025-11-18 14:06:19,129 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:06:19,129 - sqlalchemy.engine.Engine - INFO - [cached since 2612s ago] ()
+2025-11-18 14:06:19,132 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:28,402 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:28,403 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:28,403 - sqlalchemy.engine.Engine - INFO - [cached since 2621s ago] ('admin',)
+2025-11-18 14:06:28,405 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:28,586 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:28,586 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:28,587 - sqlalchemy.engine.Engine - INFO - [cached since 2622s ago] ('admin',)
+2025-11-18 14:06:28,589 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:06:28,619 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:06:28,620 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:06:28,620 - sqlalchemy.engine.Engine - INFO - [cached since 2622s ago] ('admin',)
+2025-11-18 14:06:28,623 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:06:28,624 - sqlalchemy.engine.Engine - INFO - [cached since 2621s ago] (20, 0)
+2025-11-18 14:06:28,625 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:06:28,625 - sqlalchemy.engine.Engine - INFO - [cached since 2621s ago] ()
+2025-11-18 14:06:28,627 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:45,075 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:45,075 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:45,075 - sqlalchemy.engine.Engine - INFO - [cached since 2938s ago] ('admin',)
+2025-11-18 14:11:45,077 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:45,194 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:45,194 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:45,194 - sqlalchemy.engine.Engine - INFO - [cached since 2938s ago] ('admin',)
+2025-11-18 14:11:45,196 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:45,200 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:45,201 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:45,202 - sqlalchemy.engine.Engine - INFO - [cached since 2938s ago] ('admin',)
+2025-11-18 14:11:45,204 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:45,204 - sqlalchemy.engine.Engine - INFO - [cached since 2938s ago] (20, 0)
+2025-11-18 14:11:45,206 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:11:45,206 - sqlalchemy.engine.Engine - INFO - [cached since 2938s ago] ()
+2025-11-18 14:11:45,208 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:49,668 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:49,669 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:49,669 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:49,672 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:49,672 - sqlalchemy.engine.Engine - INFO - [cached since 2906s ago] (100, 0)
+2025-11-18 14:11:49,675 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:49,952 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:49,952 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:49,952 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:49,953 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:49,953 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:49,953 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:49,956 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:49,957 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] (6, 0)
+2025-11-18 14:11:49,959 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:11:49,960 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ()
+2025-11-18 14:11:49,965 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers 
+WHERE drivers.status = ?
+2025-11-18 14:11:49,966 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('active',)
+2025-11-18 14:11:49,968 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:11:49,968 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ()
+2025-11-18 14:11:49,973 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:49,974 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers 
+WHERE drivers.created_at >= ?
+2025-11-18 14:11:49,974 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('2025-11-01 00:00:00.000000',)
+2025-11-18 14:11:49,976 - sqlalchemy.engine.Engine - INFO - SELECT drivers.main_route, count(drivers.id) AS count 
+FROM drivers GROUP BY drivers.main_route ORDER BY count(drivers.id) DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:49,976 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (10, 0)
+2025-11-18 14:11:49,979 - sqlalchemy.engine.Engine - INFO - SELECT drivers.user_id, users.username, count(drivers.id) AS count 
+FROM drivers JOIN users ON drivers.user_id = users.id GROUP BY drivers.user_id, users.username ORDER BY count(drivers.id) DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:49,980 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (10, 0)
+2025-11-18 14:11:49,983 - sqlalchemy.engine.Engine - INFO - SELECT count(vehicles.id) AS count_1 
+FROM vehicles
+2025-11-18 14:11:49,984 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ()
+2025-11-18 14:11:49,985 - sqlalchemy.engine.Engine - INFO - SELECT count(vehicles.id) AS count_1 
+FROM vehicles 
+WHERE vehicles.status = ?
+2025-11-18 14:11:49,985 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('active',)
+2025-11-18 14:11:49,986 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:49,987 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:49,988 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:49,990 - sqlalchemy.engine.Engine - INFO - SELECT count(schedules.id) AS count_1 
+FROM schedules
+2025-11-18 14:11:49,990 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ()
+2025-11-18 14:11:49,991 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers 
+WHERE drivers.id = ?
+2025-11-18 14:11:49,992 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (6,)
+2025-11-18 14:11:49,993 - sqlalchemy.engine.Engine - INFO - SELECT count(schedules.id) AS count_1 
+FROM schedules 
+WHERE schedules.status = ?
+2025-11-18 14:11:49,993 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('completed',)
+2025-11-18 14:11:49,994 - sqlalchemy.engine.Engine - INFO - SELECT driver_photos.id, driver_photos.driver_id, driver_photos.photo_type, driver_photos.file_path, driver_photos.file_name, driver_photos.file_size, driver_photos.mime_type, driver_photos.created_at 
+FROM driver_photos 
+WHERE driver_photos.driver_id = ?
+2025-11-18 14:11:49,995 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (6,)
+2025-11-18 14:11:49,998 - sqlalchemy.engine.Engine - INFO - SELECT count(driver_certificates.id) AS count_1 
+FROM driver_certificates 
+WHERE driver_certificates.expiry_date < ? AND driver_certificates.status = ?
+2025-11-18 14:11:49,999 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('2025-11-18', 'valid')
+2025-11-18 14:11:50,001 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,002 - sqlalchemy.engine.Engine - INFO - SELECT count(maintenance_records.id) AS count_1 
+FROM maintenance_records 
+WHERE maintenance_records.next_service_date >= ? AND maintenance_records.next_service_date <= ? AND maintenance_records.status = ?
+2025-11-18 14:11:50,002 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('2025-11-18', '2025-12-18', 'completed')
+2025-11-18 14:11:50,005 - sqlalchemy.engine.Engine - INFO - SELECT count(distinct(drivers.id)) AS count_1 
+FROM drivers 
+WHERE drivers.status = ?
+2025-11-18 14:11:50,005 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] ('active',)
+2025-11-18 14:11:50,008 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,011 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,014 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,015 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:50,017 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers 
+WHERE drivers.id = ?
+2025-11-18 14:11:50,017 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (5,)
+2025-11-18 14:11:50,018 - sqlalchemy.engine.Engine - INFO - SELECT driver_photos.id, driver_photos.driver_id, driver_photos.photo_type, driver_photos.file_path, driver_photos.file_name, driver_photos.file_size, driver_photos.mime_type, driver_photos.created_at 
+FROM driver_photos 
+WHERE driver_photos.driver_id = ?
+2025-11-18 14:11:50,019 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (5,)
+2025-11-18 14:11:50,021 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,115 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,117 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,117 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:50,119 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers 
+WHERE drivers.id = ?
+2025-11-18 14:11:50,123 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (4,)
+2025-11-18 14:11:50,147 - sqlalchemy.engine.Engine - INFO - SELECT driver_photos.id, driver_photos.driver_id, driver_photos.photo_type, driver_photos.file_path, driver_photos.file_name, driver_photos.file_size, driver_photos.mime_type, driver_photos.created_at 
+FROM driver_photos 
+WHERE driver_photos.driver_id = ?
+2025-11-18 14:11:50,149 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (4,)
+2025-11-18 14:11:50,160 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,182 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,183 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,184 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:50,185 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers 
+WHERE drivers.id = ?
+2025-11-18 14:11:50,185 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (3,)
+2025-11-18 14:11:50,188 - sqlalchemy.engine.Engine - INFO - SELECT driver_photos.id, driver_photos.driver_id, driver_photos.photo_type, driver_photos.file_path, driver_photos.file_name, driver_photos.file_size, driver_photos.mime_type, driver_photos.created_at 
+FROM driver_photos 
+WHERE driver_photos.driver_id = ?
+2025-11-18 14:11:50,188 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (3,)
+2025-11-18 14:11:50,190 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,208 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,209 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,210 - sqlalchemy.engine.Engine - INFO - [cached since 2943s ago] ('admin',)
+2025-11-18 14:11:50,212 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers 
+WHERE drivers.id = ?
+2025-11-18 14:11:50,213 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (1,)
+2025-11-18 14:11:50,217 - sqlalchemy.engine.Engine - INFO - SELECT driver_photos.id, driver_photos.driver_id, driver_photos.photo_type, driver_photos.file_path, driver_photos.file_name, driver_photos.file_size, driver_photos.mime_type, driver_photos.created_at 
+FROM driver_photos 
+WHERE driver_photos.driver_id = ?
+2025-11-18 14:11:50,218 - sqlalchemy.engine.Engine - INFO - [cached since 2912s ago] (1,)
+2025-11-18 14:11:50,219 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,760 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,760 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,761 - sqlalchemy.engine.Engine - INFO - [cached since 2944s ago] ('admin',)
+2025-11-18 14:11:50,761 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:50,761 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:50,761 - sqlalchemy.engine.Engine - INFO - [cached since 2944s ago] ('admin',)
+2025-11-18 14:11:50,762 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:11:50,763 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:50,764 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:11:50,765 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:51,368 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:51,369 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:51,369 - sqlalchemy.engine.Engine - INFO - [cached since 2944s ago] ('admin',)
+2025-11-18 14:11:51,370 - app.core.logging - INFO - 用户 admin 请求证书记录
+2025-11-18 14:11:51,373 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:52,202 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:52,205 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:52,206 - sqlalchemy.engine.Engine - INFO - [cached since 2945s ago] ('admin',)
+2025-11-18 14:11:52,208 - app.core.logging - INFO - 用户 admin 请求排班列表
+2025-11-18 14:11:52,212 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:52,843 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:52,843 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:52,847 - sqlalchemy.engine.Engine - INFO - [cached since 2946s ago] ('admin',)
+2025-11-18 14:11:52,850 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:52,851 - sqlalchemy.engine.Engine - INFO - [cached since 2946s ago] (20, 0)
+2025-11-18 14:11:52,852 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:11:52,852 - sqlalchemy.engine.Engine - INFO - [cached since 2946s ago] ()
+2025-11-18 14:11:52,855 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:53,423 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:53,425 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:53,426 - sqlalchemy.engine.Engine - INFO - [cached since 2946s ago] ('admin',)
+2025-11-18 14:11:53,429 - app.core.logging - INFO - 用户 admin 请求车辆列表
+2025-11-18 14:11:53,431 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:11:54,364 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:11:54,365 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:11:54,369 - sqlalchemy.engine.Engine - INFO - [cached since 2947s ago] ('admin',)
+2025-11-18 14:11:54,379 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:11:54,379 - sqlalchemy.engine.Engine - INFO - [cached since 2947s ago] (20, 0)
+2025-11-18 14:11:54,382 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:11:54,383 - sqlalchemy.engine.Engine - INFO - [cached since 2947s ago] ()
+2025-11-18 14:11:54,394 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:21,277 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:21,278 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:21,278 - sqlalchemy.engine.Engine - INFO - [cached since 2974s ago] ('admin',)
+2025-11-18 14:12:21,278 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:21,279 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:21,279 - sqlalchemy.engine.Engine - INFO - [cached since 2974s ago] ('admin',)
+2025-11-18 14:12:21,280 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:12:21,281 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:21,282 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:12:21,282 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:21,472 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:21,472 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:21,472 - sqlalchemy.engine.Engine - INFO - [cached since 2975s ago] ('admin',)
+2025-11-18 14:12:21,474 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:21,650 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:21,650 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:21,650 - sqlalchemy.engine.Engine - INFO - [cached since 2975s ago] ('admin',)
+2025-11-18 14:12:21,651 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:29,704 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:29,705 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:29,705 - sqlalchemy.engine.Engine - INFO - [cached since 2983s ago] ('admin',)
+2025-11-18 14:12:29,706 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:12:29,844 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:12:29,845 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:12:29,845 - sqlalchemy.engine.Engine - INFO - [cached since 2983s ago] ('admin',)
+2025-11-18 14:12:29,847 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:14:23,738 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:14:23,739 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:14:23,740 - sqlalchemy.engine.Engine - INFO - [cached since 3097s ago] ('admin',)
+2025-11-18 14:14:23,742 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:14:23,885 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:14:23,886 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:14:23,886 - sqlalchemy.engine.Engine - INFO - [cached since 3097s ago] ('admin',)
+2025-11-18 14:14:23,889 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:14:27,161 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:14:27,162 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:14:27,163 - sqlalchemy.engine.Engine - INFO - [cached since 3100s ago] ('admin',)
+2025-11-18 14:14:27,165 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:14:27,288 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:14:27,288 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:14:27,288 - sqlalchemy.engine.Engine - INFO - [cached since 3100s ago] ('admin',)
+2025-11-18 14:14:27,290 - sqlalchemy.engine.Engine - INFO - ROLLBACK

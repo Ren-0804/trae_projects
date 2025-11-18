@@ -170,6 +170,17 @@
                 </a-button>
               </div>
             </a-form-item>
+            <a-form-item v-if="mfaRequired" label="二次验证码" required>
+              <div style="display:flex; gap:8px;">
+                <a-input 
+                  v-model:value="mfa.code" 
+                  placeholder="请输入6位验证码"
+                  size="large"
+                  style="border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.2); background: rgba(255, 255, 255, 0.8);"
+                />
+                <a-button size="large" type="primary" @click="submitMfa" :disabled="loading" style="border-radius:12px;">验证</a-button>
+              </div>
+            </a-form-item>
             <a-form-item style="margin-bottom: 16px;">
               <a-button 
                 type="primary" 
@@ -270,6 +281,8 @@ const mode = ref<'password' | 'sms'>('password')
 
 const loading = ref(false)
 const error = ref('')
+const mfaRequired = ref(false)
+const mfa = reactive({ code: '' })
 
 const handleSubmit = async () => {
   loading.value = true
@@ -277,16 +290,38 @@ const handleSubmit = async () => {
 
   try {
     if (mode.value === 'password') {
-      await authStore.login(form.username, form.password)
+      const r: any = await authStore.login(form.username, form.password)
+      if (r?.mfa_required) {
+        mfaRequired.value = true
+        message.info('请输入二次验证码')
+        return
+      }
     } else {
       const { loginWithSms } = await import('@/api/auth')
       const r = await loginWithSms(sms.phone, sms.code)
-      await authStore.login(r.user.username, form.password)
+      authStore.setSession(r)
     }
     message.success('登录成功')
     router.push('/')
   } catch (err: any) {
     const msg = err.response?.data?.message || '登录失败，请检查用户名和密码'
+    error.value = msg
+    message.error(msg)
+  } finally {
+    loading.value = false
+  }
+}
+
+const submitMfa = async () => {
+  loading.value = true
+  try {
+    const { verifyMfa } = await import('@/api/auth')
+    const r = await verifyMfa(form.username, mfa.code)
+    authStore.setSession(r)
+    message.success('登录成功')
+    router.push('/')
+  } catch (err: any) {
+    const msg = err.response?.data?.message || '验证码错误'
     error.value = msg
     message.error(msg)
   } finally {

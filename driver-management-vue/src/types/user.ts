@@ -19,6 +19,7 @@ export interface LoginResponse {
   token: string
   user: User
   expires_in: number
+  mfa_required?: boolean
 }
 
 export interface Driver {

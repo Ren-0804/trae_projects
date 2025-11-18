@@ -19,6 +19,8 @@ let tasks = [
   { id: 102, customer: 'Globex', status: 'onroad' },
 ]
 
+const failedLogin = {}
+
 function send(res, status, data, headers = {}) {
   const body = typeof data === 'string' ? data : JSON.stringify(data)
   res.writeHead(status, { 'Content-Type': 'application/json', ...headers })
@@ -63,8 +65,29 @@ const server = http.createServer(async (req, res) => {
   // Auth
   if (path === '/api/v1/auth/login' && method === 'POST') {
     const body = await parseBody(req)
-    const user = users.find(u => u.username === (body.username || 'admin')) || users[0]
-    return send(res, 200, { token: 'devtoken', user, expires_in: 3600 })
+    const usr = String(body.username || 'admin')
+    const pwd = String(body.password || '')
+    const entry = users.find(u => u.username === usr) || users[0]
+    const now = Date.now()
+    const lock = failedLogin[usr]?.lockUntil || 0
+    if (lock && now < lock) {
+      return send(res, 423, { message: '账户已锁定，请稍后重试' })
+    }
+    if (pwd !== 'password123' && body.method !== 'sms') {
+      failedLogin[usr] = failedLogin[usr] || { count: 0, lockUntil: 0 }
+      failedLogin[usr].count += 1
+      if (failedLogin[usr].count >= 5) {
+        failedLogin[usr].lockUntil = now + 30 * 60 * 1000
+      }
+      auditLogs.push({ id: (auditLogs.slice(-1)[0]?.id || 0) + 1, created_at: new Date().toISOString(), action: 'auth.login.failed', actor_name: usr })
+      return send(res, 403, { message: '用户名或密码错误' })
+    }
+    failedLogin[usr] = { count: 0, lockUntil: 0 }
+    if ((entry.role === 'admin' || entry.role === 'superadmin') && body.method !== 'sms' && !body.mfa_code) {
+      return send(res, 200, { mfa_required: true })
+    }
+    auditLogs.push({ id: (auditLogs.slice(-1)[0]?.id || 0) + 1, created_at: new Date().toISOString(), action: 'auth.login.success', actor_name: usr })
+    return send(res, 200, { token: 'devtoken', user: entry, expires_in: 3600 })
   }
   if (path === '/api/v1/auth/me' && method === 'GET') {
     return send(res, 200, { user: users[0] })
@@ -87,6 +110,20 @@ const server = http.createServer(async (req, res) => {
     const body = await parseBody(req)
     sessions = sessions.filter(s => s.id !== body.session_id)
     return send(res, 200, { message: 'revoked' })
+  }
+  if (path === '/api/v1/auth/refresh' && method === 'POST') {
+    return send(res, 200, { token: 'devtoken', expires_in: 3600 })
+  }
+  if (path === '/api/v1/auth/verify-mfa' && method === 'POST') {
+    const body = await parseBody(req)
+    const usr = String(body.username || 'admin')
+    const code = String(body.code || '')
+    const entry = users.find(u => u.username === usr) || users[0]
+    if (code !== '123456') {
+      return send(res, 403, { message: '验证码错误' })
+    }
+    auditLogs.push({ id: (auditLogs.slice(-1)[0]?.id || 0) + 1, created_at: new Date().toISOString(), action: 'auth.mfa.verify', actor_name: usr })
+    return send(res, 200, { token: 'devtoken', user: entry, expires_in: 3600 })
   }
 
   // Audit

@@ -22,10 +22,8 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(username: string, password: string) {
     try {
       const response = await apiLogin({ username, password })
-      token.value = response.token
-      user.value = response.user
-      localStorage.setItem('token', response.token)
-      scheduleRefresh(response.expires_in)
+      if ((response as any).mfa_required) return response as any
+      setSession(response)
       return response
     } catch (error) {
       throw error
@@ -46,6 +44,13 @@ export const useAuthStore = defineStore('auth', () => {
     ;(scheduleRefresh as any)._t = window.setTimeout(() => {
       refresh().catch(() => {})
     }, ttl * 1000)
+  }
+
+  function setSession(response: { token: string; user: User; expires_in?: number }) {
+    token.value = response.token
+    user.value = response.user
+    localStorage.setItem('token', response.token)
+    scheduleRefresh(response.expires_in)
   }
 
   async function fetchUser() {
@@ -82,5 +87,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUser,
     logout,
     forceLogout,
+    setSession,
   }
 })

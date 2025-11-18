@@ -107,4 +107,9 @@ export async function loginWithSms(phone: string, code: string): Promise<LoginRe
   return response.data
 }
 
+export async function verifyMfa(username: string, code: string): Promise<LoginResponse> {
+  const response = await api.post('/auth/verify-mfa', { username, code })
+  return response.data
+}
+
 export default api
