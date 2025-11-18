@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { LoginRequest, LoginResponse } from '@/types/user'
+import type { LoginRequest, LoginResponse, User } from '@/types/user'
 
 const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'
 
@@ -79,6 +79,31 @@ export async function login(data: LoginRequest): Promise<LoginResponse> {
 
 export async function getCurrentUser(): Promise<{ user: any }> {
   const response = await api.get('/auth/me')
+  return response.data
+}
+
+export async function refreshToken(): Promise<{ token: string; expires_in: number }> {
+  const response = await api.post('/auth/refresh')
+  return response.data
+}
+
+export async function logout(): Promise<{ message: string }> {
+  const response = await api.post('/auth/logout')
+  return response.data
+}
+
+export async function getSessions(): Promise<Array<{ id: string; device: string; ip: string; created_at: string; last_active_at: string }>> {
+  const response = await api.get('/auth/sessions')
+  return response.data
+}
+
+export async function revokeSession(sessionId: string): Promise<{ message: string }> {
+  const response = await api.post('/auth/revoke-session', { session_id: sessionId })
+  return response.data
+}
+
+export async function loginWithSms(phone: string, code: string): Promise<LoginResponse> {
+  const response = await api.post('/auth/login', { phone, code, method: 'sms' })
   return response.data
 }
 

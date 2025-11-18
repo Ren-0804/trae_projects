@@ -2,7 +2,7 @@ export interface User {
   id: number
   username: string
   email: string
-  role: 'admin' | 'employee'
+  role: 'superadmin' | 'admin' | 'dispatcher' | 'manager' | 'driver' | 'auditor'
   is_active: boolean
   is_admin?: boolean
   last_login_at?: string | null

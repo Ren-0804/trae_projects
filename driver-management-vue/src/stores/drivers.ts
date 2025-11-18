@@ -8,6 +8,7 @@ import type {
   DriverListResponse,
 } from '@/api/drivers'
 import { getDrivers, getDriver, createDriver, updateDriver, deleteDriver } from '@/api/drivers'
+import { log, alert } from '@/utils/auditLogger'
 
 export const useDriverStore = defineStore('drivers', () => {
   const drivers = ref<Driver[]>([])
@@ -62,9 +63,11 @@ export const useDriverStore = defineStore('drivers', () => {
       const newDriver = await createDriver(data)
       drivers.value.unshift(newDriver) // 添加到列表开头
       total.value++
+      await log('driver.create', 'driver', newDriver.id, { name: newDriver.name })
       return newDriver
     } catch (error) {
       console.error('创建司机失败:', error)
+      await alert('driver.create.failed', 'driver', undefined, '创建司机失败', 'medium')
       throw error
     } finally {
       loading.value = false
@@ -83,9 +86,11 @@ export const useDriverStore = defineStore('drivers', () => {
       if (currentDriver.value?.id === id) {
         currentDriver.value = updatedDriver
       }
+      await log('driver.update', 'driver', id, { fields: Object.keys(data) })
       return updatedDriver
     } catch (error) {
       console.error('更新司机失败:', error)
+      await alert('driver.update.failed', 'driver', id, '更新司机失败', 'medium')
       throw error
     } finally {
       loading.value = false
@@ -102,8 +107,10 @@ export const useDriverStore = defineStore('drivers', () => {
       if (currentDriver.value?.id === id) {
         currentDriver.value = null
       }
+      await log('driver.delete', 'driver', id)
     } catch (error) {
       console.error('删除司机失败:', error)
+      await alert('driver.delete.failed', 'driver', id, '删除司机失败', 'high')
       throw error
     } finally {
       loading.value = false

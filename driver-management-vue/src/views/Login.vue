@@ -99,8 +99,12 @@
         </div>
         
         <div style="padding: 32px;">
-          <a-form layout="vertical" @submit.prevent="handleLogin">
-            <a-form-item label="用户名" required>
+          <a-radio-group v-model:value="mode" style="margin-bottom: 16px;">
+            <a-radio-button value="password">密码登录</a-radio-button>
+            <a-radio-button value="sms">短信验证码登录</a-radio-button>
+          </a-radio-group>
+          <a-form layout="vertical" @submit.prevent="handleSubmit">
+            <a-form-item v-if="mode==='password'" label="用户名" required>
               <a-input 
                 v-model:value="form.username" 
                 placeholder="请输入用户名"
@@ -122,7 +126,7 @@
                 </template>
               </a-input>
             </a-form-item>
-            <a-form-item label="密码" required>
+            <a-form-item v-if="mode==='password'" label="密码" required>
               <a-input-password 
                 v-model:value="form.password" 
                 placeholder="请输入密码"
@@ -144,6 +148,27 @@
                   </svg>
                 </template>
               </a-input-password>
+            </a-form-item>
+            <a-form-item v-if="mode==='sms'" label="手机号" required>
+              <a-input 
+                v-model:value="sms.phone" 
+                placeholder="请输入手机号"
+                size="large"
+                style="border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.2); background: rgba(255, 255, 255, 0.8);"
+              />
+            </a-form-item>
+            <a-form-item v-if="mode==='sms'" label="验证码" required>
+              <div style="display:flex; gap:8px;">
+                <a-input 
+                  v-model:value="sms.code" 
+                  placeholder="请输入验证码"
+                  size="large"
+                  style="border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.2); background: rgba(255, 255, 255, 0.8);"
+                />
+                <a-button size="large" @click="sendSmsCode" :disabled="sms.sending" style="border-radius:12px;">
+                  {{ sms.sending ? '发送中...' : '发送验证码' }}
+                </a-button>
+              </div>
             </a-form-item>
             <a-form-item style="margin-bottom: 16px;">
               <a-button 
@@ -236,16 +261,28 @@ const form = reactive({
   username: '',
   password: '',
 })
+const sms = reactive({
+  phone: '',
+  code: '',
+  sending: false,
+})
+const mode = ref<'password' | 'sms'>('password')
 
 const loading = ref(false)
 const error = ref('')
 
-const handleLogin = async () => {
+const handleSubmit = async () => {
   loading.value = true
   error.value = ''
 
   try {
-    await authStore.login(form.username, form.password)
+    if (mode.value === 'password') {
+      await authStore.login(form.username, form.password)
+    } else {
+      const { loginWithSms } = await import('@/api/auth')
+      const r = await loginWithSms(sms.phone, sms.code)
+      await authStore.login(r.user.username, form.password)
+    }
     message.success('登录成功')
     router.push('/')
   } catch (err: any) {
@@ -254,6 +291,15 @@ const handleLogin = async () => {
     message.error(msg)
   } finally {
     loading.value = false
+  }
+}
+
+const sendSmsCode = async () => {
+  sms.sending = true
+  try {
+    message.info('验证码发送逻辑需后端支持')
+  } finally {
+    sms.sending = false
   }
 }
 </script>

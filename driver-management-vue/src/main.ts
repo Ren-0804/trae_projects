@@ -5,6 +5,7 @@ import router from './router'
 import './assets/main.css'
 import Antd from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css'
+import { usePermissionStore } from '@/stores/permissions'
 
 const app = createApp(App)
 
@@ -35,3 +36,13 @@ console.error = (...args: any[]) => {
   if (text.includes('net::ERR_ABORTED') || text.includes('Failed to fetch dynamically imported module')) return
   _origConsoleError(...args)
 }
+
+const perm = usePermissionStore()
+app.directive('can', {
+  mounted(el, binding) {
+    const [resource, action, scope] = (Array.isArray(binding.value) ? binding.value : [binding.value]) as any
+    if (!perm.can(resource, action || 'view', scope)) {
+      el.style.display = 'none'
+    }
+  },
+})

@@ -152,15 +152,67 @@ const router = createRouter({
           path: '/statistics',
           name: 'Statistics',
           component: Statistics,
-          meta: { title: '数据统计', requiresAdmin: true },
-          beforeEnter: (to, from, next) => {
-            const auth = useAuthStore()
-            if (!auth.isAdmin) {
-              next('/')
-            } else {
-              next()
-            }
-          },
+          meta: { title: '数据统计', requiresRoles: ['admin', 'superadmin'] },
+        },
+        {
+          path: '/security/center',
+          name: 'SecurityCenter',
+          component: () => import('@/views/security/Center.vue'),
+          meta: { title: '安全中心', requiresAuth: true },
+        },
+        {
+          path: '/admin/permissions',
+          name: 'Permissions',
+          component: () => import('@/views/admin/Permissions.vue'),
+          meta: { title: '权限管理', requiresRoles: ['admin', 'superadmin'] },
+        },
+        {
+          path: '/tasks',
+          name: 'TaskBoard',
+          component: () => import('@/views/tasks/Board.vue'),
+          meta: { title: '任务看板', requiresRoles: ['dispatcher', 'manager', 'admin', 'superadmin'] },
+        },
+        {
+          path: '/tasks/:id',
+          name: 'TaskDetail',
+          component: () => import('@/views/tasks/Detail.vue'),
+          meta: { title: '任务详情', requiresAuth: true },
+        },
+        {
+          path: '/tasks/map',
+          name: 'TaskMap',
+          component: () => import('@/views/tasks/Map.vue'),
+          meta: { title: '任务地图', requiresAuth: true },
+        },
+        {
+          path: '/driver/tasks',
+          name: 'DriverOps',
+          component: () => import('@/views/tasks/DriverOps.vue'),
+          meta: { title: '司机任务', requiresRoles: ['driver'] },
+        },
+        {
+          path: '/files',
+          name: 'FileList',
+          component: () => import('@/views/files/List.vue'),
+          meta: { title: '文件库', requiresAuth: true, perm: { resource: 'file', action: 'view' } },
+        },
+        {
+          path: '/files/:id',
+          name: 'FileDetail',
+          component: () => import('@/views/files/Detail.vue'),
+          meta: { title: '文件详情', requiresAuth: true, perm: { resource: 'file', action: 'view' } },
+        },
+        {
+          path: '/audit/logs',
+          name: 'AuditLogs',
+          component: () => import('@/views/audit/Logs.vue'),
+          meta: { title: '审计日志', requiresRoles: ['auditor', 'admin', 'superadmin'] },
+        },
+        {
+          path: '/audit/logs/:id',
+          name: 'AuditLogDetail',
+          component: () => import('@/views/audit/LogDetail.vue'),
+          meta: { title: '日志详情', requiresRoles: ['auditor', 'admin', 'superadmin'] },
         },
         {
           path: '/users',
@@ -207,6 +259,10 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
+  const { usePermissionStore } = await import('@/stores/permissions')
+  const p = usePermissionStore()
+  p.setUser(authStore.user as any)
+
   // 司机ID路由参数校验
   if (to.name === 'DriverDetail' || to.name === 'DriverEdit') {
     const rawId = String(to.params.id ?? '')
@@ -222,9 +278,19 @@ router.beforeEach(async (to, from, next) => {
     return
   }
 
-  if (to.meta.requiresAdmin && !authStore.isAdmin) {
+  const roles = (to.meta as any).requiresRoles as Array<any> | undefined
+  if (roles && !authStore.hasRole(roles as any)) {
     next('/')
     return
+  }
+
+  const permMeta = (to.meta as any).perm as { resource: string; action?: string; scope?: any } | undefined
+  if (permMeta) {
+    const ok = p.can(permMeta.resource, permMeta.action || 'view', permMeta.scope)
+    if (!ok) {
+      next('/')
+      return
+    }
   }
 
   if (to.path === '/login' && authStore.isAuthenticated) {

@@ -18,33 +18,53 @@
         :selectedKeys="selectedKeys"
         style="background: transparent; border: none; padding: 8px"
       >
-        <a-menu-item key="drivers" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','drivers']" key="drivers" style="border-radius: 12px; margin: 4px 0;">
           <UserOutlined />
           <router-link to="/drivers">司机管理</router-link>
         </a-menu-item>
-        <a-menu-item key="vehicles" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','vehicles']" key="vehicles" style="border-radius: 12px; margin: 4px 0;">
           <CarOutlined />
           <router-link to="/vehicles">车辆管理</router-link>
         </a-menu-item>
-        <a-menu-item key="schedules" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','schedules']" key="schedules" style="border-radius: 12px; margin: 4px 0;">
           <CalendarOutlined />
           <router-link to="/schedules">排班调度</router-link>
         </a-menu-item>
-        <a-menu-item key="certificates" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','certificates']" key="certificates" style="border-radius: 12px; margin: 4px 0;">
           <SafetyOutlined />
           <router-link to="/certificates">证书管理</router-link>
         </a-menu-item>
-        <a-menu-item key="safety" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','safety']" key="safety" style="border-radius: 12px; margin: 4px 0;">
           <WarningOutlined />
           <router-link to="/safety">安全管理</router-link>
         </a-menu-item>
-        <a-menu-item v-if="authStore.isAdmin" key="statistics" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','statistics']" key="statistics" style="border-radius: 12px; margin: 4px 0;">
           <BarChartOutlined />
           <router-link to="/statistics">数据统计</router-link>
         </a-menu-item>
-        <a-menu-item v-if="authStore.isAdmin" key="users" style="border-radius: 12px; margin: 4px 0;">
+        <a-menu-item v-can="['menu','users']" key="users" style="border-radius: 12px; margin: 4px 0;">
           <TeamOutlined />
           <router-link to="/users">用户管理</router-link>
+        </a-menu-item>
+        <a-menu-item v-can="['menu','tasks']" key="tasks" style="border-radius: 12px; margin: 4px 0;">
+          <CalendarOutlined />
+          <router-link to="/tasks">任务看板</router-link>
+        </a-menu-item>
+        <a-menu-item v-can="['menu','files']" key="files" style="border-radius: 12px; margin: 4px 0;">
+          <SafetyOutlined />
+          <router-link to="/files">文件库</router-link>
+        </a-menu-item>
+        <a-menu-item v-can="['menu','audit']" key="audit" style="border-radius: 12px; margin: 4px 0;">
+          <WarningOutlined />
+          <router-link to="/audit/logs">审计日志</router-link>
+        </a-menu-item>
+        <a-menu-item v-can="['menu','security']" key="security" style="border-radius: 12px; margin: 4px 0;">
+          <SafetyOutlined />
+          <router-link to="/security/center">安全中心</router-link>
+        </a-menu-item>
+        <a-menu-item v-can="['menu','permissions']" key="permissions" style="border-radius: 12px; margin: 4px 0;">
+          <TeamOutlined />
+          <router-link to="/admin/permissions">权限管理</router-link>
         </a-menu-item>
         <a-divider style="margin: 16px 0; border-color: rgba(0, 0, 0, 0.05)" />
         <a-menu-item key="profile" style="border-radius: 12px; margin: 4px 0;">
@@ -103,6 +123,7 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
+import { usePermissionStore } from '@/stores/permissions'
 import { useRouter, useRoute } from 'vue-router'
 import { ref, watch, onMounted } from 'vue'
 import {
@@ -117,6 +138,7 @@ import {
 } from '@ant-design/icons-vue'
 
 const authStore = useAuthStore()
+const permStore = usePermissionStore()
 const router = useRouter()
 const route = useRoute()
 const collapsed = ref(false)
@@ -139,6 +161,7 @@ watch(() => route.path, updateSelected, { immediate: true })
 
 onMounted(() => {
   authStore.fetchUser()
+  permStore.setUser(authStore.user as any)
   updateSelected()
 })
 
