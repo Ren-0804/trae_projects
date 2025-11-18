@@ -230,7 +230,7 @@ import { getSchedules } from '@/api/schedules'
 import { getDrivers } from '@/api/drivers'
 import { getVehicles } from '@/api/vehicles'
 import type { Schedule } from '@/types/schedule'
-import type { Driver } from '@/types/driver'
+import type { Driver } from '@/types/user'
 import type { Vehicle } from '@/types/vehicle'
 import {
   CalendarOutlined,
@@ -261,22 +261,30 @@ const availableVehicles = ref<Vehicle[]>([])
 const selectedSchedules = computed(() => {
   if (!selectedDate.value) return []
   const dateStr = selectedDate.value.format('YYYY-MM-DD')
-  return filteredSchedules.value.filter(schedule => schedule.schedule_date === dateStr)
+  return filteredSchedules.value.filter(schedule => 
+    dayjs(schedule.schedule_date).format('YYYY-MM-DD') === dateStr
+  )
 })
 
 const hasSchedule = (date: any) => {
   const dateStr = date.format('YYYY-MM-DD')
-  return filteredSchedules.value.some(schedule => schedule.schedule_date === dateStr)
+  return filteredSchedules.value.some(schedule => 
+    dayjs(schedule.schedule_date).format('YYYY-MM-DD') === dateStr
+  )
 }
 
 const getScheduleCount = (date: any) => {
   const dateStr = date.format('YYYY-MM-DD')
-  return filteredSchedules.value.filter(schedule => schedule.schedule_date === dateStr).length
+  return filteredSchedules.value.filter(schedule => 
+    dayjs(schedule.schedule_date).format('YYYY-MM-DD') === dateStr
+  ).length
 }
 
 const getScheduleStatus = (date: any) => {
   const dateStr = date.format('YYYY-MM-DD')
-  const daySchedules = filteredSchedules.value.filter(schedule => schedule.schedule_date === dateStr)
+  const daySchedules = filteredSchedules.value.filter(schedule => 
+    dayjs(schedule.schedule_date).format('YYYY-MM-DD') === dateStr
+  )
   
   if (daySchedules.length === 0) return 'default'
   if (daySchedules.some(s => s.status === 'in_progress')) return 'processing'
@@ -289,7 +297,7 @@ const isToday = (date: any) => {
   return date.isSame(dayjs(), 'day')
 }
 
-const formatTime = (time: string) => {
+const formatTime = (time: Date | string) => {
   return dayjs(time).format('HH:mm')
 }
 
@@ -335,15 +343,18 @@ const getTaskTypeText = (taskType: string) => {
 // 统计计算
 const todayScheduleCount = computed(() => {
   const today = dayjs().format('YYYY-MM-DD')
-  return filteredSchedules.value.filter(s => s.schedule_date === today).length
+  return filteredSchedules.value.filter(s => 
+    dayjs(s.schedule_date).format('YYYY-MM-DD') === today
+  ).length
 })
 
 const weekScheduleCount = computed(() => {
   const startOfWeek = dayjs().startOf('week').format('YYYY-MM-DD')
   const endOfWeek = dayjs().endOf('week').format('YYYY-MM-DD')
-  return filteredSchedules.value.filter(s => 
-    s.schedule_date >= startOfWeek && s.schedule_date <= endOfWeek
-  ).length
+  return filteredSchedules.value.filter(s => {
+    const scheduleDate = dayjs(s.schedule_date).format('YYYY-MM-DD')
+    return scheduleDate >= startOfWeek && scheduleDate <= endOfWeek
+  }).length
 })
 
 const activeScheduleCount = computed(() => {
@@ -415,16 +426,12 @@ const cancelSchedule = async (schedule: Schedule) => {
 const fetchSchedules = async () => {
   loading.value = true
   try {
-    const startDate = dayjs().startOf('month').subtract(1, 'month').format('YYYY-MM-DD')
-    const endDate = dayjs().endOf('month').add(1, 'month').format('YYYY-MM-DD')
+    const startDate = dayjs().startOf('month').subtract(1, 'month').toDate()
+    const endDate = dayjs().endOf('month').add(1, 'month').toDate()
     
-    const response = await getSchedules({
-      start_date: startDate,
-      end_date: endDate,
-      page_size: 200
-    })
-    schedules.value = response.data
-    filteredSchedules.value = response.data
+    const schedulesData = await getSchedules(0, 200, undefined, undefined, startDate, endDate)
+    schedules.value = schedulesData
+    filteredSchedules.value = schedulesData
   } catch (error) {
     console.error('获取排班数据失败', error)
   } finally {
@@ -435,15 +442,11 @@ const fetchSchedules = async () => {
 const fetchSchedulesForMonth = async (date: any) => {
   loading.value = true
   try {
-    const startDate = date.startOf('month').subtract(1, 'month').format('YYYY-MM-DD')
-    const endDate = date.endOf('month').add(1, 'month').format('YYYY-MM-DD')
+    const startDate = date.startOf('month').subtract(1, 'month').toDate()
+    const endDate = date.endOf('month').add(1, 'month').toDate()
     
-    const response = await getSchedules({
-      start_date: startDate,
-      end_date: endDate,
-      page_size: 200
-    })
-    schedules.value = response.data
+    const schedulesData = await getSchedules(0, 200, undefined, undefined, startDate, endDate)
+    schedules.value = schedulesData
     filterSchedules()
   } catch (error) {
     console.error('获取排班数据失败', error)
@@ -454,8 +457,8 @@ const fetchSchedulesForMonth = async (date: any) => {
 
 const fetchDrivers = async () => {
   try {
-    const response = await getDrivers(0, 100)
-    availableDrivers.value = response
+    const response = await getDrivers({ page: 1, page_size: 100 })
+    availableDrivers.value = response.data
   } catch (error) {
     console.error('获取司机列表失败', error)
   }
@@ -463,8 +466,8 @@ const fetchDrivers = async () => {
 
 const fetchVehicles = async () => {
   try {
-    const response = await getVehicles(0, 100)
-    availableVehicles.value = response
+    const vehiclesData = await getVehicles(0, 100)
+    availableVehicles.value = vehiclesData
   } catch (error) {
     console.error('获取车辆列表失败', error)
   }

@@ -56,7 +56,18 @@ import { getAlerts, processAlert } from '@/api/safety'
 import type { Alert } from '@/types/safety'
 
 const loading = ref(false)
-const alerts = ref<Alert[]>([])
+const alerts = ref<Array<{
+  id: number
+  alert_type: string
+  severity: string
+  status: string
+  description: string
+  created_at: string
+  driver?: {
+    id: number
+    name: string
+  }
+}>>([])
 const pagination = ref({
   current: 1,
   pageSize: 10,

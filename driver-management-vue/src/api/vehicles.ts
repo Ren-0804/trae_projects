@@ -1,10 +1,10 @@
-import axios from 'axios'
+import api from './auth'
 import type { 
   VehicleResponse, VehicleCreate, VehicleUpdate,
   MaintenanceRecordResponse, MaintenanceRecordCreate, MaintenanceRecordUpdate 
 } from '@/types/vehicle'
 
-const API_BASE = '/api/v1'
+// 使用统一的axios实例，自动携带认证信息
 
 // 车辆管理相关API
 export async function getVehicles(
@@ -19,17 +19,17 @@ export async function getVehicles(
   if (status) params.append('status', status)
   if (vehicleType) params.append('vehicle_type', vehicleType)
   
-  const response = await axios.get(`${API_BASE}/vehicles?${params}`)
+  const response = await api.get(`/vehicles`, { params })
   return response.data
 }
 
 export async function getVehicle(vehicleId: number): Promise<VehicleResponse> {
-  const response = await axios.get(`${API_BASE}/vehicles/${vehicleId}`)
+  const response = await api.get(`/vehicles/${vehicleId}`)
   return response.data
 }
 
 export async function createVehicle(vehicle: VehicleCreate): Promise<VehicleResponse> {
-  const response = await axios.post(`${API_BASE}/vehicles`, vehicle)
+  const response = await api.post(`/vehicles`, vehicle)
   return response.data
 }
 
@@ -37,12 +37,12 @@ export async function updateVehicle(
   vehicleId: number, 
   vehicle: VehicleUpdate
 ): Promise<VehicleResponse> {
-  const response = await axios.put(`${API_BASE}/vehicles/${vehicleId}`, vehicle)
+  const response = await api.put(`/vehicles/${vehicleId}`, vehicle)
   return response.data
 }
 
 export async function deleteVehicle(vehicleId: number): Promise<void> {
-  await axios.delete(`${API_BASE}/vehicles/${vehicleId}`)
+  await api.delete(`/vehicles/${vehicleId}`)
 }
 
 export async function assignDriverToVehicle(
@@ -56,7 +56,7 @@ export async function assignDriverToVehicle(
   params.append('assignment_type', assignmentType)
   if (endDate) params.append('end_date', endDate.toISOString())
   
-  const response = await axios.post(`${API_BASE}/vehicles/${vehicleId}/assign-driver?${params}`)
+  const response = await api.post(`/vehicles/${vehicleId}/assign-driver`, undefined, { params })
   return response.data
 }
 
@@ -64,7 +64,7 @@ export async function endDriverAssignment(
   vehicleId: number,
   assignmentId: number
 ): Promise<any> {
-  const response = await axios.put(`${API_BASE}/vehicles/${vehicleId}/assignments/${assignmentId}/end`)
+  const response = await api.put(`/vehicles/${vehicleId}/assignments/${assignmentId}/end`)
   return response.data
 }
 
@@ -77,7 +77,7 @@ export async function getVehicleMaintenanceRecords(
   params.append('skip', skip.toString())
   params.append('limit', limit.toString())
   
-  const response = await axios.get(`${API_BASE}/vehicles/${vehicleId}/maintenance-records?${params}`)
+  const response = await api.get(`/vehicles/${vehicleId}/maintenance-records`, { params })
   return response.data
 }
 
@@ -85,7 +85,7 @@ export async function createMaintenanceRecord(
   vehicleId: number,
   record: MaintenanceRecordCreate
 ): Promise<MaintenanceRecordResponse> {
-  const response = await axios.post(`${API_BASE}/vehicles/${vehicleId}/maintenance-records`, record)
+  const response = await api.post(`/vehicles/${vehicleId}/maintenance-records`, record)
   return response.data
 }
 
@@ -93,7 +93,7 @@ export async function getUpcomingMaintenance(daysAhead = 30): Promise<any[]> {
   const params = new URLSearchParams()
   params.append('days_ahead', daysAhead.toString())
   
-  const response = await axios.get(`${API_BASE}/vehicles/maintenance/upcoming?${params}`)
+  const response = await api.get(`/vehicles/maintenance/upcoming`, { params })
   return response.data
 }
 
@@ -101,7 +101,7 @@ export async function getExpiringInsurance(daysAhead = 30): Promise<any[]> {
   const params = new URLSearchParams()
   params.append('days_ahead', daysAhead.toString())
   
-  const response = await axios.get(`${API_BASE}/vehicles/insurance/expiring?${params}`)
+  const response = await api.get(`/vehicles/insurance/expiring`, { params })
   return response.data
 }
 
@@ -126,6 +126,6 @@ export async function getVehicleAssignments(params: {
   if (params.start_date) queryParams.append('start_date', params.start_date)
   if (params.end_date) queryParams.append('end_date', params.end_date)
   
-  const response = await axios.get(`${API_BASE}/vehicles/assignments?${queryParams}`)
+  const response = await api.get(`/vehicles/assignments`, { params: queryParams })
   return response.data
 }

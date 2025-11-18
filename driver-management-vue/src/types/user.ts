@@ -20,3 +20,12 @@ export interface LoginResponse {
   user: User
   expires_in: number
 }
+
+export interface Driver {
+  id: number
+  name: string
+  phone: string
+  license_number?: string
+  license_type?: string
+  status?: string
+}

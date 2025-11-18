@@ -1,9 +1,9 @@
-import axios from 'axios'
+import api from './auth'
 import type { 
   DriverCertificateResponse, DriverCertificateCreate, DriverCertificateUpdate 
 } from '@/types/certificate'
 
-const API_BASE = '/api/v1'
+// 使用统一的axios实例，自动携带认证信息
 
 // 证书管理相关API
 export async function getCertificates(
@@ -24,17 +24,17 @@ export async function getCertificates(
   if (expiringSoon) params.append('expiring_soon', 'true')
   if (daysAhead) params.append('days_ahead', daysAhead.toString())
   
-  const response = await axios.get(`${API_BASE}/certificates?${params}`)
+  const response = await api.get(`/certificates`, { params })
   return response.data
 }
 
 export async function getCertificate(certificateId: number): Promise<DriverCertificateResponse> {
-  const response = await axios.get(`${API_BASE}/certificates/${certificateId}`)
+  const response = await api.get(`/certificates/${certificateId}`)
   return response.data
 }
 
 export async function createCertificate(certificate: DriverCertificateCreate): Promise<DriverCertificateResponse> {
-  const response = await axios.post(`${API_BASE}/certificates`, certificate)
+  const response = await api.post(`/certificates`, certificate)
   return response.data
 }
 
@@ -42,12 +42,12 @@ export async function updateCertificate(
   certificateId: number, 
   certificate: DriverCertificateUpdate
 ): Promise<DriverCertificateResponse> {
-  const response = await axios.put(`${API_BASE}/certificates/${certificateId}`, certificate)
+  const response = await api.put(`/certificates/${certificateId}`, certificate)
   return response.data
 }
 
 export async function deleteCertificate(certificateId: number): Promise<void> {
-  await axios.delete(`${API_BASE}/certificates/${certificateId}`)
+  await api.delete(`/certificates/${certificateId}`)
 }
 
 export async function getExpiringCertificates(
@@ -58,7 +58,7 @@ export async function getExpiringCertificates(
   params.append('days_ahead', daysAhead.toString())
   if (certificateType) params.append('certificate_type', certificateType)
   
-  const response = await axios.get(`${API_BASE}/certificates/expiring-soon?${params}`)
+  const response = await api.get(`/certificates/expiring-soon`, { params })
   return response.data
 }
 
@@ -67,11 +67,12 @@ export async function renewCertificate(
   newExpiryDate: Date,
   newCertificateNumber?: string
 ): Promise<DriverCertificateResponse> {
-  const params = new URLSearchParams()
-  params.append('new_expiry_date', newExpiryDate.toISOString())
-  if (newCertificateNumber) params.append('new_certificate_number', newCertificateNumber)
-  
-  const response = await axios.post(`${API_BASE}/certificates/${certificateId}/renew?${params}`)
+  const response = await api.post(`/certificates/${certificateId}/renew`, undefined, {
+    params: {
+      new_expiry_date: newExpiryDate.toISOString(),
+      new_certificate_number: newCertificateNumber,
+    }
+  })
   return response.data
 }
 
@@ -82,7 +83,7 @@ export async function uploadCertificateFile(
   const formData = new FormData()
   formData.append('file', file)
   
-  const response = await axios.post(`${API_BASE}/certificates/${certificateId}/upload-file`, formData, {
+  const response = await api.post(`/certificates/${certificateId}/upload-file`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     }
@@ -106,6 +107,6 @@ export async function getDriverCertificatesSummary(driverId: number): Promise<{
     days_until_expiry: number
   }>
 }> {
-  const response = await axios.get(`${API_BASE}/certificates/drivers/${driverId}/summary`)
+  const response = await api.get(`/certificates/drivers/${driverId}/summary`)
   return response.data
 }

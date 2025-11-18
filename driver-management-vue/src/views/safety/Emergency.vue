@@ -190,12 +190,14 @@ const getStatusText = (status: string) => {
 const fetchEmergencies = async () => {
   loading.value = true
   try {
-    const response = await getEmergencyAlerts({
-      page: pagination.value.current,
-      page_size: pagination.value.pageSize
-    })
-    emergencies.value = response.data
-    pagination.value.total = response.total
+    const skip = (pagination.value.current - 1) * pagination.value.pageSize
+    const emergenciesData = await getEmergencyAlerts(
+      skip,
+      pagination.value.pageSize
+    )
+    emergencies.value = emergenciesData
+    // For now, set total to current length since API doesn't return total
+    pagination.value.total = emergenciesData.length + (pagination.value.current * pagination.value.pageSize)
   } catch (error) {
     message.error('获取紧急报警列表失败')
   } finally {

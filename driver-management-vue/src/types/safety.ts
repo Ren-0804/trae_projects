@@ -108,3 +108,9 @@ export interface EmergencyAlertResponse extends EmergencyAlertBase {
     username: string
   }
 }
+
+// 简化类型别名，便于组件使用
+export type GPSRecord = GPSRecordResponse
+export type DrivingBehavior = DrivingBehaviorResponse
+export type EmergencyAlert = EmergencyAlertResponse
+export type Alert = EmergencyAlertResponse

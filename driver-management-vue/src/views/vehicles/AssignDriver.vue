@@ -99,7 +99,7 @@ import dayjs from 'dayjs'
 import { assignDriverToVehicle, getVehicle, endDriverAssignment } from '@/api/vehicles'
 import { getDrivers } from '@/api/drivers'
 import type { Vehicle } from '@/types/vehicle'
-import type { Driver } from '@/types/driver'
+import type { Driver } from '@/types/user'
 
 const route = useRoute()
 const router = useRouter()
@@ -170,10 +170,10 @@ const disabledEndDate = (current: Dayjs) => {
 }
 
 const filterDriverOption = (input: string, option: any) => {
-  const driver = availableDrivers.value.find(d => d.id === option.value)
+  const driver = availableDrivers.value.find((d: Driver) => d.id === option.value)
   if (!driver) return false
   return driver.name.toLowerCase().includes(input.toLowerCase()) ||
-         driver.license_number.toLowerCase().includes(input.toLowerCase())
+         driver.license_number?.toLowerCase().includes(input.toLowerCase())
 }
 
 const fetchVehicleInfo = async () => {
@@ -193,8 +193,8 @@ const fetchVehicleInfo = async () => {
 const fetchAvailableDrivers = async () => {
   driversLoading.value = true
   try {
-    const drivers = await getDrivers(0, 100)
-    availableDrivers.value = drivers
+    const response = await getDrivers({ page: 1, page_size: 100 })
+    availableDrivers.value = response.data
   } catch (error) {
     message.error('获取司机列表失败')
     console.error('Failed to fetch drivers:', error)

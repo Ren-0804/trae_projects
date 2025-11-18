@@ -14,10 +14,12 @@ export interface VehicleBase {
   annual_inspection_date?: Date
   maintenance_due_date?: Date
   mileage: number
+  current_mileage?: number
   fuel_type?: string
   fuel_consumption: number
   status: 'active' | 'maintenance' | 'retired'
   current_driver_id?: number
+  notes?: string
 }
 
 export interface VehicleCreate extends VehicleBase {}
@@ -33,7 +35,21 @@ export interface VehicleResponse extends VehicleBase {
     name: string
     phone: string
   }
+  assignments?: Array<{
+    id: number
+    driver_id: number
+    driver_name: string
+    start_date: Date
+    end_date?: Date
+    status: string
+  }>
+  brand_model?: string
 }
+
+// 简化类型别名，便于组件使用
+export type Vehicle = VehicleResponse
+export type VehicleCreateRequest = VehicleCreate
+export type VehicleUpdateRequest = VehicleUpdate
 
 // 维护记录相关类型定义
 export interface MaintenanceRecordBase {
@@ -59,3 +75,6 @@ export interface MaintenanceRecordResponse extends MaintenanceRecordBase {
   updated_at: Date
   vehicle?: VehicleResponse
 }
+
+// 简化类型别名，便于组件使用
+export type MaintenanceRecord = MaintenanceRecordResponse

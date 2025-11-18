@@ -21,16 +21,20 @@
           </a-select>
         </a-form-item>
         
-        <a-form-item label="品牌型号" name="brand_model">
-          <a-input v-model:value="form.brand_model" placeholder="请输入品牌型号" />
+        <a-form-item label="品牌" name="brand">
+          <a-input v-model:value="form.brand" placeholder="请输入品牌" />
+        </a-form-item>
+        
+        <a-form-item label="型号" name="model">
+          <a-input v-model:value="form.model" placeholder="请输入型号" />
         </a-form-item>
         
         <a-form-item label="购买日期" name="purchase_date">
           <a-date-picker v-model:value="form.purchase_date" style="width: 100%" />
         </a-form-item>
         
-        <a-form-item label="当前里程" name="current_mileage">
-          <a-input-number v-model:value="form.current_mileage" :min="0" style="width: 100%" />
+        <a-form-item label="当前里程" name="mileage">
+          <a-input-number v-model:value="form.mileage" :min="0" style="width: 100%" />
         </a-form-item>
         
         <a-form-item label="状态" name="status">
@@ -74,9 +78,10 @@ const vehicleId = Number(route.params.id)
 const form = ref<Partial<VehicleUpdateRequest>>({
   plate_number: '',
   vehicle_type: '',
-  brand_model: '',
+  brand: '',
+  model: '',
   purchase_date: undefined,
-  current_mileage: 0,
+  mileage: 0,
   status: 'active',
   notes: ''
 })
@@ -84,7 +89,8 @@ const form = ref<Partial<VehicleUpdateRequest>>({
 const rules = {
   plate_number: [{ required: true, message: '请输入车牌号' }],
   vehicle_type: [{ required: true, message: '请选择车辆类型' }],
-  brand_model: [{ required: true, message: '请输入品牌型号' }],
+  brand: [{ required: true, message: '请输入品牌' }],
+  model: [{ required: true, message: '请输入型号' }],
   status: [{ required: true, message: '请选择状态' }]
 }
 
@@ -93,7 +99,7 @@ const fetchVehicle = async () => {
     const response = await getVehicle(vehicleId)
     form.value = {
       ...response,
-      purchase_date: response.purchase_date ? dayjs(response.purchase_date) : undefined
+      purchase_date: response.purchase_date ? dayjs(response.purchase_date).toDate() : undefined
     }
   } catch (error) {
     message.error('获取车辆信息失败')
@@ -104,7 +110,7 @@ const handleSubmit = async () => {
   try {
     const submitData = {
       ...form.value,
-      purchase_date: form.value.purchase_date ? dayjs(form.value.purchase_date).format('YYYY-MM-DD') : undefined
+      purchase_date: form.value.purchase_date ? dayjs(form.value.purchase_date).toDate() : undefined
     }
     
     await updateVehicle(vehicleId, submitData as VehicleUpdateRequest)

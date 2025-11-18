@@ -188,9 +188,13 @@ pytest --cov=app tests/
 pytest tests/test_api.py
 ```
 
-### Frontend Tests
+### Frontend Configuration & Tests
 ```bash
 cd driver-management-vue
+
+# 配置后端地址（推荐）
+# 在 .env.development 中设置：
+# VITE_API_BASE_URL=http://localhost:8001/api/v1
 
 # Run type checking
 pnpm type-check
@@ -206,12 +210,12 @@ pnpm check
 Test the API endpoints using the provided test script:
 ```bash
 # Test authentication
-curl -X POST "http://localhost:8001/api/v1/auth/login" \
+curl -X POST "http://localhost:8000/api/v1/auth/login" \
   -H "Content-Type: application/json" \
   -d '{"username":"admin","password":"admin123"}'
 
 # Test driver list (requires token)
-curl -X GET "http://localhost:8001/api/v1/drivers" \
+curl -X GET "http://localhost:8000/api/v1/drivers" \
   -H "Authorization: Bearer <your-token>"
 ```
 
@@ -286,8 +290,15 @@ For support and questions:
 
 ## 📈 Changelog
 
-### v1.0.0 (Current)
-- Initial release with core functionality
+### v1.0.1 (Current)
+- ✅ Fixed all API 404 errors for schedules, vehicles, and certificates endpoints
+- ✅ Replaced synchronous SQLAlchemy implementations with async versions
+- ✅ Enhanced driver usage tracking system with comprehensive history
+- ✅ Improved TypeScript type safety across frontend components
+- ✅ Standardized API client with unified axios configuration
+- ✅ Enhanced date handling with proper null checks
+- ✅ Fixed authentication validation and error handling
+- ✅ Added comprehensive code optimization and bug fixes
 - User authentication and authorization
 - Complete driver management system
 - File upload functionality

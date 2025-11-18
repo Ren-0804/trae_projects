@@ -1,15 +1,15 @@
-import axios from 'axios'
+import api from './auth'
 import type { 
   GPSRecordResponse, GPSRecordCreate,
   DrivingBehaviorResponse, DrivingBehaviorCreate, DrivingBehaviorUpdate,
   EmergencyAlertResponse, EmergencyAlertCreate, EmergencyAlertUpdate 
 } from '@/types/safety'
 
-const API_BASE = '/api/v1'
+// 使用统一的axios实例，自动携带认证信息
 
 // GPS轨迹管理相关API
 export async function createGPSRecord(gpsRecord: GPSRecordCreate): Promise<GPSRecordResponse> {
-  const response = await axios.post(`${API_BASE}/safety/gps-records`, gpsRecord)
+  const response = await api.post(`/safety/gps-records`, gpsRecord)
   return response.data
 }
 
@@ -29,7 +29,7 @@ export async function getGPSRecords(
   if (startTime) params.append('start_time', startTime.toISOString())
   if (endTime) params.append('end_time', endTime.toISOString())
   
-  const response = await axios.get(`${API_BASE}/safety/gps-records?${params}`)
+  const response = await api.get(`/safety/gps-records`, { params })
   return response.data
 }
 
@@ -60,13 +60,13 @@ export async function getVehicleTrack(
   params.append('start_time', startTime.toISOString())
   params.append('end_time', endTime.toISOString())
   
-  const response = await axios.get(`${API_BASE}/safety/vehicles/${vehicleId}/track?${params}`)
+  const response = await api.get(`/safety/vehicles/${vehicleId}/track`, { params })
   return response.data
 }
 
 // 驾驶行为管理相关API
 export async function createDrivingBehavior(behavior: DrivingBehaviorCreate): Promise<DrivingBehaviorResponse> {
-  const response = await axios.post(`${API_BASE}/safety/driving-behaviors`, behavior)
+  const response = await api.post(`/safety/driving-behaviors`, behavior)
   return response.data
 }
 
@@ -92,7 +92,7 @@ export async function getDrivingBehaviors(
   if (startTime) params.append('start_time', startTime.toISOString())
   if (endTime) params.append('end_time', endTime.toISOString())
   
-  const response = await axios.get(`${API_BASE}/safety/driving-behaviors?${params}`)
+  const response = await api.get(`/safety/driving-behaviors`, { params })
   return response.data
 }
 
@@ -100,7 +100,7 @@ export async function updateDrivingBehavior(
   behaviorId: number,
   behaviorUpdate: DrivingBehaviorUpdate
 ): Promise<DrivingBehaviorResponse> {
-  const response = await axios.put(`${API_BASE}/safety/driving-behaviors/${behaviorId}`, behaviorUpdate)
+  const response = await api.put(`/safety/driving-behaviors/${behaviorId}`, behaviorUpdate)
   return response.data
 }
 
@@ -123,13 +123,13 @@ export async function getDrivingBehaviorSummary(
   if (startDate) params.append('start_date', startDate.toISOString())
   if (endDate) params.append('end_date', endDate.toISOString())
   
-  const response = await axios.get(`${API_BASE}/safety/driving-behaviors/summary?${params}`)
+  const response = await api.get(`/safety/driving-behaviors/summary`, { params })
   return response.data
 }
 
 // 紧急警报管理相关API
 export async function createEmergencyAlert(alert: EmergencyAlertCreate): Promise<EmergencyAlertResponse> {
-  const response = await axios.post(`${API_BASE}/safety/emergency-alerts`, alert)
+  const response = await api.post(`/safety/emergency-alerts`, alert)
   return response.data
 }
 
@@ -151,7 +151,7 @@ export async function getEmergencyAlerts(
   if (severity) params.append('severity', severity)
   if (status) params.append('status', status)
   
-  const response = await axios.get(`${API_BASE}/safety/emergency-alerts?${params}`)
+  const response = await api.get(`/safety/emergency-alerts`, { params })
   return response.data
 }
 
@@ -159,7 +159,7 @@ export async function updateEmergencyAlert(
   alertId: number,
   alertUpdate: EmergencyAlertUpdate
 ): Promise<EmergencyAlertResponse> {
-  const response = await axios.put(`${API_BASE}/safety/emergency-alerts/${alertId}`, alertUpdate)
+  const response = await api.put(`/safety/emergency-alerts/${alertId}`, alertUpdate)
   return response.data
 }
 
@@ -178,7 +178,7 @@ export async function getActiveEmergencyAlertsSummary(): Promise<{
     longitude: number
   }>
 }> {
-  const response = await axios.get(`${API_BASE}/safety/emergency-alerts/active-summary`)
+  const response = await api.get(`/safety/emergency-alerts/active-summary`)
   return response.data
 }
 
@@ -189,7 +189,7 @@ export async function getSafetyStats(): Promise<{
   today_alerts: number
   emergency_alerts: number
 }> {
-  const response = await axios.get(`${API_BASE}/safety/stats`)
+  const response = await api.get(`/safety/stats`)
   return response.data
 }
 
@@ -217,7 +217,7 @@ export async function getRecentAlerts(params?: {
   if (params?.severity) queryParams.append('severity', params.severity)
   if (params?.status) queryParams.append('status', params.status)
   
-  const response = await axios.get(`${API_BASE}/safety/alerts/recent?${queryParams}`)
+  const response = await api.get(`/safety/alerts/recent?${queryParams}`)
   return response.data
 }
 
@@ -249,12 +249,12 @@ export async function getAlerts(params?: {
   if (params?.status) queryParams.append('status', params.status)
   if (params?.driver_id) queryParams.append('driver_id', params.driver_id.toString())
   
-  const response = await axios.get(`${API_BASE}/safety/alerts?${queryParams}`)
+  const response = await api.get(`/safety/alerts?${queryParams}`)
   return response.data
 }
 
 export async function processAlert(alertId: number): Promise<void> {
-  await axios.put(`${API_BASE}/safety/alerts/${alertId}/process`)
+  await api.put(`/safety/alerts/${alertId}/process`)
 }
 
 export async function getEmergencyStats(): Promise<{
@@ -262,10 +262,10 @@ export async function getEmergencyStats(): Promise<{
   pending_emergency: number
   resolved_emergency: number
 }> {
-  const response = await axios.get(`${API_BASE}/safety/emergency-alerts/stats`)
+  const response = await api.get(`/safety/emergency-alerts/stats`)
   return response.data
 }
 
 export async function processEmergencyAlert(alertId: number): Promise<void> {
-  await axios.put(`${API_BASE}/safety/emergency-alerts/${alertId}/process`)
+  await api.put(`/safety/emergency-alerts/${alertId}/process`)
 }

@@ -110,8 +110,8 @@ const handleSubmit = async () => {
   try {
     const submitData = {
       ...form.value,
-      issue_date: form.value.issue_date ? dayjs(form.value.issue_date).format('YYYY-MM-DD') : undefined,
-      expiry_date: form.value.expiry_date ? dayjs(form.value.expiry_date).format('YYYY-MM-DD') : undefined
+      issue_date: form.value.issue_date ? dayjs(form.value.issue_date).toDate() : undefined,
+      expiry_date: form.value.expiry_date ? dayjs(form.value.expiry_date).toDate() : undefined
     }
     
     await createCertificate(submitData as CertificateCreateRequest)

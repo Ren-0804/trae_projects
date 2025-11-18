@@ -86,6 +86,7 @@ async def health_check():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+
 # 全局异常处理
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
@@ -101,12 +102,20 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     # 记录到操作日志
     try:
         async with AsyncSessionLocal() as session:
-            # 此处无法确定用户，记录user_id为0
             await create_operation_log(session, 0, "validation_error", request.url.path, 0, None, str(exc))
     except Exception:
         pass
+
+    # 汇总可读的错误消息
+    errors = exc.errors()
+    messages = []
+    for e in errors:
+        loc = ".".join(str(x) for x in e.get("loc", []))
+        msg = e.get("msg", "验证错误")
+        messages.append(f"{loc}: {msg}" if loc else msg)
+
     return JSONResponse(status_code=422, content={
         "code": 42200,
-        "message": "验证错误: path.driver_id: Input should be a valid integer, unable to parse string as an integer" if "path" in str(exc) else "验证错误",
-        "detail": exc.errors(),
+        "message": "; ".join(messages) if messages else "验证错误",
+        "detail": errors,
     })

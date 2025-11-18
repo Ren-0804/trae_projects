@@ -23,7 +23,7 @@
         <a-form-item label="车辆" name="vehicle_id">
           <a-select v-model:value="form.vehicle_id" placeholder="请选择车辆">
             <a-select-option v-for="vehicle in vehicles" :key="vehicle.id" :value="vehicle.id">
-              {{ vehicle.plate_number }} - {{ vehicle.brand_model }}
+              {{ vehicle.plate_number }} - {{ vehicle.brand }} {{ vehicle.model }}
             </a-select-option>
           </a-select>
         </a-form-item>
@@ -80,10 +80,10 @@ const form = ref<Partial<ScheduleCreateRequest>>({
   schedule_date: undefined,
   driver_id: undefined,
   vehicle_id: undefined,
-  shift_type: '',
+  shift_type: undefined,
   start_time: undefined,
   end_time: undefined,
-  notes: ''
+  notes: undefined
 })
 
 const drivers = ref<Driver[]>([])
@@ -109,8 +109,8 @@ const fetchDrivers = async () => {
 
 const fetchVehicles = async () => {
   try {
-    const response = await getVehicles({ page_size: 100 })
-    vehicles.value = response.data
+    const vehiclesData = await getVehicles(0, 100)
+    vehicles.value = vehiclesData
   } catch (error) {
     message.error('获取车辆列表失败')
   }
@@ -120,9 +120,9 @@ const handleSubmit = async () => {
   try {
     const submitData = {
       ...form.value,
-      schedule_date: form.value.schedule_date ? dayjs(form.value.schedule_date).format('YYYY-MM-DD') : undefined,
-      start_time: form.value.start_time ? dayjs(form.value.start_time).format('HH:mm:ss') : undefined,
-      end_time: form.value.end_time ? dayjs(form.value.end_time).format('HH:mm:ss') : undefined
+      schedule_date: form.value.schedule_date ? dayjs(form.value.schedule_date).toDate() : undefined,
+      start_time: form.value.start_time ? dayjs(form.value.start_time).toDate() : undefined,
+      end_time: form.value.end_time ? dayjs(form.value.end_time).toDate() : undefined
     }
     
     await createSchedule(submitData as ScheduleCreateRequest)

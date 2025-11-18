@@ -49,25 +49,77 @@
           </a-descriptions-item>
           <a-descriptions-item label="主要线路">
             <template v-if="!manualRouteInput">
-              <a-tree-select
-                v-model:value="routeValue"
-                :treeData="routeTreeData"
-                :showSearch="true"
-                treeNodeFilterProp="title"
-                allowClear
-                :placeholder="'请选择国家/省份'"
-                treeDefaultExpandAll
-                @search="handleRouteSearch"
-                @change="handleRouteChange"
-                style="width:100%"
-              />
-              <div class="text-xs text-gray-500 mt-2">
-                若列表为空或无法选择，可
-                <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+              <!-- 出发地选择 -->
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">出发地</label>
+                <a-tree-select
+                  v-model:value="originRouteValue"
+                  :treeData="routeTreeData"
+                  :showSearch="true"
+                  treeNodeFilterProp="title"
+                  allowClear
+                  :placeholder="'请选择出发地国家/省份'"
+                  treeDefaultExpandAll
+                  @search="handleRouteSearch"
+                  @change="handleOriginRouteChange"
+                  style="width:100%"
+                />
+              </div>
+              
+              <!-- 目的地选择 -->
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">目的地</label>
+                <a-tree-select
+                  v-model:value="destinationRouteValue"
+                  :treeData="routeTreeData"
+                  :showSearch="true"
+                  treeNodeFilterProp="title"
+                  allowClear
+                  :placeholder="'请选择目的地国家/省份'"
+                  treeDefaultExpandAll
+                  @search="handleRouteSearch"
+                  @change="handleDestinationRouteChange"
+                  style="width:100%"
+                />
+              </div>
+              
+              <!-- 添加路线按钮 -->
+              <div class="mb-3">
+                <a-button 
+                  type="primary" 
+                  size="small" 
+                  @click="addCurrentRoute"
+                  :disabled="!originRouteValue || !destinationRouteValue"
+                >
+                  添加路线
+                </a-button>
+              </div>
+              
+              <!-- 已选择的路线显示 -->
+              <div v-if="selectedRoutes.length > 0" class="mb-3">
+                <label class="block text-sm font-medium text-gray-700 mb-1">已选择路线</label>
+                <div class="space-y-2">
+                  <div v-for="(route, index) in selectedRoutes" :key="index" 
+                       class="flex items-center justify-between bg-blue-50 px-3 py-2 rounded">
+                    <span class="text-sm">{{ route.origin }} → {{ route.destination }}</span>
+                    <a-button type="link" size="small" danger @click="removeRoute(index)">删除</a-button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="text-xs text-gray-500 mt-2 space-y-1">
+                <div>• 支持选择多个路线</div>
+                <div>• 若列表为空或无法选择，可
+                  <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+                </div>
               </div>
             </template>
             <template v-else>
-              <a-input v-model:value="form.main_route" placeholder="例如：中国-北京 或 北京-上海" />
+              <a-textarea 
+                v-model:value="form.main_route" 
+                placeholder="例如：&#10;中国-北京,中国-上海&#10;哈萨克斯坦-阿拉木图,乌兹别克斯坦-塔什干"
+                :rows="3"
+              />
               <div class="text-xs text-gray-500 mt-2">
                 <a-button type="link" size="small" @click="manualRouteInput = false">返回选择列表</a-button>
               </div>
@@ -148,10 +200,13 @@ const driver = ref<Driver | null>(null)
 
 const form = ref<DriverUpdate>({})
 const routeValue = ref<string>('')
+const originRouteValue = ref<string>('')
+const destinationRouteValue = ref<string>('')
 const countries = ref<string[]>([])
 const provinces = ref<Record<string, string[]>>({})
 const routeTreeData = ref<any[]>([])
 const manualRouteInput = ref(false)
+const selectedRoutes = ref<Array<{origin: string, destination: string}>>([])
 
 const buildTree = () => {
   routeTreeData.value = countries.value.map((c) => ({
@@ -184,6 +239,72 @@ const handleRouteSearch = async (q: string) => {
 const handleRouteChange = (val: string) => {
   routeValue.value = val
   form.value.main_route = val
+}
+
+const handleOriginRouteChange = (val: string) => {
+  originRouteValue.value = val
+  updateMainRoute()
+}
+
+const handleDestinationRouteChange = (val: string) => {
+  destinationRouteValue.value = val
+  updateMainRoute()
+}
+
+const updateMainRoute = () => {
+  if (originRouteValue.value && destinationRouteValue.value) {
+    const newRoute = {
+      origin: originRouteValue.value,
+      destination: destinationRouteValue.value
+    }
+    
+    // 检查是否已存在相同路线
+    const exists = selectedRoutes.value.some(
+      route => route.origin === newRoute.origin && route.destination === newRoute.destination
+    )
+    
+    if (!exists) {
+      selectedRoutes.value.push(newRoute)
+      // 清空选择框，准备下一次选择
+      originRouteValue.value = ''
+      destinationRouteValue.value = ''
+      updateFormMainRoute()
+    }
+  }
+}
+
+const removeRoute = (index: number) => {
+  selectedRoutes.value.splice(index, 1)
+  updateFormMainRoute()
+}
+
+const updateFormMainRoute = () => {
+  if (selectedRoutes.value.length > 0) {
+    // 将多个路线格式化为字符串，用分号分隔
+    form.value.main_route = selectedRoutes.value.map(route => `${route.origin}→${route.destination}`).join(';')
+  } else {
+    form.value.main_route = ''
+  }
+}
+
+const addCurrentRoute = () => {
+  if (originRouteValue.value && destinationRouteValue.value) {
+    updateMainRoute()
+  }
+}
+
+const parseExistingRoutes = (routeString: string) => {
+  if (!routeString) return
+  
+  // 解析现有的路线格式：origin→destination;origin2→destination2
+  const routes = routeString.split(';').filter(route => route.trim())
+  selectedRoutes.value = routes.map(route => {
+    const [origin, destination] = route.split('→')
+    return {
+      origin: origin?.trim() || '',
+      destination: destination?.trim() || ''
+    }
+  }).filter(route => route.origin && route.destination)
 }
 
 const formRef = ref<FormInstance>()
@@ -246,6 +367,12 @@ const fetchDriver = async () => {
       }
     }
     routeValue.value = driver.value?.main_route || ''
+    
+    // 解析现有的路线数据
+    if (driver.value?.main_route) {
+      parseExistingRoutes(driver.value.main_route)
+    }
+    
     await initRegions()
     // 若初始化后没有数据，则启用手动输入作为回退
     if (routeTreeData.value.length === 0) manualRouteInput.value = true

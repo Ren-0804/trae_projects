@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, and_, or_
 from typing import List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
-from app.models import User, Driver, DriverPhoto, OperationLog
+from app.models import User, Driver, DriverPhoto, OperationLog, Schedule, Vehicle, DriverCertificate
 from app.core.security import get_password_hash, verify_password
 
 
@@ -59,6 +59,17 @@ async def get_users(db: AsyncSession, skip: int = 0, limit: int = 100) -> List[U
 async def get_users_count(db: AsyncSession) -> int:
     result = await db.execute(select(func.count(User.id)))
     return result.scalar()
+
+
+async def delete_user(db: AsyncSession, user_id: int) -> bool:
+    """真正删除用户"""
+    user = await get_user_by_id(db, user_id)
+    if not user:
+        return False
+    
+    await db.delete(user)
+    await db.commit()
+    return True
 
 
 # Driver CRUD operations
@@ -146,6 +157,207 @@ async def get_drivers(
     query = query.offset(skip).limit(limit).order_by(Driver.created_at.desc())
     result = await db.execute(query)
     return result.scalars().all()
+
+
+# Schedule CRUD operations
+async def get_schedules(
+    db: AsyncSession,
+    skip: int = 0,
+    limit: int = 100,
+    driver_id: Optional[int] = None,
+    vehicle_id: Optional[int] = None,
+    schedule_date: Optional[date] = None,
+    start_date: Optional[date] = None,
+    end_date: Optional[date] = None,
+    status: Optional[str] = None,
+    task_type: Optional[str] = None
+) -> List[Schedule]:
+    query = select(Schedule)
+    
+    if driver_id:
+        query = query.where(Schedule.driver_id == driver_id)
+    if vehicle_id:
+        query = query.where(Schedule.vehicle_id == vehicle_id)
+    if schedule_date:
+        query = query.where(
+            Schedule.schedule_date >= datetime.combine(schedule_date, datetime.min.time()),
+            Schedule.schedule_date < datetime.combine(schedule_date + timedelta(days=1), datetime.min.time())
+        )
+    if start_date:
+        query = query.where(Schedule.schedule_date >= datetime.combine(start_date, datetime.min.time()))
+    if end_date:
+        query = query.where(Schedule.schedule_date < datetime.combine(end_date + timedelta(days=1), datetime.min.time()))
+    if status:
+        query = query.where(Schedule.status == status)
+    if task_type:
+        query = query.where(Schedule.task_type == task_type)
+    
+    query = query.order_by(Schedule.schedule_date.desc(), Schedule.start_time.desc()).offset(skip).limit(limit)
+    result = await db.execute(query)
+    return result.scalars().all()
+
+
+async def get_schedule_by_id(db: AsyncSession, schedule_id: int) -> Optional[Schedule]:
+    result = await db.execute(select(Schedule).where(Schedule.id == schedule_id))
+    return result.scalar_one_or_none()
+
+
+async def create_schedule(db: AsyncSession, **kwargs) -> Schedule:
+    schedule = Schedule(**kwargs)
+    db.add(schedule)
+    await db.commit()
+    await db.refresh(schedule)
+    return schedule
+
+
+async def update_schedule(db: AsyncSession, schedule_id: int, **kwargs) -> Optional[Schedule]:
+    schedule = await get_schedule_by_id(db, schedule_id)
+    if not schedule:
+        return None
+    
+    for key, value in kwargs.items():
+        if hasattr(schedule, key) and value is not None:
+            setattr(schedule, key, value)
+    
+    schedule.updated_at = datetime.utcnow()
+    await db.commit()
+    await db.refresh(schedule)
+    return schedule
+
+
+async def delete_schedule(db: AsyncSession, schedule_id: int) -> bool:
+    schedule = await get_schedule_by_id(db, schedule_id)
+    if not schedule:
+        return False
+    
+    await db.delete(schedule)
+    await db.commit()
+    return True
+
+
+# Vehicle CRUD operations
+async def get_vehicles(
+    db: AsyncSession,
+    skip: int = 0,
+    limit: int = 100,
+    status: Optional[str] = None,
+    vehicle_type: Optional[str] = None
+) -> List[Vehicle]:
+    query = select(Vehicle)
+    
+    if status:
+        query = query.where(Vehicle.status == status)
+    if vehicle_type:
+        query = query.where(Vehicle.vehicle_type == vehicle_type)
+    
+    query = query.offset(skip).limit(limit).order_by(Vehicle.created_at.desc())
+    result = await db.execute(query)
+    return result.scalars().all()
+
+
+async def get_vehicle_by_id(db: AsyncSession, vehicle_id: int) -> Optional[Vehicle]:
+    result = await db.execute(select(Vehicle).where(Vehicle.id == vehicle_id))
+    return result.scalar_one_or_none()
+
+
+async def create_vehicle(db: AsyncSession, **kwargs) -> Vehicle:
+    vehicle = Vehicle(**kwargs)
+    db.add(vehicle)
+    await db.commit()
+    await db.refresh(vehicle)
+    return vehicle
+
+
+async def update_vehicle(db: AsyncSession, vehicle_id: int, **kwargs) -> Optional[Vehicle]:
+    vehicle = await get_vehicle_by_id(db, vehicle_id)
+    if not vehicle:
+        return None
+    
+    for key, value in kwargs.items():
+        if hasattr(vehicle, key) and value is not None:
+            setattr(vehicle, key, value)
+    
+    vehicle.updated_at = datetime.utcnow()
+    await db.commit()
+    await db.refresh(vehicle)
+    return vehicle
+
+
+async def delete_vehicle(db: AsyncSession, vehicle_id: int) -> bool:
+    vehicle = await get_vehicle_by_id(db, vehicle_id)
+    if not vehicle:
+        return False
+    
+    await db.delete(vehicle)
+    await db.commit()
+    return True
+
+
+# DriverCertificate CRUD operations
+async def get_certificates(
+    db: AsyncSession,
+    skip: int = 0,
+    limit: int = 100,
+    driver_id: Optional[int] = None,
+    certificate_type: Optional[str] = None,
+    status: Optional[str] = None,
+    expiring_soon: bool = False,
+    days_ahead: int = 30
+) -> List[DriverCertificate]:
+    query = select(DriverCertificate)
+    
+    if driver_id:
+        query = query.where(DriverCertificate.driver_id == driver_id)
+    if certificate_type:
+        query = query.where(DriverCertificate.certificate_type == certificate_type)
+    if status:
+        query = query.where(DriverCertificate.status == status)
+    
+    if expiring_soon:
+        expiry_date = datetime.utcnow() + timedelta(days=days_ahead)
+        query = query.where(DriverCertificate.expiry_date <= expiry_date)
+    
+    query = query.offset(skip).limit(limit).order_by(DriverCertificate.expiry_date.asc())
+    result = await db.execute(query)
+    return result.scalars().all()
+
+
+async def get_certificate_by_id(db: AsyncSession, certificate_id: int) -> Optional[DriverCertificate]:
+    result = await db.execute(select(DriverCertificate).where(DriverCertificate.id == certificate_id))
+    return result.scalar_one_or_none()
+
+
+async def create_certificate(db: AsyncSession, **kwargs) -> DriverCertificate:
+    certificate = DriverCertificate(**kwargs)
+    db.add(certificate)
+    await db.commit()
+    await db.refresh(certificate)
+    return certificate
+
+
+async def update_certificate(db: AsyncSession, certificate_id: int, **kwargs) -> Optional[DriverCertificate]:
+    certificate = await get_certificate_by_id(db, certificate_id)
+    if not certificate:
+        return None
+    
+    for key, value in kwargs.items():
+        if hasattr(certificate, key) and value is not None:
+            setattr(certificate, key, value)
+    
+    certificate.updated_at = datetime.utcnow()
+    await db.commit()
+    await db.refresh(certificate)
+    return certificate
+
+
+async def delete_certificate(db: AsyncSession, certificate_id: int) -> bool:
+    certificate = await get_certificate_by_id(db, certificate_id)
+    if not certificate:
+        return False
+    
+    await db.delete(certificate)
+    await db.commit()
+    return certificate
 
 
 async def get_drivers_count(

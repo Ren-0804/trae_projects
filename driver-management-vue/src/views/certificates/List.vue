@@ -1,20 +1,72 @@
 <template>
-  <div class="certificate-list">
-    <a-card title="证书管理">
-      <template #extra>
+  <div style="padding: 24px">
+    <!-- Glassmorphism Header -->
+    <div style="
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    ">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <div>
+          <h1 style="
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+          ">证书管理</h1>
+          <p style="color: #6b7280; margin: 8px 0 0 0; font-size: 14px;">管理司机证书和到期提醒</p>
+        </div>
         <a-space>
           <a-input-search
             v-model:value="searchText"
-            placeholder="搜索证书"
-            style="width: 200px"
+            placeholder="搜索证书名称、编号或持证人"
+            style="
+              width: 280px;
+              border-radius: 12px;
+              border: 1px solid rgba(0, 0, 0, 0.1);
+              background: rgba(255, 255, 255, 0.7);
+            "
             @search="handleSearch"
-          />
+          >
+            <template #prefix><SearchOutlined style="color: #9ca3af" /></template>
+          </a-input-search>
           <router-link to="/certificates/new">
-            <a-button type="primary">新增证书</a-button>
+            <a-button 
+              type="primary" 
+              size="large"
+              style="
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border: none;
+                border-radius: 12px;
+                height: 44px;
+                padding: 0 24px;
+                font-weight: 600;
+                box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+              "
+            >
+              <template #icon><PlusOutlined /></template>
+              新增证书
+            </a-button>
           </router-link>
         </a-space>
-      </template>
+      </div>
+    </div>
 
+    <!-- Glassmorphism Table Card -->
+    <div style="
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    ">
       <a-table
         :columns="columns"
         :data-source="certificates"
@@ -22,40 +74,71 @@
         :pagination="pagination"
         row-key="id"
         @change="handleTableChange"
+        style="background: transparent;"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'action'">
             <a-space>
               <router-link :to="`/certificates/${record.id}`">
-                <a-button type="link" size="small">详情</a-button>
+                <a-button 
+                  type="text" 
+                  style="
+                    color: #667eea;
+                    border-radius: 8px;
+                    padding: 4px 12px;
+                    font-weight: 500;
+                  "
+                >
+                  <template #icon><EyeOutlined /></template>
+                  详情
+                </a-button>
               </router-link>
               <a-popconfirm
                 title="确定要删除这个证书吗？"
                 @confirm="handleDelete(record.id)"
+                okText="确认"
+                cancelText="取消"
               >
-                <a-button type="link" danger size="small">删除</a-button>
+                <a-button 
+                  danger 
+                  type="text"
+                  style="
+                    border-radius: 8px;
+                    padding: 4px 12px;
+                    font-weight: 500;
+                  "
+                >
+                  <template #icon><DeleteOutlined /></template>
+                  删除
+                </a-button>
               </a-popconfirm>
             </a-space>
           </template>
           <template v-else-if="column.key === 'status'">
-            <a-tag :color="getStatusColor(record.status)">
+            <a-tag 
+              :color="getStatusColor(record.status)"
+              style="border-radius: 20px; padding: 4px 12px; font-weight: 500;"
+            >
               {{ getStatusText(record.status) }}
             </a-tag>
           </template>
           <template v-else-if="column.key === 'expiry_status'">
-            <a-tag :color="getExpiryColor(record)">
+            <a-tag 
+              :color="getExpiryColor(record)"
+              style="border-radius: 20px; padding: 4px 12px; font-weight: 500;"
+            >
               {{ getExpiryText(record) }}
             </a-tag>
           </template>
           <template v-else-if="column.key === 'driver'">
-            <span v-if="record.driver">
+            <span v-if="record.driver" style="font-weight: 500;">
               {{ record.driver.name }}
             </span>
-            <span v-else style="color: #999">未分配</span>
+            <span v-else style="color: #9ca3af; font-style: italic;">未分配</span>
           </template>
         </template>
       </a-table>
-    </a-card>
+    </div>
   </div>
 </template>
 
@@ -65,6 +148,12 @@ import { message } from 'ant-design-vue'
 import { getCertificates, deleteCertificate } from '@/api/certificates'
 import type { Certificate } from '@/types/certificate'
 import dayjs from 'dayjs'
+import {
+  PlusOutlined,
+  SearchOutlined,
+  EyeOutlined,
+  DeleteOutlined
+} from '@ant-design/icons-vue'
 
 const loading = ref(false)
 const searchText = ref('')
@@ -180,13 +269,20 @@ const getExpiryText = (record: Certificate) => {
 const fetchCertificates = async () => {
   loading.value = true
   try {
-    const response = await getCertificates({
-      page: pagination.value.current,
-      page_size: pagination.value.pageSize,
-      search: searchText.value
-    })
-    certificates.value = response.data
-    pagination.value.total = response.total
+    const skip = (pagination.value.current - 1) * pagination.value.pageSize
+    const certificatesData = await getCertificates(
+      skip,
+      pagination.value.pageSize,
+      undefined,
+      undefined,
+      undefined,
+      false,
+      30
+    )
+    certificates.value = certificatesData
+    // For now, set total to current length since API doesn't return total
+    // In a real app, you'd want to add a count endpoint
+    pagination.value.total = certificatesData.length + (pagination.value.current * pagination.value.pageSize)
   } catch (error) {
     message.error('获取证书列表失败')
   } finally {

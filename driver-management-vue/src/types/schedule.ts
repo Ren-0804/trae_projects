@@ -7,6 +7,7 @@ export interface ScheduleBase {
   end_time: Date
   route?: string
   task_type: 'delivery' | 'pickup' | 'transport'
+  shift_type?: string
   status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled'
   notes?: string
 }
@@ -30,3 +31,8 @@ export interface ScheduleResponse extends ScheduleBase {
     vehicle_type: string
   }
 }
+
+// 简化类型别名，便于组件使用
+export type Schedule = ScheduleResponse
+export type ScheduleCreateRequest = ScheduleCreate
+export type ScheduleUpdateRequest = ScheduleUpdate

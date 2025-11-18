@@ -15,9 +15,10 @@
       <a-descriptions bordered :column="2">
         <a-descriptions-item label="车牌号">{{ vehicle?.plate_number }}</a-descriptions-item>
         <a-descriptions-item label="车辆类型">{{ getVehicleTypeText(vehicle?.vehicle_type) }}</a-descriptions-item>
-        <a-descriptions-item label="品牌型号">{{ vehicle?.brand_model }}</a-descriptions-item>
+        <a-descriptions-item label="品牌">{{ vehicle?.brand }}</a-descriptions-item>
+        <a-descriptions-item label="型号">{{ vehicle?.model }}</a-descriptions-item>
         <a-descriptions-item label="购买日期">{{ vehicle?.purchase_date }}</a-descriptions-item>
-        <a-descriptions-item label="当前里程">{{ vehicle?.current_mileage }} 公里</a-descriptions-item>
+        <a-descriptions-item label="当前里程">{{ vehicle?.mileage }} 公里</a-descriptions-item>
         <a-descriptions-item label="状态">
           <a-tag :color="getStatusColor(vehicle?.status)">
             {{ getStatusText(vehicle?.status) }}
@@ -325,8 +326,8 @@ const fetchVehicle = async () => {
 const fetchMaintenanceRecords = async () => {
   maintenanceLoading.value = true
   try {
-    const response = await getVehicleMaintenanceRecords(vehicleId)
-    maintenanceRecords.value = response.data
+    const records = await getVehicleMaintenanceRecords(vehicleId)
+    maintenanceRecords.value = records
   } catch (error) {
     message.error('获取维护记录失败')
   } finally {

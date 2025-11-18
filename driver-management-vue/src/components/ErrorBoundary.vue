@@ -44,10 +44,11 @@ const goHome = () => {
 onErrorCaptured((error: any, instance: any, info: string) => {
   console.error('组件错误:', error)
   console.error('错误信息:', info)
+  console.error('错误实例:', instance)
   
   hasError.value = true
-  errorMessage.value = error.message || '发生了未知错误'
-  errorDetails.value = error.stack || ''
+  errorMessage.value = error?.message || '发生了未知错误'
+  errorDetails.value = error?.stack || JSON.stringify(error, null, 2) || ''
   
   // 显示错误提示
   message.error(`组件错误: ${errorMessage.value}`)

@@ -21,16 +21,20 @@
           </a-select>
         </a-form-item>
         
-        <a-form-item label="品牌型号" name="brand_model">
-          <a-input v-model:value="form.brand_model" placeholder="请输入品牌型号" />
+        <a-form-item label="品牌" name="brand">
+          <a-input v-model:value="form.brand" placeholder="请输入品牌" />
+        </a-form-item>
+        
+        <a-form-item label="型号" name="model">
+          <a-input v-model:value="form.model" placeholder="请输入型号" />
         </a-form-item>
         
         <a-form-item label="购买日期" name="purchase_date">
           <a-date-picker v-model:value="form.purchase_date" style="width: 100%" />
         </a-form-item>
         
-        <a-form-item label="初始里程" name="initial_mileage">
-          <a-input-number v-model:value="form.initial_mileage" :min="0" style="width: 100%" />
+        <a-form-item label="当前里程" name="mileage">
+          <a-input-number v-model:value="form.mileage" :min="0" style="width: 100%" />
         </a-form-item>
         
         <a-form-item label="备注" name="notes">
@@ -63,24 +67,26 @@ const router = useRouter()
 const form = ref<Partial<VehicleCreateRequest>>({
   plate_number: '',
   vehicle_type: '',
-  brand_model: '',
+  brand: '',
+  model: '',
   purchase_date: undefined,
-  initial_mileage: 0,
+  mileage: 0,
   notes: ''
 })
 
 const rules = {
   plate_number: [{ required: true, message: '请输入车牌号' }],
   vehicle_type: [{ required: true, message: '请选择车辆类型' }],
-  brand_model: [{ required: true, message: '请输入品牌型号' }],
-  purchase_date: [{ required: true, message: '请选择购买日期' }]
+  brand: [{ required: true, message: '请输入品牌' }],
+  model: [{ required: true, message: '请输入型号' }],
+  mileage: [{ required: true, message: '请输入当前里程' }]
 }
 
 const handleSubmit = async () => {
   try {
     const submitData = {
       ...form.value,
-      purchase_date: form.value.purchase_date ? dayjs(form.value.purchase_date).format('YYYY-MM-DD') : undefined
+      purchase_date: form.value.purchase_date ? dayjs(form.value.purchase_date).toDate() : undefined
     }
     
     await createVehicle(submitData as VehicleCreateRequest)

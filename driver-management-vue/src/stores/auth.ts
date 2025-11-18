@@ -10,8 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!token.value)
   const isAdmin = computed(() => {
     const role = user.value?.role
-    const flag = (user.value as any)?.is_admin
-    return (typeof role === 'string' && role.toLowerCase() === 'admin') || flag === true
+    return typeof role === 'string' && role.toLowerCase() === 'admin'
   })
 
   async function login(username: string, password: string) {

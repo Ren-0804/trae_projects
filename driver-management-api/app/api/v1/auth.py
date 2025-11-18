@@ -10,9 +10,10 @@ from app.crud import create_operation_log
 from app.models import User
 from app.crud import (
     get_user_by_username, get_user_by_email, create_user, 
-    get_user_by_id, get_users as crud_get_users, update_user as crud_update_user
+    get_user_by_id, get_users as crud_get_users, update_user as crud_update_user,
+    delete_user as crud_delete_user
 )
-from app.schemas import UserCreate, UserUpdate, UserResponse
+from app.schemas import UserCreate, UserUpdate, UserResponse, LoginRequest
 
 router = APIRouter()
 
@@ -55,38 +56,29 @@ async def register(
 
 @router.post("/login")
 async def login(
-    form_data: dict,
+    user_in: LoginRequest,
     db: AsyncSession = Depends(get_db)
 ):
     """用户登录"""
-    username = form_data.get("username")
-    password = form_data.get("password")
-    
-    if not username or not password:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="用户名和密码不能为空"
-        )
-    
     # 验证用户
-    user = await get_user_by_username(db, username=username)
-    if not user or not verify_password(password, user.password_hash):
+    user = await get_user_by_username(db, username=user_in.username)
+    if not user or not verify_password(user_in.password, user.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="用户名或密码错误"
         )
-    
+
     if not user.is_active:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="用户已被禁用"
         )
-    
+
     # 更新最后登录时间
     user.last_login_at = datetime.utcnow()
     await db.commit()
     await db.refresh(user)
-    
+
     # 创建访问令牌
     access_token = create_access_token(data={"sub": user.username})
     await create_operation_log(db, user.id, "login", "users", user.id)
@@ -183,6 +175,45 @@ async def delete_user(
     
     await crud_update_user(db, user_id=user_id, is_active=False)
     return {"message": "用户已禁用"}
+
+
+@router.delete("/{user_id}/permanent")
+async def delete_user_permanent(
+    user_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_admin_user)
+):
+    """真正删除用户（管理员权限）"""
+    if user_id == current_user.id:
+        raise HTTPException(
+            status_code=400,
+            detail="不能删除自己的账户"
+        )
+    
+    user = await get_user_by_id(db, user_id=user_id)
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="用户不存在"
+        )
+    
+    # 检查用户是否已被禁用
+    if user.is_active:
+        raise HTTPException(
+            status_code=400,
+            detail="只能删除已禁用的用户"
+        )
+    
+    # 真正删除用户
+    success = await crud_delete_user(db, user_id=user_id)
+    if not success:
+        raise HTTPException(
+            status_code=500,
+            detail="删除用户失败"
+        )
+    
+    await create_operation_log(db, current_user.id, "user_delete_permanent", "users", user_id)
+    return {"message": "用户已永久删除"}
 @router.post("/change-password")
 async def change_password(
     payload: dict,
