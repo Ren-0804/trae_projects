@@ -89,6 +89,12 @@ const router = createRouter({
           meta: { title: '维护提醒' },
         },
         {
+          path: '/vehicles/:id/usage-history',
+          name: 'VehicleUsageHistory',
+          component: () => import('@/views/vehicles/DriverUsageHistory.vue'),
+          meta: { title: '司机使用记录' },
+        },
+        {
           path: '/schedules',
           name: 'ScheduleList',
           component: () => import('@/views/schedules/List.vue'),
