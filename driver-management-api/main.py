@@ -29,6 +29,37 @@ async def lifespan(app: FastAPI):
                 await conn.execute(text("ALTER TABLE drivers ADD COLUMN region_type VARCHAR(10) DEFAULT '国内'"))
         except Exception:
             pass
+        # Ensure operation_logs hash columns exist
+        try:
+            result = await conn.execute(text("PRAGMA table_info(operation_logs)"))
+            cols = [row[1] for row in result.fetchall()]
+            if "prev_hash" not in cols:
+                await conn.execute(text("ALTER TABLE operation_logs ADD COLUMN prev_hash VARCHAR(128)"))
+            if "hash" not in cols:
+                await conn.execute(text("ALTER TABLE operation_logs ADD COLUMN hash VARCHAR(128)"))
+        except Exception:
+            pass
+
+        # Ensure task workflow columns exist
+        try:
+            result = await conn.execute(text("PRAGMA table_info(tasks)"))
+            cols = [row[1] for row in result.fetchall()]
+            mapping = {
+                "task_no": "ALTER TABLE tasks ADD COLUMN task_no VARCHAR(50)",
+                "origin_address": "ALTER TABLE tasks ADD COLUMN origin_address TEXT",
+                "origin_lat": "ALTER TABLE tasks ADD COLUMN origin_lat DECIMAL(10,7)",
+                "origin_lng": "ALTER TABLE tasks ADD COLUMN origin_lng DECIMAL(10,7)",
+                "destination_address": "ALTER TABLE tasks ADD COLUMN destination_address TEXT",
+                "destination_lat": "ALTER TABLE tasks ADD COLUMN destination_lat DECIMAL(10,7)",
+                "destination_lng": "ALTER TABLE tasks ADD COLUMN destination_lng DECIMAL(10,7)",
+                "estimated_distance_km": "ALTER TABLE tasks ADD COLUMN estimated_distance_km DECIMAL(10,2)",
+                "estimated_duration_min": "ALTER TABLE tasks ADD COLUMN estimated_duration_min INTEGER"
+            }
+            for k, sql in mapping.items():
+                if k not in cols:
+                    await conn.execute(text(sql))
+        except Exception:
+            pass
     
     setup_logging()
     # 重置管理员密码（如提供）

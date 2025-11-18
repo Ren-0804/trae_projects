@@ -551,15 +551,20 @@ const fetchRecentDriverPhotos = async () => {
     await driverStore.fetchDrivers({ page: 1, page_size: 6 })
     const drivers = driverStore.drivers.slice(0, 6)
     const photos: any[] = []
-    for (const d of drivers) {
-      try {
-        const list = await getDriverPhotos(d.id)
-        const vehicle = list.find((x: any) => x.photo_type === 'vehicle')
-        const picked = vehicle || list[0]
-        if (picked) photos.push(picked)
-      } catch {
+    const limit = 3
+    let i = 0
+    const workers = new Array(limit).fill(0).map(async () => {
+      while (i < drivers.length) {
+        const idx = i++
+        try {
+          const list = await getDriverPhotos(drivers[idx].id)
+          const vehicle = list.find((x: any) => x.photo_type === 'vehicle')
+          const picked = vehicle || list[0]
+          if (picked) photos.push(picked)
+        } catch {}
       }
-    }
+    })
+    await Promise.all(workers)
     recentPhotos.value = photos
     await hydratePhotoUrls()
   } finally {

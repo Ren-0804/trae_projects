@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import api from '@/api/auth'
+import { getUser, updateUser } from '@/api/users'
 import type { User } from '@/types/user'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
@@ -98,8 +98,13 @@ const rules: Record<string, Rule[]> = {
 }
 
 const fetchUser = async () => {
-  const res = await api.get(`/auth/${route.params.id}`)
-  const u: User = res.data
+  const rawId = String(route.params.id ?? '')
+  const idNum = Number(rawId)
+  if (!Number.isFinite(idNum) || rawId.trim() === '') {
+    router.push('/users')
+    return
+  }
+  const u: User = await getUser(idNum)
   form.value = {
     username: u.username,
     email: u.email ?? '',
@@ -116,9 +121,14 @@ const handleSubmit = async () => {
   }
   loading.value = true
   try {
-    await api.put(`/auth/${route.params.id}`, form.value)
+    const rawId = String(route.params.id ?? '')
+    const idNum = Number(rawId)
+    if (!Number.isFinite(idNum) || rawId.trim() === '') {
+      throw new Error('无效用户ID')
+    }
+    await updateUser(idNum, form.value)
     message.success('更新成功')
-    router.push(`/users/${route.params.id}`)
+    router.push(`/users/${idNum}`)
   } catch (error: any) {
     message.error(error?.response?.data?.detail || '更新失败')
   } finally {

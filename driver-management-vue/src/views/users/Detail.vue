@@ -62,7 +62,12 @@ const formatDate = (dateString: string | undefined) => {
 }
 
 const fetchUser = async () => {
-  const res = await api.get(`/auth/${route.params.id}`)
+  const rawId = String(route.params.id ?? '')
+  const idNum = Number(rawId)
+  if (!Number.isFinite(idNum) || rawId.trim() === '') {
+    return
+  }
+  const res = await api.get(`/auth/${idNum}`)
   data.value = res.data
 }
 

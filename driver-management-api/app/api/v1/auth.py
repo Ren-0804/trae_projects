@@ -59,7 +59,7 @@ async def register(
 async def login(
     user_in: LoginRequest,
     db: AsyncSession = Depends(get_db),
-    request: Request | None = None,
+    request: Request = None,
 ):
     """用户登录"""
     # 验证用户
@@ -116,6 +116,23 @@ async def get_users(
     """获取用户列表（管理员权限）"""
     users = await crud_get_users(db, skip=skip, limit=limit)
     return users
+
+
+# 优先声明静态路径，避免被 /{user_id} 吞掉
+@router.get("/sessions")
+async def list_sessions(current_user: User = Depends(get_current_active_user)):
+    return sm_list(current_user.id)
+
+
+@router.post("/revoke-session")
+async def revoke_session(payload: dict, current_user: User = Depends(get_current_active_user)):
+    sid = payload.get("session_id")
+    if not sid:
+        raise HTTPException(status_code=400, detail="缺少 session_id")
+    ok = sm_revoke(sid)
+    if not ok:
+        raise HTTPException(status_code=404, detail="会话不存在")
+    return {"message": "revoked"}
 
 
 @router.get("/{user_id}", response_model=UserResponse)
@@ -225,20 +242,6 @@ async def delete_user_permanent(
     return {"message": "用户已永久删除"}
 
 
-@router.get("/sessions")
-async def list_sessions(current_user: User = Depends(get_current_active_user)):
-    return sm_list(current_user.id)
-
-
-@router.post("/revoke-session")
-async def revoke_session(payload: dict, current_user: User = Depends(get_current_active_user)):
-    sid = payload.get("session_id")
-    if not sid:
-        raise HTTPException(status_code=400, detail="缺少 session_id")
-    ok = sm_revoke(sid)
-    if not ok:
-        raise HTTPException(status_code=404, detail="会话不存在")
-    return {"message": "revoked"}
 @router.post("/change-password")
 async def change_password(
     payload: dict,

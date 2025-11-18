@@ -7,7 +7,7 @@ from decimal import Decimal
 class UserBase(BaseModel):
     username: str = Field(..., min_length=3, max_length=50)
     email: Optional[EmailStr] = None
-    role: str = Field(default="employee", pattern="^(admin|employee)$")
+    role: str = Field(default="employee", pattern="^(superadmin|admin|dispatcher|manager|driver|auditor|employee)$")
     is_active: bool = True
 
 
@@ -17,7 +17,7 @@ class UserCreate(UserBase):
 
 class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
-    role: Optional[str] = Field(None, pattern="^(admin|employee)$")
+    role: Optional[str] = Field(None, pattern="^(superadmin|admin|dispatcher|manager|driver|auditor|employee)$")
     is_active: Optional[bool] = None
 
 
@@ -169,7 +169,6 @@ class VehicleResponse(VehicleBase):
     created_at: datetime
     updated_at: datetime
     current_driver: Optional[DriverResponse] = None
-    assignments: Optional[List[dict]] = None
     
     class Config:
         from_attributes = True

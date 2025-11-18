@@ -56,43 +56,43 @@ const router = createRouter({
           path: '/vehicles',
           name: 'VehicleList',
           component: () => import('@/views/vehicles/List.vue'),
-          meta: { title: '车辆列表' },
+          meta: { title: '车辆列表', requiresAuth: true },
         },
         {
           path: '/vehicles/new',
           name: 'VehicleCreate',
           component: () => import('@/views/vehicles/Create.vue'),
-          meta: { title: '新增车辆' },
+          meta: { title: '新增车辆', requiresAuth: true },
         },
         {
           path: '/vehicles/:id',
           name: 'VehicleDetail',
           component: () => import('@/views/vehicles/Detail.vue'),
-          meta: { title: '车辆详情' },
+          meta: { title: '车辆详情', requiresAuth: true },
         },
         {
           path: '/vehicles/:id/edit',
           name: 'VehicleEdit',
           component: () => import('@/views/vehicles/Edit.vue'),
-          meta: { title: '编辑车辆' },
+          meta: { title: '编辑车辆', requiresAuth: true },
         },
         {
           path: '/vehicles/:id/assign-driver',
           name: 'VehicleAssignDriver',
           component: () => import('@/views/vehicles/AssignDriver.vue'),
-          meta: { title: '分配司机' },
+          meta: { title: '分配司机', requiresAuth: true },
         },
         {
           path: '/vehicles/maintenance-reminders',
           name: 'VehicleMaintenanceReminders',
           component: () => import('@/views/vehicles/MaintenanceReminders.vue'),
-          meta: { title: '维护提醒' },
+          meta: { title: '维护提醒', requiresAuth: true },
         },
         {
           path: '/vehicles/:id/usage-history',
           name: 'VehicleUsageHistory',
           component: () => import('@/views/vehicles/DriverUsageHistory.vue'),
-          meta: { title: '司机使用记录' },
+          meta: { title: '司机使用记录', requiresAuth: true },
         },
         {
           path: '/schedules',
@@ -170,13 +170,25 @@ const router = createRouter({
           path: '/tasks',
           name: 'TaskBoard',
           component: () => import('@/views/tasks/Board.vue'),
-          meta: { title: '任务看板', requiresRoles: ['dispatcher', 'manager', 'admin', 'superadmin'] },
+          meta: { title: '任务看板', requiresAuth: true, requiresRoles: ['dispatcher', 'manager', 'admin', 'superadmin'] },
+        },
+        {
+          path: '/tasks/kanban',
+          name: 'TaskKanban',
+          component: () => import('@/views/tasks/Kanban.vue'),
+          meta: { title: '看板', requiresAuth: true, requiresRoles: ['dispatcher', 'manager', 'admin', 'superadmin'] },
         },
         {
           path: '/tasks/:id',
           name: 'TaskDetail',
           component: () => import('@/views/tasks/Detail.vue'),
           meta: { title: '任务详情', requiresAuth: true },
+        },
+        {
+          path: '/tasks/:id/workflow',
+          name: 'TaskWorkflow',
+          component: () => import('@/views/tasks/Workflow.vue'),
+          meta: { title: '任务流程', requiresAuth: true },
         },
         {
           path: '/tasks/map',
@@ -269,6 +281,16 @@ router.beforeEach(async (to, from, next) => {
     const idNum = Number(rawId)
     if (!Number.isFinite(idNum) || rawId.trim() === '') {
       next('/drivers')
+      return
+    }
+  }
+
+  // 用户ID路由参数校验
+  if (to.name === 'UserDetail' || to.name === 'UserEdit') {
+    const rawId = String(to.params.id ?? '')
+    const idNum = Number(rawId)
+    if (!Number.isFinite(idNum) || rawId.trim() === '') {
+      next('/users')
       return
     }
   }

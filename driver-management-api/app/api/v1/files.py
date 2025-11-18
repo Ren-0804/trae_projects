@@ -51,6 +51,18 @@ async def upload_file(
     with open(fpath, "wb") as f:
         f.write(await upload.read())
     stat = os.stat(fpath)
+    # 版本控制：同名+关联对象，版本+1
+    from sqlalchemy import func
+    version = 1
+    if related_type and related_id:
+        existing = await db.execute(select(func.max(FileAsset.version)).where(
+            FileAsset.related_type == related_type,
+            FileAsset.related_id == related_id,
+            FileAsset.name == (upload.filename or fname)
+        ))
+        maxv = existing.scalar() or 0
+        version = int(maxv) + 1
+
     asset = FileAsset(
         name=upload.filename or fname,
         mime_type=upload.content_type or "application/octet-stream",
@@ -59,6 +71,7 @@ async def upload_file(
         uploader_id=current_user.id,
         related_type=related_type,
         related_id=related_id,
+        version=version,
     )
     db.add(asset)
     await db.commit()

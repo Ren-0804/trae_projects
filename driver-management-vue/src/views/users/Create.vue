@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { message } from 'ant-design-vue'
-import api from '@/api/auth'
+import { createUser } from '@/api/users'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 
@@ -118,14 +118,9 @@ const handleSubmit = async () => {
       password: form.value.password,
       role: form.value.role,
     }
-    console.log('创建用户请求数据:', payload)
-    const res = await api.post('/auth/register', payload)
-    if (res.status >= 200 && res.status < 300) {
-      message.success('用户创建成功')
-      window.location.href = '/users'
-    } else {
-      message.error('创建失败')
-    }
+    const res = await createUser(payload)
+    message.success('用户创建成功')
+    window.location.href = '/users'
   } catch (error: any) {
     console.error('创建用户失败:', error)
     const errorMessage = error?.response?.data?.detail || 

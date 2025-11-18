@@ -8,7 +8,13 @@
       <div style="margin-bottom:16px">
         <a-button type="primary" @click="logoutAll" :loading="loading">退出当前设备</a-button>
       </div>
-      <a-table :dataSource="sessions" :columns="columns" :loading="loading" rowKey="id" />
+      <a-table :dataSource="sessions" :columns="columns" :loading="loading" rowKey="id">
+        <template #bodyCell="{ column, record }">
+          <template v-if="column.key==='action'">
+            <a-button type="link" danger @click="revoke(record.id)">强制下线</a-button>
+          </template>
+        </template>
+      </a-table>
     </a-card>
   </div>
 </template>
@@ -28,21 +34,16 @@ const columns = [
   { title: 'IP', dataIndex: 'ip', key: 'ip' },
   { title: '创建时间', dataIndex: 'created_at', key: 'created_at' },
   { title: '最近活跃', dataIndex: 'last_active_at', key: 'last_active_at' },
-  { title: '操作', key: 'action',
-    customRender: ({ record }: any) => {
-      return (window as any).h(
-        (window as any).resolveComponent('a-button'),
-        { type: 'link', danger: true, onClick: () => revoke(record.id) },
-        '强制下线'
-      )
-    }
-  },
+  { title: '操作', key: 'action' },
 ]
 
 const fetchSessions = async () => {
   loading.value = true
   try {
     sessions.value = await getSessions()
+  } catch (err: any) {
+    const msg = err?.response?.data?.detail || err?.message || '会话加载失败'
+    ;(await import('ant-design-vue')).message.error(msg)
   } finally {
     loading.value = false
   }
@@ -53,6 +54,9 @@ const revoke = async (id: string) => {
   try {
     await revokeSession(id)
     await fetchSessions()
+  } catch (err: any) {
+    const msg = err?.response?.data?.detail || err?.message || '强制下线失败'
+    ;(await import('ant-design-vue')).message.error(msg)
   } finally {
     loading.value = false
   }

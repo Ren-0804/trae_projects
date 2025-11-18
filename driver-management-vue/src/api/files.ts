@@ -14,3 +14,7 @@ export async function getFiles(params?: Record<string, any>): Promise<any[]> {
   const response = await api.get('/files', { params })
   return response.data
 }
+
+export async function deleteFile(id: number): Promise<void> {
+  await api.delete(`/files/${id}`)
+}

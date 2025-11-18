@@ -20,16 +20,13 @@ async def get_safety_stats(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """获取安全统计 - 简化版本"""
+    """获取安全统计（仪表板期望字段）"""
     logger.info(f"用户 {current_user.username} 请求安全统计")
     return {
-        "total_alerts": 0,
-        "critical_alerts": 0,
-        "resolved_alerts": 0,
-        "pending_alerts": 0,
+        "online_drivers": 0,
+        "active_vehicles": 0,
         "today_alerts": 0,
-        "weekly_trend": [],
-        "alert_types_distribution": {}
+        "emergency_alerts": 0
     }
 
 
@@ -39,9 +36,9 @@ async def get_recent_alerts(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """获取最近预警 - 简化版本"""
+    """获取最近预警 - 简化版本，返回 data 包装"""
     logger.info(f"用户 {current_user.username} 请求最近预警，限制: {limit}")
-    return []
+    return {"data": []}
 
 
 @router.post("/gps-records", response_model=GPSRecordResponse)

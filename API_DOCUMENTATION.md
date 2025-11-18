@@ -609,3 +609,35 @@ Get region type for a driver.
 
 ### PUT /drivers/{id}/region-type
 Update region type. Body: `{ "region_type": "国内" | "国外" }`
+## Tasks API
+
+- GET `/tasks` params: `status?`, `q?`, `assignee_id?` → list tasks
+- GET `/tasks/{id}` → task detail
+- POST `/tasks` body: `{ title, description?, priority?, due_date?, assignee_id?, status?, sort_index?, labels?: [string], custom_fields?: object }` → create
+- PUT `/tasks/{id}` body: same as create (partial) → update
+- DELETE `/tasks/{id}` → delete
+- PUT `/tasks/{id}/assign` body: `{ assignee_id }` → assign
+- POST `/tasks/{id}/event` body: `{ type, content?, status? }` → add event (status change/comment/note)
+- POST `/tasks/{id}/status` body: `{ status, remark? }` → update status (auto timestamp)
+- POST `/tasks/{id}/comments` body: `{ content, mentions?: [string] }` → add comment
+- GET `/tasks/{id}/comments` → list comments
+- POST `/tasks/{id}/move` body: `{ status, sort_index }` → kanban move
+- GET `/tasks/stats` → `{ total, by_status, by_priority }`
+- GET `/tasks/{id}/report` → task detail + timeline
+- GET `/tasks/{id}/report?format=csv` → CSV timeline export
+- POST `/tasks/{id}/location` body: `{ lat, lng }` → record location
+- GET `/tasks/{id}/sse` → Server-Sent Events stream of status/location
+
+## Audit API
+
+- GET `/audit/logs` params: `user_id?`, `operation_type?`, `start?`, `end?`, `format?=csv` → list or export
+- GET `/audit/logs/{id}` → detail
+- POST `/audit/logs` body: `{ action, actor_id?, resource, resource_id?, content? }` → create log
+- POST `/audit/alerts` body: `{ action, resource, resource_id?, description?, severity }` → create alert
+
+## Files API
+
+- POST `/files` form-data: `upload`, `related_type?`, `related_id?` → upload attachment
+- GET `/files` params: `q?`, `related_type?`, `related_id?` → list
+- GET `/files/{id}` → metadata
+- DELETE `/files/{id}` → delete

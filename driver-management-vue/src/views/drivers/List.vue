@@ -205,6 +205,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 import { useRouter } from 'vue-router'
 import { useDriverStore } from '@/stores/drivers'
 import { message, Modal } from 'ant-design-vue'
@@ -257,6 +258,10 @@ const handleSearch = () => {
   driverStore.setPage(1)
   fetchDrivers()
 }
+const debouncedSearch = useDebounceFn(() => {
+  driverStore.setPage(1)
+  fetchDrivers()
+}, 300)
 
 const handlePageChange = (page: number) => {
   driverStore.setPage(page)
@@ -264,7 +269,7 @@ const handlePageChange = (page: number) => {
 }
 
 const handleEdit = (id: number) => {
-  router.push(`/drivers/${id}`)
+  router.push(`/drivers/${id}/edit`)
 }
 
 const handleDelete = async (id: number) => {
@@ -288,7 +293,7 @@ const handleDelete = async (id: number) => {
 
 // 监听搜索条件变化
 watch([searchKeyword, selectedStatus], () => {
-  handleSearch()
+  debouncedSearch()
 })
 
 onMounted(() => {

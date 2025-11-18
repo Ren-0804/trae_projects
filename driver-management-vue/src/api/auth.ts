@@ -2,6 +2,7 @@ import axios from 'axios'
 import type { LoginRequest, LoginResponse, User } from '@/types/user'
 
 const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'
+const AUTH_MODE = (import.meta as any).env?.VITE_AUTH_MODE || 'mixed'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -10,12 +11,12 @@ const api = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  withCredentials: true,
+  withCredentials: AUTH_MODE === 'cookie' || AUTH_MODE === 'mixed',
 })
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  if (token) {
+  if (token && AUTH_MODE !== 'cookie') {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
@@ -36,14 +37,24 @@ api.interceptors.response.use(
     // 处理422验证错误
     if (error.response?.status === 422) {
       const detail = error.response?.data?.detail
+      const where = {
+        url: (error.config || {}).url,
+        method: (error.config || {}).method,
+      }
       if (Array.isArray(detail)) {
         const errorMessages = detail.map((item: any) => {
           const loc = item.loc?.join('.') || '字段'
           return `${loc}: ${item.msg}`
         }).join(', ')
-        console.error('验证错误:', errorMessages)
+        if (!(import.meta as any).env?.PROD) {
+          console.error('验证错误:', errorMessages)
+          console.error('验证错误来源:', where)
+        }
       } else {
-        console.error('验证错误:', detail)
+        if (!(import.meta as any).env?.PROD) {
+          console.error('验证错误:', detail)
+          console.error('验证错误来源:', where)
+        }
       }
       return Promise.reject(error)
     }
@@ -57,16 +68,17 @@ api.interceptors.response.use(
       return api(config)
     }
     
-    // 记录详细的错误信息
-    console.error('API请求错误:', {
-      url: config.url,
-      method: config.method,
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      data: error.response?.data,
-      code: error.code,
-      message: error.message
-    })
+    if (!(import.meta as any).env?.PROD) {
+      console.error('API请求错误:', {
+        url: config.url,
+        method: config.method,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        code: error.code,
+        message: error.message
+      })
+    }
     
     return Promise.reject(error)
   },

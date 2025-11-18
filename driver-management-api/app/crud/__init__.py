@@ -4,6 +4,7 @@ from typing import List, Optional
 from datetime import datetime, timedelta, date
 
 from app.models import User, Driver, DriverPhoto, OperationLog, Schedule, Vehicle, DriverCertificate
+import hashlib
 from app.core.security import get_password_hash, verify_password
 
 
@@ -421,6 +422,12 @@ async def create_operation_log(db: AsyncSession, user_id: int, operation_type: s
                              table_name: str, record_id: int, old_data: Optional[str] = None,
                              new_data: Optional[str] = None, ip_address: Optional[str] = None,
                              user_agent: Optional[str] = None) -> OperationLog:
+    # 获取上一条哈希
+    prev = await db.execute(select(OperationLog.hash).order_by(OperationLog.id.desc()).limit(1))
+    prev_hash = prev.scalar_one_or_none()
+    # 计算当前哈希
+    payload = f"{user_id}|{operation_type}|{table_name}|{record_id}|{old_data or ''}|{new_data or ''}|{ip_address or ''}|{user_agent or ''}|{prev_hash or ''}"
+    curr_hash = hashlib.sha256(payload.encode('utf-8')).hexdigest()
     log = OperationLog(
         user_id=user_id,
         operation_type=operation_type,
@@ -429,7 +436,9 @@ async def create_operation_log(db: AsyncSession, user_id: int, operation_type: s
         old_data=old_data,
         new_data=new_data,
         ip_address=ip_address,
-        user_agent=user_agent
+        user_agent=user_agent,
+        prev_hash=prev_hash,
+        hash=curr_hash,
     )
     db.add(log)
     await db.commit()

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import { getTasks, getTask, createTask, assignTask, postTaskEvent } from '@/api/tasks'
 import { log, alert } from '@/utils/auditLogger'
+import api from '@/api/auth'
 
 export const useTaskStore = defineStore('tasks', () => {
   const tasks = ref<any[]>([])
@@ -12,6 +13,8 @@ export const useTaskStore = defineStore('tasks', () => {
     loading.value = true
     try {
       tasks.value = await getTasks(status ? { status } : undefined)
+    } catch (error) {
+      console.error('获取任务列表失败:', error)
     } finally {
       loading.value = false
     }
@@ -53,5 +56,17 @@ export const useTaskStore = defineStore('tasks', () => {
     }
   }
 
-  return { tasks, current, loading, fetchTasks, fetchTask, create, assign, addEvent }
+  async function update(id: number, payload: any) {
+    await api.put(`/tasks/${id}`, payload)
+  }
+
+  async function remove(id: number) {
+    await api.delete(`/tasks/${id}`)
+  }
+
+  async function move(id: number, payload: any) {
+    await api.post(`/tasks/${id}/move`, payload)
+  }
+
+  return { tasks, current, loading, fetchTasks, fetchTask, create, assign, addEvent, update, remove, move }
 })

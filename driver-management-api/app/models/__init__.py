@@ -287,6 +287,8 @@ class OperationLog(Base):
     record_id = Column(Integer, nullable=False, index=True)
     old_data = Column(Text, nullable=True)  # JSON字符串
     new_data = Column(Text, nullable=True)  # JSON字符串
+    prev_hash = Column(String(128), nullable=True, index=True)
+    hash = Column(String(128), nullable=True, index=True)
     ip_address = Column(String(50), nullable=True)
     user_agent = Column(Text, nullable=True)
     created_at = Column(DateTime, default=func.now(), index=True)
@@ -306,8 +308,20 @@ class Task(Base):
     description = Column(Text, nullable=True)
     assignee_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
     due_date = Column(DateTime, nullable=True, index=True)
-    priority = Column(String(20), nullable=False, default="medium", index=True)  # low, medium, high, critical
-    status = Column(String(20), nullable=False, default="draft", index=True)  # draft, assigned, accepted, onroad, arrived, completed, abnormal
+    priority = Column(String(20), nullable=False, default="medium", index=True)
+    status = Column(String(20), nullable=False, default="draft", index=True)
+    sort_index = Column(Integer, nullable=False, default=0, index=True)
+    labels = Column(Text, nullable=True)
+    custom_fields = Column(Text, nullable=True)
+    task_no = Column(String(50), nullable=True, unique=True, index=True)
+    origin_address = Column(Text, nullable=True)
+    origin_lat = Column(DECIMAL(10,7), nullable=True)
+    origin_lng = Column(DECIMAL(10,7), nullable=True)
+    destination_address = Column(Text, nullable=True)
+    destination_lat = Column(DECIMAL(10,7), nullable=True)
+    destination_lng = Column(DECIMAL(10,7), nullable=True)
+    estimated_distance_km = Column(DECIMAL(10,2), nullable=True)
+    estimated_duration_min = Column(Integer, nullable=True)
     created_at = Column(DateTime, default=func.now(), index=True)
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
 
@@ -329,6 +343,29 @@ class TaskEvent(Base):
 
     task = relationship("Task")
     actor = relationship("User")
+
+
+class TaskComment(Base):
+    __tablename__ = "task_comments"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False, index=True)
+    content = Column(Text, nullable=False)
+    mentions = Column(Text, nullable=True)
+    creator_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=func.now(), index=True)
+
+    task = relationship("Task")
+    creator = relationship("User")
+
+
+class TaskDependency(Base):
+    __tablename__ = "task_dependencies"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False, index=True)
+    depends_on_task_id = Column(Integer, ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False, index=True)
+    created_at = Column(DateTime, default=func.now(), index=True)
 
 
 class FileAsset(Base):

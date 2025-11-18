@@ -2,10 +2,11 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { User } from '@/types/user'
 import { login as apiLogin, getCurrentUser, refreshToken, logout as apiLogout } from '@/api/auth'
+const AUTH_MODE = (import.meta as any).env?.VITE_AUTH_MODE || 'mixed'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(null)
-  const token = ref<string | null>(localStorage.getItem('token'))
+  const token = ref<string | null>(AUTH_MODE === 'cookie' || AUTH_MODE === 'memory' ? null : localStorage.getItem('token'))
 
   const isAuthenticated = computed(() => !!token.value)
   const isAdmin = computed(() => {
@@ -34,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!token.value) return
     const r = await refreshToken()
     token.value = r.token
-    localStorage.setItem('token', r.token)
+    if (AUTH_MODE !== 'cookie' && AUTH_MODE !== 'memory') localStorage.setItem('token', r.token)
     scheduleRefresh(r.expires_in)
   }
 
@@ -46,10 +47,10 @@ export const useAuthStore = defineStore('auth', () => {
     }, ttl * 1000)
   }
 
-  function setSession(response: { token: string; user: User; expires_in?: number }) {
-    token.value = response.token
+  function setSession(response: { token?: string; user: User; expires_in?: number }) {
+    token.value = response.token || null
     user.value = response.user
-    localStorage.setItem('token', response.token)
+    if (response.token && AUTH_MODE !== 'cookie' && AUTH_MODE !== 'memory') localStorage.setItem('token', response.token)
     scheduleRefresh(response.expires_in)
   }
 
@@ -68,7 +69,7 @@ export const useAuthStore = defineStore('auth', () => {
   function logout() {
     token.value = null
     user.value = null
-    localStorage.removeItem('token')
+    if (AUTH_MODE !== 'cookie' && AUTH_MODE !== 'memory') localStorage.removeItem('token')
     window.clearTimeout((scheduleRefresh as any)._t)
   }
 
