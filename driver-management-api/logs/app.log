@@ -34115,3 +34115,33 @@ FROM users
 WHERE users.username = ?
 2025-11-18 14:14:27,288 - sqlalchemy.engine.Engine - INFO - [cached since 3100s ago] ('admin',)
 2025-11-18 14:14:27,290 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:20:58,287 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:20:58,289 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:21:01,113 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:21:01,114 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:21:01,114 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:21:01,116 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:21:01,117 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:21:01,117 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:21:01,117 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:21:01,117 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:25:56,351 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:25:56,351 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:25:56,352 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:25:56,353 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:25:56,353 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:25:56,353 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:25:56,353 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:25:56,353 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:25:56,356 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:25:56,356 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:26:33,018 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:26:33,021 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:26:33,022 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:26:33,023 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:26:33,024 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:26:33,024 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:26:33,024 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:26:33,025 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:26:33,026 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:26:33,026 - apscheduler.scheduler - INFO - Scheduler has been shut down

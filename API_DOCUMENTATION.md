@@ -1,7 +1,7 @@
 # Driver Management System - API Documentation
 
 ## Base URL
-- Development: `http://localhost:8001/api`
+- Development: `http://localhost:8000/api`
 - Production: `https://your-domain.com/api`
 
 ## Authentication
