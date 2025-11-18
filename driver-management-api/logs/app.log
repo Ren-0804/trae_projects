@@ -34145,3 +34145,244 @@ WHERE users.username = ?
 2025-11-18 14:26:33,025 - app.services.task_manager - INFO - 后台任务调度器启动成功
 2025-11-18 14:26:33,026 - app.services.task_manager - INFO - 后台任务调度器已停止
 2025-11-18 14:26:33,026 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:28:09,502 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:09,502 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:09,502 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:09,503 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:28:09,504 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:28:09,504 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:28:09,504 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:28:09,504 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:28:09,506 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:28:09,506 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:28:46,923 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:46,924 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:46,924 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:28:46,925 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:28:46,926 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:28:46,926 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:28:46,926 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:28:46,926 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:29:13,937 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:13,960 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:13,961 - sqlalchemy.engine.Engine - INFO - [generated in 0.00038s] ('admin',)
+2025-11-18 14:29:14,174 - sqlalchemy.engine.Engine - INFO - UPDATE users SET last_login_at=?, updated_at=CURRENT_TIMESTAMP WHERE users.id = ?
+2025-11-18 14:29:14,175 - sqlalchemy.engine.Engine - INFO - [generated in 0.00046s] ('2025-11-18 06:29:14.172753', 1)
+2025-11-18 14:29:14,178 - sqlalchemy.engine.Engine - INFO - COMMIT
+2025-11-18 14:29:14,182 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:14,183 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.id = ?
+2025-11-18 14:29:14,183 - sqlalchemy.engine.Engine - INFO - [generated in 0.00036s] (1,)
+2025-11-18 14:29:14,185 - sqlalchemy.engine.Engine - INFO - INSERT INTO operation_logs (user_id, operation_type, table_name, record_id, old_data, new_data, ip_address, user_agent, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING id, created_at
+2025-11-18 14:29:14,185 - sqlalchemy.engine.Engine - INFO - [generated in 0.00032s] (1, 'login', 'users', 1, None, None, None, None)
+2025-11-18 14:29:14,187 - sqlalchemy.engine.Engine - INFO - COMMIT
+2025-11-18 14:29:14,193 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:14,193 - sqlalchemy.engine.Engine - INFO - SELECT operation_logs.id, operation_logs.user_id, operation_logs.operation_type, operation_logs.table_name, operation_logs.record_id, operation_logs.old_data, operation_logs.new_data, operation_logs.ip_address, operation_logs.user_agent, operation_logs.created_at 
+FROM operation_logs 
+WHERE operation_logs.id = ?
+2025-11-18 14:29:14,194 - sqlalchemy.engine.Engine - INFO - [generated in 0.00034s] (70,)
+2025-11-18 14:29:14,195 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:14,485 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:14,485 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:14,486 - sqlalchemy.engine.Engine - INFO - [cached since 0.5256s ago] ('admin',)
+2025-11-18 14:29:14,500 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:14,508 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:14,509 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:14,509 - sqlalchemy.engine.Engine - INFO - [cached since 0.549s ago] ('admin',)
+2025-11-18 14:29:14,512 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:29:14,512 - sqlalchemy.engine.Engine - INFO - [generated in 0.00048s] (20, 0)
+2025-11-18 14:29:14,515 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:29:14,516 - sqlalchemy.engine.Engine - INFO - [generated in 0.00085s] ()
+2025-11-18 14:29:14,524 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:16,837 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:16,838 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:16,838 - sqlalchemy.engine.Engine - INFO - [cached since 2.878s ago] ('admin',)
+2025-11-18 14:29:16,841 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:16,848 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:16,849 - sqlalchemy.engine.Engine - INFO - INSERT INTO operation_logs (user_id, operation_type, table_name, record_id, old_data, new_data, ip_address, user_agent, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP) RETURNING id, created_at
+2025-11-18 14:29:16,851 - sqlalchemy.engine.Engine - INFO - [cached since 2.666s ago] (0, 'validation_error', '/api/v1/auth/sessions', 0, None, "[{'type': 'int_parsing', 'loc': ('path', 'user_id'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'sessions'}]", None, None)
+2025-11-18 14:29:16,858 - sqlalchemy.engine.Engine - INFO - COMMIT
+2025-11-18 14:29:16,867 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:16,878 - sqlalchemy.engine.Engine - INFO - SELECT operation_logs.id, operation_logs.user_id, operation_logs.operation_type, operation_logs.table_name, operation_logs.record_id, operation_logs.old_data, operation_logs.new_data, operation_logs.ip_address, operation_logs.user_agent, operation_logs.created_at 
+FROM operation_logs 
+WHERE operation_logs.id = ?
+2025-11-18 14:29:16,878 - sqlalchemy.engine.Engine - INFO - [cached since 2.685s ago] (71,)
+2025-11-18 14:29:16,881 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:25,259 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:25,260 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:25,261 - sqlalchemy.engine.Engine - INFO - [cached since 11.3s ago] ('admin',)
+2025-11-18 14:29:25,263 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:25,491 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:25,492 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:25,492 - sqlalchemy.engine.Engine - INFO - [cached since 11.53s ago] ('admin',)
+2025-11-18 14:29:25,495 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:25,500 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:25,500 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:25,500 - sqlalchemy.engine.Engine - INFO - [cached since 11.54s ago] ('admin',)
+2025-11-18 14:29:25,503 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:29:25,504 - sqlalchemy.engine.Engine - INFO - [cached since 10.99s ago] (20, 0)
+2025-11-18 14:29:25,505 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:29:25,506 - sqlalchemy.engine.Engine - INFO - [cached since 10.99s ago] ()
+2025-11-18 14:29:25,509 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:35,919 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:35,920 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:35,920 - sqlalchemy.engine.Engine - INFO - [cached since 21.96s ago] ('admin',)
+2025-11-18 14:29:35,926 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:36,095 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:36,096 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:36,096 - sqlalchemy.engine.Engine - INFO - [cached since 22.14s ago] ('admin',)
+2025-11-18 14:29:36,099 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:29:36,108 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:29:36,108 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:29:36,109 - sqlalchemy.engine.Engine - INFO - [cached since 22.15s ago] ('admin',)
+2025-11-18 14:29:36,110 - sqlalchemy.engine.Engine - INFO - SELECT drivers.id, drivers.user_id, drivers.name, drivers.phone, drivers.id_card, drivers.license_number, drivers.license_type, drivers.main_route, drivers.vehicle_type, drivers.vehicle_length, drivers.price_per_km, drivers.experience_years, drivers.status, drivers.region_type, drivers.emergency_contact, drivers.emergency_phone, drivers.remark, drivers.created_at, drivers.updated_at 
+FROM drivers ORDER BY drivers.created_at DESC
+ LIMIT ? OFFSET ?
+2025-11-18 14:29:36,111 - sqlalchemy.engine.Engine - INFO - [cached since 21.6s ago] (20, 0)
+2025-11-18 14:29:36,112 - sqlalchemy.engine.Engine - INFO - SELECT count(drivers.id) AS count_1 
+FROM drivers
+2025-11-18 14:29:36,113 - sqlalchemy.engine.Engine - INFO - [cached since 21.6s ago] ()
+2025-11-18 14:29:36,116 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:31:15,074 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:31:15,076 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:31:15,076 - sqlalchemy.engine.Engine - INFO - [cached since 121.1s ago] ('admin',)
+2025-11-18 14:31:15,078 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:31:15,079 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:31:15,080 - sqlalchemy.engine.Engine - INFO - [cached since 121.1s ago] ('admin',)
+2025-11-18 14:31:15,082 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:31:15,083 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:31:15,084 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:31:15,085 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:31:45,276 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:31:45,276 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:31:45,276 - sqlalchemy.engine.Engine - INFO - [cached since 151.3s ago] ('admin',)
+2025-11-18 14:31:45,277 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:31:45,278 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:31:45,280 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:31:45,280 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:31:45,280 - sqlalchemy.engine.Engine - INFO - [cached since 151.3s ago] ('admin',)
+2025-11-18 14:31:45,281 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:31:45,282 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:32:07,246 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:32:07,246 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:32:08,825 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:08,826 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:08,826 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:08,827 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:32:08,827 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:32:08,828 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:32:08,828 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:32:08,828 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:32:15,592 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:32:15,614 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:32:15,614 - sqlalchemy.engine.Engine - INFO - [generated in 0.00069s] ('admin',)
+2025-11-18 14:32:15,615 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:32:15,615 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:32:15,615 - sqlalchemy.engine.Engine - INFO - [cached since 0.001892s ago] ('admin',)
+2025-11-18 14:32:15,616 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:32:15,617 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:32:15,618 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:32:15,619 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:32:44,466 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:32:44,467 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:32:44,467 - sqlalchemy.engine.Engine - INFO - [cached since 28.85s ago] ('admin',)
+2025-11-18 14:32:44,468 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:32:44,468 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:32:44,470 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:32:44,470 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:32:44,470 - sqlalchemy.engine.Engine - INFO - [cached since 28.86s ago] ('admin',)
+2025-11-18 14:32:44,471 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:32:44,476 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:32:53,250 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:32:53,250 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:32:54,420 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:54,420 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:54,420 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:32:54,421 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:32:54,422 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:32:54,422 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:32:54,422 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:32:54,422 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:33:04,230 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:33:04,230 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:33:04,231 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2025-11-18 14:33:04,233 - apscheduler.scheduler - INFO - Added job "每日到期提醒检查" to job store "default"
+2025-11-18 14:33:04,233 - apscheduler.scheduler - INFO - Added job "每周到期提醒检查" to job store "default"
+2025-11-18 14:33:04,234 - apscheduler.scheduler - INFO - Added job "每月到期提醒检查" to job store "default"
+2025-11-18 14:33:04,234 - apscheduler.scheduler - INFO - Scheduler started
+2025-11-18 14:33:04,234 - app.services.task_manager - INFO - 后台任务调度器启动成功
+2025-11-18 14:33:04,235 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:33:04,235 - apscheduler.scheduler - INFO - Scheduler has been shut down
+2025-11-18 14:33:15,584 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:33:15,609 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:33:15,609 - sqlalchemy.engine.Engine - INFO - [generated in 0.00039s] ('admin',)
+2025-11-18 14:33:15,610 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:33:15,610 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:33:15,610 - sqlalchemy.engine.Engine - INFO - [cached since 0.001567s ago] ('admin',)
+2025-11-18 14:33:15,611 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:33:15,611 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:33:15,612 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:33:15,613 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:33:44,458 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:33:44,459 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:33:44,460 - sqlalchemy.engine.Engine - INFO - [cached since 28.85s ago] ('admin',)
+2025-11-18 14:33:44,462 - app.core.logging - INFO - 用户 admin 请求安全统计
+2025-11-18 14:33:44,465 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:33:44,468 - sqlalchemy.engine.Engine - INFO - BEGIN (implicit)
+2025-11-18 14:33:44,469 - sqlalchemy.engine.Engine - INFO - SELECT users.id, users.username, users.email, users.password_hash, users.role, users.is_active, users.last_login_at, users.created_at, users.updated_at 
+FROM users 
+WHERE users.username = ?
+2025-11-18 14:33:44,469 - sqlalchemy.engine.Engine - INFO - [cached since 28.86s ago] ('admin',)
+2025-11-18 14:33:44,470 - app.core.logging - INFO - 用户 admin 请求最近预警，限制: 10
+2025-11-18 14:33:44,472 - sqlalchemy.engine.Engine - INFO - ROLLBACK
+2025-11-18 14:34:04,802 - app.services.task_manager - INFO - 后台任务调度器已停止
+2025-11-18 14:34:04,802 - apscheduler.scheduler - INFO - Scheduler has been shut down

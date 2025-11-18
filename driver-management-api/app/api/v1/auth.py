@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy import func
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
@@ -14,6 +14,7 @@ from app.crud import (
     delete_user as crud_delete_user
 )
 from app.schemas import UserCreate, UserUpdate, UserResponse, LoginRequest
+from app.services.session_manager import list_sessions as sm_list, add_session as sm_add, revoke_session as sm_revoke
 
 router = APIRouter()
 
@@ -57,7 +58,8 @@ async def register(
 @router.post("/login")
 async def login(
     user_in: LoginRequest,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    request: Request | None = None,
 ):
     """用户登录"""
     # 验证用户
@@ -81,6 +83,13 @@ async def login(
 
     # 创建访问令牌
     access_token = create_access_token(data={"sub": user.username})
+    try:
+        ua = request.headers.get("User-Agent") if request else ""
+        ip = request.client.host if request and request.client else ""
+        device = ua or "Unknown"
+        sm_add(user.id, user.username, device, ip)
+    except Exception:
+        pass
     await create_operation_log(db, user.id, "login", "users", user.id)
     return {
         "token": access_token,
@@ -214,6 +223,22 @@ async def delete_user_permanent(
     
     await create_operation_log(db, current_user.id, "user_delete_permanent", "users", user_id)
     return {"message": "用户已永久删除"}
+
+
+@router.get("/sessions")
+async def list_sessions(current_user: User = Depends(get_current_active_user)):
+    return sm_list(current_user.id)
+
+
+@router.post("/revoke-session")
+async def revoke_session(payload: dict, current_user: User = Depends(get_current_active_user)):
+    sid = payload.get("session_id")
+    if not sid:
+        raise HTTPException(status_code=400, detail="缺少 session_id")
+    ok = sm_revoke(sid)
+    if not ok:
+        raise HTTPException(status_code=404, detail="会话不存在")
+    return {"message": "revoked"}
 @router.post("/change-password")
 async def change_password(
     payload: dict,

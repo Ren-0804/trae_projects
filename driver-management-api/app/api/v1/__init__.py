@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api.v1 import auth, drivers, statistics, regions, vehicles, schedules, certificates, safety, reminders
+from app.api.v1 import auth, drivers, statistics, regions, vehicles, schedules, certificates, safety, reminders, tasks, files, audit
 
 api_router = APIRouter()
 
@@ -12,3 +12,6 @@ api_router.include_router(safety.router, prefix="/safety", tags=["安全管理"]
 api_router.include_router(statistics.router, prefix="/statistics", tags=["统计"])
 api_router.include_router(reminders.router, prefix="/reminders", tags=["提醒管理"])
 api_router.include_router(regions.router, prefix="", tags=["地区信息"])
+api_router.include_router(tasks.router, prefix="/tasks", tags=["任务管理"])
+api_router.include_router(files.router, prefix="/files", tags=["文件管理"])
+api_router.include_router(audit.router, prefix="/audit", tags=["审计日志"])

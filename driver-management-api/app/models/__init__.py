@@ -298,6 +298,56 @@ class OperationLog(Base):
         return f"<OperationLog(id={self.id}, user_id={self.user_id}, operation={self.operation_type})>"
 
 
+class Task(Base):
+    __tablename__ = "tasks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    assignee_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    due_date = Column(DateTime, nullable=True, index=True)
+    priority = Column(String(20), nullable=False, default="medium", index=True)  # low, medium, high, critical
+    status = Column(String(20), nullable=False, default="draft", index=True)  # draft, assigned, accepted, onroad, arrived, completed, abnormal
+    created_at = Column(DateTime, default=func.now(), index=True)
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
+
+    assignee = relationship("User")
+
+    def __repr__(self):
+        return f"<Task(id={self.id}, title={self.title}, status={self.status})>"
+
+
+class TaskEvent(Base):
+    __tablename__ = "task_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    task_id = Column(Integer, ForeignKey("tasks.id", ondelete="CASCADE"), nullable=False, index=True)
+    type = Column(String(50), nullable=False, index=True)  # assign, update_status, note, abnormal
+    content = Column(Text, nullable=True)
+    actor_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    created_at = Column(DateTime, default=func.now(), index=True)
+
+    task = relationship("Task")
+    actor = relationship("User")
+
+
+class FileAsset(Base):
+    __tablename__ = "file_assets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)
+    mime_type = Column(String(100), nullable=True)
+    size = Column(Integer, nullable=True)
+    path = Column(String(500), nullable=False)
+    uploader_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    related_type = Column(String(50), nullable=True, index=True)
+    related_id = Column(String(50), nullable=True, index=True)
+    version = Column(Integer, default=1)
+    created_at = Column(DateTime, default=func.now(), index=True)
+
+    uploader = relationship("User")
+
+
 # 创建索引
 Index("idx_drivers_user_created", Driver.user_id, Driver.created_at.desc())
 Index("idx_operation_logs_user_created", OperationLog.user_id, OperationLog.created_at.desc())
@@ -309,3 +359,6 @@ Index("idx_certificates_driver_expiry", DriverCertificate.driver_id, DriverCerti
 Index("idx_gps_records_vehicle_timestamp", GPSRecord.vehicle_id, GPSRecord.timestamp.desc())
 Index("idx_driving_behaviors_driver_timestamp", DrivingBehavior.driver_id, DrivingBehavior.timestamp.desc())
 Index("idx_emergency_alerts_status", EmergencyAlert.status)
+Index("idx_tasks_status", Task.status)
+Index("idx_task_events_task_created", TaskEvent.task_id, TaskEvent.created_at.desc())
+Index("idx_file_assets_related", FileAsset.related_type, FileAsset.related_id)
