@@ -245,12 +245,11 @@ const fetchSafetyStats = async () => {
     const response = await getSafetyStats()
     console.log('获取安全统计响应:', response)
     if (response && typeof response === 'object') {
-      // Handle both the expected format and the current backend response
       stats.value = {
-        online_drivers: response.online_drivers || response.total_alerts || 0,
-        active_vehicles: response.active_vehicles || response.total_alerts || 0,
-        today_alerts: response.today_alerts || response.total_alerts || 0,
-        emergency_alerts: response.emergency_alerts || response.critical_alerts || 0
+        online_drivers: Number(response.online_drivers) || 0,
+        active_vehicles: Number(response.active_vehicles) || 0,
+        today_alerts: Number(response.today_alerts) || 0,
+        emergency_alerts: Number(response.emergency_alerts) || 0
       }
     } else {
       console.warn('获取安全统计数据格式不正确:', response)

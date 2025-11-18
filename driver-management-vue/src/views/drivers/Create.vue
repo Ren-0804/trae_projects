@@ -16,6 +16,7 @@
             font-size: 28px;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea, #764ba2);
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
@@ -43,7 +44,7 @@
       </div>
     </div>
 
-    <a-form layout="vertical" :model="form" :rules="rules" ref="formRef" @submit.prevent>
+    <a-form layout="vertical" :model="form" :rules="rules" ref="formRef" @submit.prevent="handleSubmit">
       <div style="
         background: rgba(255, 255, 255, 0.8);
         backdrop-filter: blur(10px);
@@ -113,71 +114,74 @@
           <a-col :span="12">
             <a-form-item name="main_route" label="主要线路" required>
               <template v-if="!manualRouteInput">
-                <!-- 出发地选择 -->
-                <div style="margin-bottom: 12px;">
-                  <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">出发地</label>
-                  <a-tree-select
-                    v-model:value="originRouteValue"
-                    :treeData="routeTreeData"
-                    :showSearch="true"
-                    treeNodeFilterProp="title"
-                    allowClear
-                    :placeholder="'请选择出发地国家/省份'"
-                    treeDefaultExpandAll
-                    @search="handleRouteSearch"
-                    @change="handleOriginRouteChange"
-                    style="width: 100%; border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
-                  />
-                </div>
-                
-                <!-- 目的地选择 -->
-                <div style="margin-bottom: 12px;">
-                  <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">目的地</label>
-                  <a-tree-select
-                    v-model:value="destinationRouteValue"
-                    :treeData="routeTreeData"
-                    :showSearch="true"
-                    treeNodeFilterProp="title"
-                    allowClear
-                    :placeholder="'请选择目的地国家/省份'"
-                    treeDefaultExpandAll
-                    @search="handleRouteSearch"
-                    @change="handleDestinationRouteChange"
-                    style="width: 100%; border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
-                  />
-                </div>
-                
-                <!-- 添加路线按钮 -->
-                <div style="margin-bottom: 12px;">
-                  <a-button 
-                    type="primary" 
-                    size="small" 
-                    @click="addCurrentRoute"
-                    :disabled="!originRouteValue || !destinationRouteValue"
-                    style="border-radius: 8px;"
-                  >
-                    添加路线
-                  </a-button>
-                </div>
-                
-                <!-- 已选择的路线显示 -->
-                <div v-if="selectedRoutes.length > 0" style="margin-bottom: 12px;">
-                  <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">已选择路线</label>
-                  <div style="display: flex; flex-direction: column; gap: 8px;">
-                    <div v-for="(route, index) in selectedRoutes" :key="index" 
-                         style="display: flex; align-items: center; justify-content: space-between; background: rgba(59, 130, 246, 0.1); padding: 8px 12px; border-radius: 8px;">
-                      <span style="font-size: 14px;">{{ route.origin }} → {{ route.destination }}</span>
-                      <a-button type="link" size="small" danger @click="removeRoute(index)">删除</a-button>
+                <a-input v-model:value="form.main_route" type="hidden" />
+                <a-form-item-rest>
+                  <!-- 出发地选择 -->
+                  <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">出发地</label>
+                    <a-tree-select
+                      v-model:value="originRouteValue"
+                      :treeData="routeTreeData"
+                      :showSearch="true"
+                      treeNodeFilterProp="title"
+                      allowClear
+                      :placeholder="'请选择出发地国家/省份'"
+                      treeDefaultExpandAll
+                      @search="handleRouteSearch"
+                      @change="handleOriginRouteChange"
+                      style="width: 100%; border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
+                    />
+                  </div>
+                  
+                  <!-- 目的地选择 -->
+                  <div style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">目的地</label>
+                    <a-tree-select
+                      v-model:value="destinationRouteValue"
+                      :treeData="routeTreeData"
+                      :showSearch="true"
+                      treeNodeFilterProp="title"
+                      allowClear
+                      :placeholder="'请选择目的地国家/省份'"
+                      treeDefaultExpandAll
+                      @search="handleRouteSearch"
+                      @change="handleDestinationRouteChange"
+                      style="width: 100%; border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
+                    />
+                  </div>
+                  
+                  <!-- 添加路线按钮 -->
+                  <div style="margin-bottom: 12px;">
+                    <a-button 
+                      type="primary" 
+                      size="small" 
+                      @click="addCurrentRoute"
+                      :disabled="!originRouteValue || !destinationRouteValue"
+                      style="border-radius: 8px;"
+                    >
+                      添加路线
+                    </a-button>
+                  </div>
+                  
+                  <!-- 已选择的路线显示 -->
+                  <div v-if="selectedRoutes.length > 0" style="margin-bottom: 12px;">
+                    <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 4px;">已选择路线</label>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <div v-for="(route, index) in selectedRoutes" :key="index" 
+                           style="display: flex; align-items: center; justify-content: space-between; background: rgba(59, 130, 246, 0.1); padding: 8px 12px; border-radius: 8px;">
+                        <span style="font-size: 14px;">{{ route.origin }} → {{ route.destination }}</span>
+                        <a-button type="link" size="small" danger @click="removeRoute(index)">删除</a-button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div style="font-size: 12px; color: #6b7280; margin-top: 8px;">
-                  <div>• 支持选择多个路线</div>
-                  <div>• 若列表为空或无法选择，可
-                    <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+                  
+                  <div style="font-size: 12px; color: #6b7280; margin-top: 8px;">
+                    <div>• 支持选择多个路线</div>
+                    <div>• 若列表为空或无法选择，可
+                      <a-button type="link" size="small" @click="manualRouteInput = true">手动输入路线</a-button>
+                    </div>
                   </div>
-                </div>
+                </a-form-item-rest>
               </template>
               <template v-else>
                 <a-textarea 
@@ -266,19 +270,33 @@
               />
             </a-form-item>
           </a-col>
-        </div>
 
-        <a-col :span="24">
-          <a-form-item name="remark" label="备注">
-            <a-textarea 
-              v-model:value="form.remark" 
-              rows="3" 
-              placeholder="请输入备注信息"
-              style="border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
-            />
-          </a-form-item>
-        </a-col>
-        </div>
+          <a-col :span="12">
+            <a-form-item name="status" label="状态">
+              <a-select 
+                v-model:value="form.status" 
+                placeholder="请选择状态"
+                style="border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
+              >
+                <a-select-option value="active">活跃</a-select-option>
+                <a-select-option value="inactive">非活跃</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+        </a-row>
+
+        <a-row :gutter="24">
+          <a-col :span="24">
+            <a-form-item name="remark" label="备注">
+              <a-textarea 
+                v-model:value="form.remark" 
+                rows="3" 
+                placeholder="请输入备注信息"
+                style="border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
+              />
+            </a-form-item>
+          </a-col>
+        </a-row>
 
         <div style="display: flex; justify-content: flex-end; gap: 16px; margin-top: 24px;">
           <router-link to="/drivers">
@@ -327,7 +345,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
 import { useRouter } from 'vue-router'
@@ -479,7 +497,6 @@ const updateFormMainRoute = () => {
 
 initRegions()
 // 也在挂载时尝试加载，确保数据可用
-import { onMounted } from 'vue'
 onMounted(() => {
   initRegions()
   // 若初始化后没有数据，则启用手动输入作为回退

@@ -52,7 +52,7 @@
             pageSize: 10,
             showSizeChanger: true,
             showQuickJumper: true,
-            showTotal: (total, range) => `${range[0]}-${range[1]} 共 ${total} 条`
+            showTotal: (total: number, range: [number, number]) => `${range[0]}-${range[1]} 共 ${total} 条`
           }"
           style="
             background: transparent;

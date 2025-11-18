@@ -5,7 +5,7 @@ const DriverList = () => import('@/views/drivers/List.vue')
 const DriverDetail = () => import('@/views/drivers/Detail.vue')
 const DriverCreate = () => import('@/views/drivers/Create.vue')
 const DriverEdit = () => import('@/views/drivers/Edit.vue')
-const Statistics = () => import('@/views/Statistics.vue')
+import Statistics from '@/views/Statistics.vue'
 const UserManagement = () => import('@/views/users/Management.vue')
 const Profile = () => import('@/views/users/Profile.vue')
 import { useAuthStore } from '@/stores/auth'
@@ -153,6 +153,14 @@ const router = createRouter({
           name: 'Statistics',
           component: Statistics,
           meta: { title: '数据统计', requiresAdmin: true },
+          beforeEnter: (to, from, next) => {
+            const auth = useAuthStore()
+            if (!auth.isAdmin) {
+              next('/')
+            } else {
+              next()
+            }
+          },
         },
         {
           path: '/users',
@@ -225,6 +233,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   next()
+})
+
+router.onError((error) => {
+  const msg = String((error && (error as any).message) || '')
+  if (msg.includes('Failed to fetch dynamically imported module')) return
+  console.error(error)
 })
 
 export default router

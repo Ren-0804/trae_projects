@@ -450,7 +450,7 @@
             </a-row>
           </div>
         </a-col>
-      </div>
+      </a-row>
     </div>
   </div>
 </template>
@@ -464,7 +464,7 @@ import { useDriverStore } from '@/stores/drivers'
 import { getDriverPhotos, getDriverPhotoBlob } from '@/api/drivers'
 import { UpOutlined, DownOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { BarChart, PieChart, LineChart } from '@/components/charts'
-import { formatStatisticsToChartData, generateTimeSeriesData, filterAndSortData } from '@/utils/chartUtils'
+import { formatStatisticsToChartData, generateTimeSeriesData, filterAndSortData as _unused } from '@/utils/chartUtils'
 
 const statisticsStore = useStatisticsStore()
 const driverStore = useDriverStore()
