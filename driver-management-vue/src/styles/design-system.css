@@ -1,0 +1,245 @@
+:root {
+  /* 企业级色彩系统 - 饱和度低的专业色彩 */
+
+  /* 主色 - 稳重蓝色 */
+  --color-primary-50: #f0f5ff;
+  --color-primary-100: #dde8ff;
+  --color-primary-200: #bbd1ff;
+  --color-primary-300: #8fb1ff;
+  --color-primary-400: #5c8cff;
+  --color-primary-500: #3b6cc8;
+  --color-primary-600: #2951b3;
+  --color-primary-700: #1e3d8d;
+  --color-primary-800: #1a3270;
+  --color-primary-900: #172b5d;
+
+  /* 辅助色 - 深灰色 */
+  --color-secondary-50: #f8fafc;
+  --color-secondary-100: #f1f5f9;
+  --color-secondary-200: #e2e8f0;
+  --color-secondary-300: #cbd5e1;
+  --color-secondary-400: #94a3b8;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+
+  /* 功能色 - 非亮色蓝 */
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #1890ff;
+
+  /* 中性色 - 6-8个灰色等级 */
+  --color-gray-50: #fafafa;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #eeeeee;
+  --color-gray-300: #e0e0e0;
+  --color-gray-400: #bdbdbd;
+  --color-gray-500: #9e9e9e;
+  --color-gray-600: #757575;
+  --color-gray-700: #616161;
+  --color-gray-800: #424242;
+  --color-gray-900: #212121;
+
+  /* 文本色 */
+  --color-text-primary: #262626;
+  --color-text-secondary: #595959;
+  --color-text-tertiary: #8c8c8c;
+  --color-text-disabled: #bfbfbf;
+
+  /* 背景色 */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #fafafa;
+  --color-bg-container: #ffffff;
+  --color-bg-elevated: #ffffff;
+  --color-bg-spotlight: #ffffff;
+
+  /* 边框色 */
+  --color-border: #d9d9d9;
+  --color-border-light: #f0f0f0;
+  --color-border-dark: #434343;
+
+  /* 阴影系统 - 真实产品阴影 */
+  --shadow-1: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  --shadow-2: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-4: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* 圆角 - 小圆角，符合真实产品 */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-base: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* 间距系统 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-base: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+
+  /* 字体系统 */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+  /* 字号 */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-md: 18px;
+  --font-size-lg: 20px;
+  --font-size-xl: 24px;
+  --font-size-2xl: 30px;
+  --font-size-3xl: 38px;
+
+  /* 行高 */
+  --line-height-xs: 1.2;
+  --line-height-sm: 1.4;
+  --line-height-base: 1.5;
+  --line-height-md: 1.6;
+  --line-height-lg: 1.8;
+
+  /* 动效 - 细微动效，150ms内 */
+  --duration-fast: 100ms;
+  --duration-base: 150ms;
+  --duration-slow: 200ms;
+
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* 层级 */
+  --z-index-dropdown: 1050;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+
+  /* 布局 */
+  --layout-header-height: 64px;
+  --layout-sidebar-width: 240px;
+  --layout-sidebar-collapsed-width: 80px;
+  --layout-content-padding: 24px;
+  --layout-content-max-width: 1200px;
+
+  /* 按钮系统 */
+  --button-height-sm: 24px;
+  --button-height-md: 32px;
+  --button-height-lg: 40px;
+
+  --button-padding-sm: 4px 8px;
+  --button-padding-md: 8px 16px;
+  --button-padding-lg: 12px 24px;
+
+  /* 输入框 */
+  --input-height-sm: 24px;
+  --input-height-md: 32px;
+  --input-height-lg: 40px;
+  --input-padding: 8px 12px;
+  --input-border-width: 1px;
+  --input-border-color: var(--color-border);
+  --input-border-radius: var(--radius-base);
+
+  /* 表格 */
+  --table-header-bg: #fafafa;
+  --table-row-hover-bg: #f5f5f5;
+  --table-border-color: var(--color-border-light);
+  --table-cell-padding: 12px 16px;
+
+  /* 卡片 */
+  --card-padding: var(--spacing-lg);
+  --card-border-radius: var(--radius-lg);
+  --card-bg: var(--color-bg-container);
+  --card-shadow: var(--shadow-1);
+
+  /* 分割线 */
+  --divider-color: var(--color-border-light);
+  --divider-thickness: 1px;
+
+  /* 骨架屏 */
+  --skeleton-base-color: #f2f2f2;
+  --skeleton-shine-color: #e6e6e6;
+
+  /* 禁用状态 */
+  --disabled-bg: #f5f5f5;
+  --disabled-color: var(--color-text-disabled);
+  --disabled-border: #d9d9d9;
+}
+
+/* 暗色模式变量 - 可选 */
+[data-theme='dark'] {
+  --color-bg-primary: #141414;
+  --color-bg-secondary: #1f1f1f;
+  --color-bg-container: #262626;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a6a6a6;
+  --color-text-tertiary: #737373;
+  --color-border: #434343;
+  --color-border-light: #303030;
+}
+
+/* 通用工具类 */
+.text-primary { color: var(--color-primary-600); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-container { background-color: var(--color-bg-container); }
+
+.border-light { border-color: var(--color-border-light); }
+.border-normal { border-color: var(--color-border); }
+
+.shadow-1 { box-shadow: var(--shadow-1); }
+.shadow-2 { box-shadow: var(--shadow-2); }
+.shadow-3 { box-shadow: var(--shadow-3); }
+
+.radius-sm { border-radius: var(--radius-sm); }
+.radius-base { border-radius: var(--radius-base); }
+.radius-md { border-radius: var(--radius-md); }
+.radius-lg { border-radius: var(--radius-lg); }
+
+/* 过渡动画 */
+.transition-base {
+  transition: all var(--duration-base) var(--ease-in-out);
+}
+
+.transition-fast {
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* 禁用文本选择 */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-gray-100);
+  border-radius: var(--radius-xs);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-xs);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
+}

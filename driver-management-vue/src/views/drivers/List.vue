@@ -159,7 +159,7 @@
                 @confirm="handleDelete(record.id)"
                 okText="确认"
                 cancelText="取消"
-                okButtonProps="{ style: { backgroundColor: '#ef4444', borderColor: '#ef4444' } }"
+                :okButtonProps="{ style: { backgroundColor: '#ef4444', borderColor: '#ef4444' } }"
               >
                 <a-button 
                   danger 

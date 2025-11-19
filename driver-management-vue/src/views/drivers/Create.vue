@@ -291,7 +291,7 @@
             <a-form-item name="remark" label="备注">
               <a-textarea 
                 v-model:value="form.remark" 
-                rows="3" 
+                :rows="3" 
                 placeholder="请输入备注信息"
                 style="border-radius: 8px; border: 1px solid rgba(102, 126, 234, 0.2);"
               />

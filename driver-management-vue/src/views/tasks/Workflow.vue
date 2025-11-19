@@ -28,7 +28,7 @@
 
       <a-form layout="vertical" style="margin-top:12px">
         <a-form-item label="备注">
-          <a-textarea v-model:value="remark" rows="3" />
+          <a-textarea v-model:value="remark" :rows="3" />
         </a-form-item>
         <a-upload :customRequest="uploadAttachment" :multiple="true">
           <a-button>上传附件</a-button>

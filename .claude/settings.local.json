@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(pnpm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(sqlite3:*)",
+      "WebSearch",
+      "WebFetch(domain:www.flaticon.com)",
+      "WebFetch(domain:heroicons.com)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

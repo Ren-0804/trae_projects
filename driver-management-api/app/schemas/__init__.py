@@ -16,6 +16,7 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
     email: Optional[EmailStr] = None
     role: Optional[str] = Field(None, pattern="^(superadmin|admin|dispatcher|manager|driver|auditor|employee)$")
     is_active: Optional[bool] = None
@@ -168,8 +169,8 @@ class VehicleResponse(VehicleBase):
     id: int
     created_at: datetime
     updated_at: datetime
-    current_driver: Optional[DriverResponse] = None
-    
+    current_driver_id: Optional[int] = None
+
     class Config:
         from_attributes = True
 

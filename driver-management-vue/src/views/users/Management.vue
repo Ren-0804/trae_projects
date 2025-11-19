@@ -296,7 +296,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { getUsers, deleteUser, updateUser } from '@/api/users'
+import { getUsers, deleteUser, deleteUserPermanent, updateUser } from '@/api/users'
 import { message } from 'ant-design-vue'
 
 interface User {
@@ -436,9 +436,8 @@ const handleDelete = async (userId: number) => {
 
 const handleDeletePermanent = async (userId: number) => {
   try {
-    // For now, we'll use the regular delete function
-    // In a real implementation, you would have a separate permanent delete endpoint
-    await deleteUser(userId)
+    // 调用永久删除API，只能删除已禁用的用户
+    await deleteUserPermanent(userId)
     message.success('用户已永久删除')
     fetchUsers()
   } catch (error) {

@@ -1,124 +1,148 @@
 <template>
-  <a-layout style="min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)">
-    <a-layout-sider 
-      :collapsed="collapsed" 
-      collapsible 
-      breakpoint="lg" 
-      @breakpoint="onBreakpoint"
-      style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-right: 1px solid rgba(255, 255, 255, 0.2)"
-    >
-      <div style="height: 80px; display: flex; align-items: center; justify-content: center; padding: 0 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.05)">
-        <div style="font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-          🚗 司机管理系统
-        </div>
+  <div class="enterprise-layout">
+    <!-- 左侧菜单 -->
+    <aside class="sidebar" :class="{ 'sidebar--collapsed': collapsed }">
+      <div class="sidebar__logo">
+        <div class="logo-icon">🚗</div>
+        <div v-if="!collapsed" class="logo-text">司机管理系统</div>
       </div>
-      <a-menu 
-        theme="light" 
-        mode="inline" 
-        :selectedKeys="selectedKeys"
-        style="background: transparent; border: none; padding: 8px"
-      >
-        <a-menu-item v-can="['menu','drivers']" key="drivers" style="border-radius: 12px; margin: 4px 0;">
-          <UserOutlined />
-          <router-link to="/drivers">司机管理</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','vehicles']" key="vehicles" style="border-radius: 12px; margin: 4px 0;">
-          <CarOutlined />
-          <router-link to="/vehicles">车辆管理</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','schedules']" key="schedules" style="border-radius: 12px; margin: 4px 0;">
-          <CalendarOutlined />
-          <router-link to="/schedules">排班调度</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','certificates']" key="certificates" style="border-radius: 12px; margin: 4px 0;">
-          <SafetyOutlined />
-          <router-link to="/certificates">证书管理</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','safety']" key="safety" style="border-radius: 12px; margin: 4px 0;">
-          <WarningOutlined />
-          <router-link to="/safety">安全管理</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','statistics']" key="statistics" style="border-radius: 12px; margin: 4px 0;">
-          <BarChartOutlined />
-          <router-link to="/statistics">数据统计</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','users']" key="users" style="border-radius: 12px; margin: 4px 0;">
-          <TeamOutlined />
-          <router-link to="/users">用户管理</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','tasks']" key="tasks" style="border-radius: 12px; margin: 4px 0;">
-          <CalendarOutlined />
-          <router-link to="/tasks">任务看板</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','files']" key="files" style="border-radius: 12px; margin: 4px 0;">
-          <SafetyOutlined />
-          <router-link to="/files">文件库</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','audit']" key="audit" style="border-radius: 12px; margin: 4px 0;">
-          <WarningOutlined />
-          <router-link to="/audit/logs">审计日志</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','security']" key="security" style="border-radius: 12px; margin: 4px 0;">
-          <SafetyOutlined />
-          <router-link to="/security/center">安全中心</router-link>
-        </a-menu-item>
-        <a-menu-item v-can="['menu','permissions']" key="permissions" style="border-radius: 12px; margin: 4px 0;">
-          <TeamOutlined />
-          <router-link to="/admin/permissions">权限管理</router-link>
-        </a-menu-item>
-        <a-divider style="margin: 16px 0; border-color: rgba(0, 0, 0, 0.05)" />
-        <a-menu-item key="profile" style="border-radius: 12px; margin: 4px 0;">
-          <UserOutlined />
-          <router-link to="/profile">个人资料</router-link>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
-    <a-layout style="background: transparent">
-      <a-layout-header
-        style="
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(10px);
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0 28px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-          height: 68px;
-        "
-      >
-        <div style="font-size: 20px; font-weight: 600; color: #2c3e50; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
-          {{ $route.meta.title || '仪表板' }}
+
+      <nav class="sidebar__nav">
+        <a-menu
+          mode="inline"
+          :selectedKeys="selectedKeys"
+          class="sidebar-menu"
+        >
+          <template v-if="permStore.can('menu', 'drivers')">
+            <a-menu-item key="drivers" class="sidebar-menu__item">
+              <UserOutlined />
+              <router-link to="/drivers">司机管理</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'vehicles')">
+            <a-menu-item key="vehicles" class="sidebar-menu__item">
+              <CarOutlined />
+              <router-link to="/vehicles">车辆管理</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'schedules')">
+            <a-menu-item key="schedules" class="sidebar-menu__item">
+              <CalendarOutlined />
+              <router-link to="/schedules">排班调度</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'certificates')">
+            <a-menu-item key="certificates" class="sidebar-menu__item">
+              <SafetyOutlined />
+              <router-link to="/certificates">证书管理</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'safety')">
+            <a-menu-item key="safety" class="sidebar-menu__item">
+              <WarningOutlined />
+              <router-link to="/safety">安全管理</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'statistics')">
+            <a-menu-item key="statistics" class="sidebar-menu__item">
+              <BarChartOutlined />
+              <router-link to="/statistics">数据统计</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'users')">
+            <a-menu-item key="users" class="sidebar-menu__item">
+              <TeamOutlined />
+              <router-link to="/users">用户管理</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'tasks')">
+            <a-menu-item key="tasks" class="sidebar-menu__item">
+              <CalendarOutlined />
+              <router-link to="/tasks">任务看板</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'files')">
+            <a-menu-item key="files" class="sidebar-menu__item">
+              <SafetyOutlined />
+              <router-link to="/files">文件库</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'audit')">
+            <a-menu-item key="audit" class="sidebar-menu__item">
+              <WarningOutlined />
+              <router-link to="/audit/logs">审计日志</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'security')">
+            <a-menu-item key="security" class="sidebar-menu__item">
+              <SafetyOutlined />
+              <router-link to="/security/center">安全中心</router-link>
+            </a-menu-item>
+          </template>
+          <template v-if="permStore.can('menu', 'permissions')">
+            <a-menu-item key="permissions" class="sidebar-menu__item">
+              <TeamOutlined />
+              <router-link to="/admin/permissions">权限管理</router-link>
+            </a-menu-item>
+          </template>
+
+          <div class="sidebar__divider"></div>
+
+          <a-menu-item key="profile" class="sidebar-menu__item">
+            <UserOutlined />
+            <router-link to="/profile">个人资料</router-link>
+          </a-menu-item>
+        </a-menu>
+      </nav>
+    </aside>
+
+    <!-- 主要内容区域 -->
+    <div class="main-container">
+      <!-- 顶部导航栏 -->
+      <header class="header">
+        <div class="header__left">
+          <button
+            class="header__trigger"
+            @click="collapsed = !collapsed"
+          >
+            <MenuUnfoldOutlined v-if="collapsed" />
+            <MenuFoldOutlined v-else />
+          </button>
+          <h1 class="header__title">
+            {{ $route.meta.title || '仪表板' }}
+          </h1>
         </div>
-        <div style="display: flex; align-items: center; gap: 12px">
-          <div style="display: flex; align-items: center; gap: 10px; padding: 6px 12px; background: rgba(255, 255, 255, 0.85); border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08); transition: all 0.3s ease;">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 12px; box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);">
+
+        <div class="header__right">
+          <div class="user-info">
+            <div class="user-avatar">
               {{ authStore.user?.username?.charAt(0).toUpperCase() }}
             </div>
-            <div style="display: flex; flex-direction: column; gap: 1px;">
-              <div style="font-weight: 500; color: #2c3e50; font-size: 12px; line-height: 1.2;">{{ authStore.user?.username }}</div>
-              <a-tag :color="authStore.isAdmin ? '#ff4d4f' : '#1890ff'" style="border-radius: 8px; font-size: 9px; padding: 0 5px; height: 16px; line-height: 16px; margin: 0; border: none; font-weight: 500;">
-                {{ authStore.isAdmin ? '管理员' : '员工' }}
-              </a-tag>
+            <div class="user-details">
+              <div class="user-name">{{ authStore.user?.username }}</div>
+              <div class="user-role">
+                <span class="role-tag" :class="authStore.isAdmin ? 'role-tag--admin' : 'role-tag--staff'">
+                  {{ authStore.isAdmin ? '管理员' : '员工' }}
+                </span>
+              </div>
             </div>
           </div>
-          <a-button 
-            type="text" 
-            @click="handleLogout"
-            style="border-radius: 18px; padding: 6px 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; gap: 5px; font-weight: 500; transition: all 0.3s ease; font-size: 12px;"
-            @mouseenter="logoutEnter"
-            @mouseleave="logoutLeave"
-          >
-            <LogoutOutlined style="font-size: 12px;" />
+
+          <button class="logout-btn" @click="handleLogout">
+            <LogoutOutlined />
             退出
-          </a-button>
+          </button>
         </div>
-      </a-layout-header>
-      <a-layout-content class="glass-card" style="margin: 24px; padding: 24px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);">
-        <router-view />
-      </a-layout-content>
-    </a-layout>
-  </a-layout>
+      </header>
+
+      <!-- 内容区域 -->
+      <main class="content">
+        <div class="content-wrapper">
+          <router-view />
+        </div>
+      </main>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -134,7 +158,9 @@ import {
   WarningOutlined,
   BarChartOutlined,
   TeamOutlined,
-  LogoutOutlined
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined
 } from '@ant-design/icons-vue'
 
 const authStore = useAuthStore()
@@ -173,7 +199,265 @@ const handleLogout = () => {
 const onBreakpoint = (broken: boolean) => {
   collapsed.value = broken
 }
-
-const logoutEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.95)' }
-const logoutLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.85)' }
 </script>
+
+<style scoped>
+.enterprise-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-bg-secondary);
+  font-family: var(--font-family);
+}
+
+/* 侧边栏样式 */
+.sidebar {
+  width: var(--layout-sidebar-width);
+  background-color: var(--color-bg-container);
+  border-right: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  transition: width var(--duration-base) var(--ease-in-out);
+  position: fixed;
+  height: 100vh;
+  z-index: var(--z-index-fixed);
+}
+
+.sidebar--collapsed {
+  width: var(--layout-sidebar-collapsed-width);
+}
+
+.sidebar__logo {
+  height: var(--layout-header-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border-light);
+  gap: var(--spacing-sm);
+}
+
+.logo-icon {
+  font-size: var(--font-size-xl);
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.sidebar__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md) var(--spacing-sm);
+}
+
+.sidebar-menu {
+  background: transparent;
+  border: none;
+}
+
+.sidebar-menu__item {
+  margin: var(--spacing-xs) 0;
+  border-radius: var(--radius-base);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.sidebar-menu__item:hover {
+  background-color: var(--color-gray-100);
+}
+
+.sidebar-menu__item.ant-menu-item-selected {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-600);
+}
+
+.sidebar-menu__item.ant-menu-item-selected::after {
+  display: none;
+}
+
+.sidebar__divider {
+  height: 1px;
+  background-color: var(--color-border-light);
+  margin: var(--spacing-lg) var(--spacing-md);
+}
+
+/* 主容器样式 */
+.main-container {
+  flex: 1;
+  margin-left: var(--layout-sidebar-width);
+  transition: margin-left var(--duration-base) var(--ease-in-out);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar--collapsed + .main-container {
+  margin-left: var(--layout-sidebar-collapsed-width);
+}
+
+/* 头部样式 */
+.header {
+  height: var(--layout-header-height);
+  background-color: var(--color-bg-container);
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  box-shadow: var(--shadow-1);
+}
+
+.header__left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.header__trigger {
+  background: none;
+  border: none;
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__trigger:hover {
+  background-color: var(--color-gray-100);
+  color: var(--color-text-primary);
+}
+
+.header__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  background-color: var(--color-gray-50);
+  border: 1px solid var(--color-border-light);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-primary-500);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.user-name {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.role-tag {
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  font-weight: 500;
+  line-height: 1.2;
+  display: inline-block;
+}
+
+.role-tag--admin {
+  background-color: var(--color-error);
+  color: white;
+}
+
+.role-tag--staff {
+  background-color: var(--color-info);
+  color: white;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.logout-btn:hover {
+  background-color: var(--color-gray-50);
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+/* 内容区域样式 */
+.content {
+  flex: 1;
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+}
+
+.content-wrapper {
+  max-width: var(--layout-content-max-width);
+  margin: 0 auto;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar--collapsed {
+    transform: translateX(0);
+    width: var(--layout-sidebar-width);
+  }
+
+  .main-container {
+    margin-left: 0;
+  }
+
+  .sidebar--collapsed + .main-container {
+    margin-left: 0;
+  }
+
+  .header__title {
+    font-size: var(--font-size-md);
+  }
+
+  .user-details {
+    display: none;
+  }
+}
+</style>

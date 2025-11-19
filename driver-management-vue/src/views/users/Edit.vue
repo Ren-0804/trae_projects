@@ -34,9 +34,9 @@
           </a-col>
           <a-col :xs="24" :md="12">
             <a-form-item name="is_active" label="状态" required>
-              <a-select v-model:value="form.is_active">
-                <a-select-option :value="true">活跃</a-select-option>
-                <a-select-option :value="false">禁用</a-select-option>
+              <a-select v-model:value="form.is_active_string">
+                <a-select-option value="true">活跃</a-select-option>
+                <a-select-option value="false">禁用</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -91,10 +91,27 @@ const loading = ref(false)
 const form = ref<Partial<User> & { position?: string; permissions?: string[] }>({})
 
 const rules: Record<string, Rule[]> = {
-  username: [{ required: true, message: '请输入用户名' }],
-  email: [{ type: 'email', message: '邮箱格式不正确' }],
+  username: [
+    { required: true, message: '请输入用户名' },
+    { min: 3, message: '用户名至少3位' }
+  ],
+  email: [
+    {
+      validator: async (_, value) => {
+        if (!value || value.trim() === '') {
+          return Promise.resolve() // 允许空值
+        }
+        // 简单的邮箱格式验证
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(value.trim())) {
+          return Promise.reject(new Error('邮箱格式不正确'))
+        }
+        return Promise.resolve()
+      }
+    }
+  ],
   role: [{ required: true, message: '请选择角色' }],
-  is_active: [{ required: true, message: '请选择状态' }],
+  is_active_string: [{ required: true, message: '请选择状态' }],
 }
 
 const fetchUser = async () => {
@@ -111,6 +128,7 @@ const fetchUser = async () => {
     email: u.email ?? '',
     role: u.role,
     is_active: u.is_active,
+    is_active_string: String(u.is_active),
   }
 }
 
@@ -127,7 +145,20 @@ const handleSubmit = async () => {
     if (!Number.isFinite(idNum) || rawId.trim() === '') {
       throw new Error('无效用户ID')
     }
-    await api.put(`/auth/${idNum}`, form.value)
+
+    // 过滤掉空的邮箱字段，避免后端验证错误
+    const updateData: any = {
+      username: form.value.username?.trim(),
+      role: form.value.role,
+      is_active: form.value.is_active_string === 'true',
+    }
+
+    // 只有当邮箱不为空时才包含邮箱字段
+    if (form.value.email && form.value.email.trim() !== '') {
+      updateData.email = form.value.email.trim()
+    }
+
+    await api.put(`/auth/${idNum}`, updateData)
     message.success('更新成功')
     router.push(`/users/${idNum}`)
   } catch (error: any) {

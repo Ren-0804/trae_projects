@@ -55,7 +55,8 @@ async def get_current_admin_user(
     current_user: User = Depends(get_current_active_user),
 ) -> User:
     """获取当前管理员用户"""
-    if current_user.role != "admin":
+    admin_roles = ["admin", "superadmin", "manager"]
+    if current_user.role not in admin_roles:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="权限不足，需要管理员权限"

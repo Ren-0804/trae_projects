@@ -166,8 +166,17 @@ async def update_user(
             detail="用户不存在"
         )
     
+    # 检查用户名是否已存在
+    if user_in.username and user_in.username != user.username:
+        existing_user = await get_user_by_username(db, username=user_in.username)
+        if existing_user and existing_user.id != user_id:
+            raise HTTPException(
+                status_code=400,
+                detail="用户名已存在"
+            )
+
     # 检查邮箱是否已存在
-    if user_in.email:
+    if user_in.email and user_in.email != user.email:
         existing_user = await get_user_by_email(db, email=user_in.email)
         if existing_user and existing_user.id != user_id:
             raise HTTPException(
@@ -176,7 +185,7 @@ async def update_user(
             )
     
     user = await crud_update_user(db, user_id=user_id, **user_in.dict(exclude_unset=True))
-    return user
+    return UserResponse.from_orm(user)
 
 
 @router.delete("/{user_id}")

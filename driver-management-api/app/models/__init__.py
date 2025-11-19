@@ -102,7 +102,6 @@ class Vehicle(Base):
     updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
     
     # 关联关系
-    current_driver = relationship("Driver", foreign_keys=[current_driver_id])
     assignments = relationship("VehicleAssignment", back_populates="vehicle", cascade="all, delete-orphan")
     maintenance_records = relationship("MaintenanceRecord", back_populates="vehicle", cascade="all, delete-orphan")
     gps_records = relationship("GPSRecord", back_populates="vehicle", cascade="all, delete-orphan")

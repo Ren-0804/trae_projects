@@ -94,8 +94,25 @@ const form = ref({
 })
 
 const rules: Record<string, Rule[]> = {
-  username: [{ required: true, message: '请输入用户名' }],
-  email: [{ type: 'email', message: '邮箱格式不正确' }],
+  username: [
+    { required: true, message: '请输入用户名' },
+    { min: 2, message: '用户名至少2位' }
+  ],
+  email: [
+    {
+      validator: async (_, value) => {
+        if (!value || value.trim() === '') {
+          return Promise.resolve() // 允许空值
+        }
+        // 简单的邮箱格式验证
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(value.trim())) {
+          return Promise.reject(new Error('邮箱格式不正确'))
+        }
+        return Promise.resolve()
+      }
+    }
+  ],
   password: [
     { required: true, message: '请输入密码' },
     { min: 6, message: '密码至少6位' },
@@ -113,8 +130,8 @@ const handleSubmit = async () => {
   try {
     // 只发送后端需要的字段
     const payload = {
-      username: form.value.username,
-      email: form.value.email || undefined, // 如果邮箱为空则不发送
+      username: form.value.username?.trim(),
+      email: form.value.email?.trim() || undefined, // 如果邮箱为空则不发送
       password: form.value.password,
       role: form.value.role,
     }
