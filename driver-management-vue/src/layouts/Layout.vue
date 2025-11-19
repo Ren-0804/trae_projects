@@ -8,7 +8,7 @@
       style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-right: 1px solid rgba(255, 255, 255, 0.2)"
     >
       <div style="height: 80px; display: flex; align-items: center; justify-content: center; padding: 0 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.05)">
-        <div style="font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+        <div style="font-size: 24px; font-weight: 700; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
           🚗 司机管理系统
         </div>
       </div>
@@ -87,7 +87,7 @@
           height: 68px;
         "
       >
-        <div style="font-size: 20px; font-weight: 600; color: #2c3e50; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
+        <div style="font-size: 20px; font-weight: 600; color: #2c3e50; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px;">
           {{ $route.meta.title || '仪表板' }}
         </div>
         <div style="display: flex; align-items: center; gap: 12px">

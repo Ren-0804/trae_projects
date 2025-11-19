@@ -18,6 +18,7 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             background-clip: text;
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
           ">新增司机</h1>
