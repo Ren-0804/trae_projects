@@ -4,7 +4,7 @@
       <a-col :xs="24" :md="8">
         <a-card title="待办">
           <div class="kanban-column" @dragover.prevent @drop="onDrop('todo')">
-            <TaskCard v-for="t in tasksByStatus('todo')" :key="t.id" :task="t" draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
+            <TaskCard v-for="t in tasksByStatus('todo')" :key="t.id" :task="t" :draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
           </div>
           <a-button type="dashed" block @click="openCreate('todo')">新建任务</a-button>
         </a-card>
@@ -12,7 +12,7 @@
       <a-col :xs="24" :md="8">
         <a-card title="进行中">
           <div class="kanban-column" @dragover.prevent @drop="onDrop('in_progress')">
-            <TaskCard v-for="t in tasksByStatus('in_progress')" :key="t.id" :task="t" draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
+            <TaskCard v-for="t in tasksByStatus('in_progress')" :key="t.id" :task="t" :draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
           </div>
           <a-button type="dashed" block @click="openCreate('in_progress')">新建任务</a-button>
         </a-card>
@@ -20,7 +20,7 @@
       <a-col :xs="24" :md="8">
         <a-card title="已完成">
           <div class="kanban-column" @dragover.prevent @drop="onDrop('completed')">
-            <TaskCard v-for="t in tasksByStatus('completed')" :key="t.id" :task="t" draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
+            <TaskCard v-for="t in tasksByStatus('completed')" :key="t.id" :task="t" :draggable="true" @dragstart="onDragStart(t)" @update="refresh" />
           </div>
           <a-button type="dashed" block @click="openCreate('completed')">新建任务</a-button>
         </a-card>

@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getAuditLogs, exportAuditLogs } from '@/api/audit'
+import { getAuditLogs, exportAuditLogs, getAuditStats } from '@/api/audit'
 
 const logs = ref<any[]>([])
 const start = ref<any>(null)
@@ -76,8 +76,7 @@ const fetch = async () => {
   if (operation.value) params.operation_type = operation.value
   logs.value = await getAuditLogs(params)
   try {
-    const res = await (await import('@/api/audit')).default.get('/audit/stats')
-    stats.value = res.data
+    stats.value = await getAuditStats()
   } catch {}
 }
 

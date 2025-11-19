@@ -1,8 +1,7 @@
 import axios from 'axios'
-import type { LoginRequest, LoginResponse, User } from '@/types/user'
+import type { LoginRequest, LoginResponse } from '@/types/user'
 
 const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'
-const AUTH_MODE = (import.meta as any).env?.VITE_AUTH_MODE || 'mixed'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,12 +10,12 @@ const api = axios.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
-  withCredentials: AUTH_MODE === 'cookie' || AUTH_MODE === 'mixed',
+  withCredentials: true,
 })
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
-  if (token && AUTH_MODE !== 'cookie') {
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
   return config
@@ -46,15 +45,11 @@ api.interceptors.response.use(
           const loc = item.loc?.join('.') || '字段'
           return `${loc}: ${item.msg}`
         }).join(', ')
-        if (!(import.meta as any).env?.PROD) {
-          console.error('验证错误:', errorMessages)
-          console.error('验证错误来源:', where)
-        }
+        console.error('验证错误:', errorMessages)
+        console.error('验证错误来源:', where)
       } else {
-        if (!(import.meta as any).env?.PROD) {
-          console.error('验证错误:', detail)
-          console.error('验证错误来源:', where)
-        }
+        console.error('验证错误:', detail)
+        console.error('验证错误来源:', where)
       }
       return Promise.reject(error)
     }
@@ -68,17 +63,16 @@ api.interceptors.response.use(
       return api(config)
     }
     
-    if (!(import.meta as any).env?.PROD) {
-      console.error('API请求错误:', {
-        url: config.url,
-        method: config.method,
-        status: error.response?.status,
-        statusText: error.response?.statusText,
-        data: error.response?.data,
-        code: error.code,
-        message: error.message
-      })
-    }
+    // 记录详细的错误信息
+    console.error('API请求错误:', {
+      url: config.url,
+      method: config.method,
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      data: error.response?.data,
+      code: error.code,
+      message: error.message
+    })
     
     return Promise.reject(error)
   },

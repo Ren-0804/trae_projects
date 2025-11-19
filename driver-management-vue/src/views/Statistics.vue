@@ -101,8 +101,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
           "
-          @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-4px)'"
-          @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+          @mouseenter="hoverUp4"
+          @mouseleave="hoverDown"
           >
             <a-statistic
               title="司机总数"
@@ -122,8 +122,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
           "
-          @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-4px)'"
-          @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+          @mouseenter="hoverUp4"
+          @mouseleave="hoverDown"
           >
             <a-statistic
               title="活跃司机"
@@ -143,8 +143,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
           "
-          @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-4px)'"
-          @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+          @mouseenter="hoverUp4"
+          @mouseleave="hoverDown"
           >
             <a-statistic
               title="本月新增"
@@ -164,8 +164,8 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
           "
-          @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-4px)'"
-          @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+          @mouseenter="hoverUp4"
+          @mouseleave="hoverDown"
           >
             <a-statistic
               title="活跃率"
@@ -366,8 +366,8 @@
                 margin-bottom: 16px;
                 transition: all 0.3s ease;
               "
-              @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-2px)'"
-              @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+              @mouseenter="hoverUp2"
+              @mouseleave="hoverDown"
               >
                 <a-image :src="getPhotoUrl(p.id)" :preview="true" :style="photoStyle" />
                 <a-statistic :title="p.photo_type" :value="p.id" prefix="#" style="margin-top: 8px;" />
@@ -404,8 +404,8 @@
                   text-align: center;
                   transition: all 0.3s ease;
                 "
-                @mouseenter="(e: any) => e.currentTarget.style.background = 'rgba(102, 126, 234, 0.2)'"
-                @mouseleave="(e: any) => e.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)'"
+                @mouseenter="bgBlueEnter"
+                @mouseleave="bgBlueLeave"
                 >
                   <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">{{ item.route }}</div>
                   <div style="font-size: 16px; font-weight: 600; color: #667eea;">{{ item.count }}</div>
@@ -440,8 +440,8 @@
                   text-align: center;
                   transition: all 0.3s ease;
                 "
-                @mouseenter="(e: any) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'"
-                @mouseleave="(e: any) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'"
+                @mouseenter="bgGreenEnter"
+                @mouseleave="bgGreenLeave"
                 >
                   <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">{{ item.username }}</div>
                   <div style="font-size: 16px; font-weight: 600; color: #10b981;">{{ item.count }}</div>
@@ -465,6 +465,13 @@ import { getDriverPhotos, getDriverPhotoBlob } from '@/api/drivers'
 import { UpOutlined, DownOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { BarChart, PieChart, LineChart } from '@/components/charts'
 import { formatStatisticsToChartData, generateTimeSeriesData, filterAndSortData as _unused } from '@/utils/chartUtils'
+const hoverUp4 = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.transform = 'translateY(-4px)' }
+const hoverDown = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.transform = 'translateY(0)' }
+const hoverUp2 = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.transform = 'translateY(-2px)' }
+const bgBlueEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(102, 126, 234, 0.2)' }
+const bgBlueLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(102, 126, 234, 0.1)' }
+const bgGreenEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(16, 185, 129, 0.2)' }
+const bgGreenLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(16, 185, 129, 0.1)' }
 
 const statisticsStore = useStatisticsStore()
 const driverStore = useDriverStore()
@@ -551,20 +558,15 @@ const fetchRecentDriverPhotos = async () => {
     await driverStore.fetchDrivers({ page: 1, page_size: 6 })
     const drivers = driverStore.drivers.slice(0, 6)
     const photos: any[] = []
-    const limit = 3
-    let i = 0
-    const workers = new Array(limit).fill(0).map(async () => {
-      while (i < drivers.length) {
-        const idx = i++
-        try {
-          const list = await getDriverPhotos(drivers[idx].id)
-          const vehicle = list.find((x: any) => x.photo_type === 'vehicle')
-          const picked = vehicle || list[0]
-          if (picked) photos.push(picked)
-        } catch {}
+    for (const d of drivers) {
+      try {
+        const list = await getDriverPhotos(d.id)
+        const vehicle = list.find((x: any) => x.photo_type === 'vehicle')
+        const picked = vehicle || list[0]
+        if (picked) photos.push(picked)
+      } catch {
       }
-    })
-    await Promise.all(workers)
+    }
     recentPhotos.value = photos
     await hydratePhotoUrls()
   } finally {

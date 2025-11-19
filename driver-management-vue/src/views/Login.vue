@@ -115,8 +115,8 @@
                   background: rgba(255, 255, 255, 0.8);
                   transition: all 0.3s ease;
                 "
-                @focus="(e: any) => e.target.style.borderColor = '#667eea'"
-                @blur="(e: any) => e.target.style.borderColor = 'rgba(102, 126, 234, 0.2)'"
+                @focus="onFocus"
+                @blur="onBlur"
               >
                 <template #prefix>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
@@ -137,8 +137,8 @@
                   background: rgba(255, 255, 255, 0.8);
                   transition: all 0.3s ease;
                 "
-                @focus="(e: any) => e.target.style.borderColor = '#667eea'"
-                @blur="(e: any) => e.target.style.borderColor = 'rgba(102, 126, 234, 0.2)'"
+                @focus="onFocus"
+                @blur="onBlur"
               >
                 <template #prefix>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
@@ -198,8 +198,8 @@
                   box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
                   transition: all 0.3s ease;
                 "
-                @mouseenter="(e: any) => e.target.style.transform = 'translateY(-2px)'"
-                @mouseleave="(e: any) => e.target.style.transform = 'translateY(0)'"
+                @mouseenter="onEnter"
+                @mouseleave="onLeave"
               >
                 <template #icon>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
@@ -283,6 +283,11 @@ const loading = ref(false)
 const error = ref('')
 const mfaRequired = ref(false)
 const mfa = reactive({ code: '' })
+
+const onFocus = (e: Event) => { const el = e.target as HTMLInputElement; if (el && el.style) el.style.borderColor = '#667eea' }
+const onBlur = (e: Event) => { const el = e.target as HTMLInputElement; if (el && el.style) el.style.borderColor = 'rgba(102, 126, 234, 0.2)' }
+const onEnter = (e: Event) => { const el = e.target as HTMLElement; if (el && el.style) el.style.transform = 'translateY(-2px)' }
+const onLeave = (e: Event) => { const el = e.target as HTMLElement; if (el && el.style) el.style.transform = 'translateY(0)' }
 
 const handleSubmit = async () => {
   loading.value = true

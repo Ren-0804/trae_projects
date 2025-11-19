@@ -38,3 +38,8 @@ export async function createAuditAlert(payload: {
   const response = await api.post('/audit/alerts', payload)
   return response.data
 }
+
+export async function getAuditStats(): Promise<any> {
+  const response = await api.get('/audit/stats')
+  return response.data
+}

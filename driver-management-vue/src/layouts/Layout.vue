@@ -106,8 +106,8 @@
             type="text" 
             @click="handleLogout"
             style="border-radius: 18px; padding: 6px 12px; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; gap: 5px; font-weight: 500; transition: all 0.3s ease; font-size: 12px;"
-            @mouseenter="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)'"
-            @mouseleave="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.85)'"
+            @mouseenter="logoutEnter"
+            @mouseleave="logoutLeave"
           >
             <LogoutOutlined style="font-size: 12px;" />
             退出
@@ -173,4 +173,7 @@ const handleLogout = () => {
 const onBreakpoint = (broken: boolean) => {
   collapsed.value = broken
 }
+
+const logoutEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.95)' }
+const logoutLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.85)' }
 </script>

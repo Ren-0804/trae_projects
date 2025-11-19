@@ -11,8 +11,8 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
   "
-  @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-4px)'"
-  @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+  @mouseenter="hoverUp"
+  @mouseleave="hoverDown"
   >
     <div style="
       display: flex;
@@ -45,6 +45,17 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const hoverUp = (e: Event) => {
+  const el = e.currentTarget as HTMLElement
+  if (el && el.style) el.style.transform = 'translateY(-4px)'
+}
+const hoverDown = (e: Event) => {
+  const el = e.currentTarget as HTMLElement
+  if (el && el.style) el.style.transform = 'translateY(0)'
+}
+</script>
 
 <style scoped>
 @media (min-width: 1024px) {

@@ -77,7 +77,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getUser, updateUser } from '@/api/users'
+import api from '@/api/auth'
 import type { User } from '@/types/user'
 import type { FormInstance } from 'ant-design-vue'
 import type { Rule } from 'ant-design-vue/es/form'
@@ -104,7 +104,8 @@ const fetchUser = async () => {
     router.push('/users')
     return
   }
-  const u: User = await getUser(idNum)
+  const res = await api.get(`/auth/${idNum}`)
+  const u: User = res.data
   form.value = {
     username: u.username,
     email: u.email ?? '',
@@ -126,7 +127,7 @@ const handleSubmit = async () => {
     if (!Number.isFinite(idNum) || rawId.trim() === '') {
       throw new Error('无效用户ID')
     }
-    await updateUser(idNum, form.value)
+    await api.put(`/auth/${idNum}`, form.value)
     message.success('更新成功')
     router.push(`/users/${idNum}`)
   } catch (error: any) {

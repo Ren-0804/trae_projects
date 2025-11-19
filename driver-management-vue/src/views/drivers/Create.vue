@@ -35,8 +35,8 @@
               font-weight: 600;
               transition: all 0.3s ease;
             "
-            @mouseenter="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)'"
-            @mouseleave="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.7)'"
+            @mouseenter="onCardHoverEnter"
+            @mouseleave="onCardHoverLeave"
           >
             ← 返回列表
           </a-button>
@@ -311,8 +311,8 @@
                 font-weight: 600;
                 transition: all 0.3s ease;
               "
-              @mouseenter="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)'"
-              @mouseleave="(e: any) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.7)'"
+              @mouseenter="onCardHoverEnter"
+              @mouseleave="onCardHoverLeave"
             >
               取消
             </a-button>
@@ -333,8 +333,8 @@
               box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
               transition: all 0.3s ease;
             "
-            @mouseenter="(e: any) => e.currentTarget.style.transform = 'translateY(-2px)'"
-            @mouseleave="(e: any) => e.currentTarget.style.transform = 'translateY(0)'"
+            @mouseenter="onPrimaryEnter"
+            @mouseleave="onPrimaryLeave"
           >
             保存
           </a-button>
@@ -523,4 +523,8 @@ const handleSubmit = async () => {
     loading.value = false
   }
 }
+const onCardHoverEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.9)' }
+const onCardHoverLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.background = 'rgba(255, 255, 255, 0.7)' }
+const onPrimaryEnter = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.transform = 'translateY(-2px)' }
+const onPrimaryLeave = (e: Event) => { const el = e.currentTarget as HTMLElement; if (el) el.style.transform = 'translateY(0)' }
 </script>
