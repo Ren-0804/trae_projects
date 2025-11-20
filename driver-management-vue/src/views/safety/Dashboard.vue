@@ -1,94 +1,73 @@
 <template>
-  <div class="safety-dashboard">
-    <div style="margin-bottom: 24px;">
-      <h1 style="
-        margin: 0 0 8px 0;
-        font-size: 32px;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      ">安全监控中心</h1>
-      <p style="
-        margin: 0;
-        color: #718096;
-        font-size: 16px;
-        font-weight: 500;
-      ">实时监控车队安全状况</p>
+  <div class="page-container">
+    <div class="page-header glass-panel">
+      <div class="header-content">
+        <div class="header-title-wrapper">
+          <h1 class="page-title text-gradient">安全监控中心</h1>
+          <p class="page-subtitle">实时监控车队安全状况</p>
+        </div>
+      </div>
     </div>
     
     <!-- 加载状态 -->
-    <div v-if="alertsLoading && !recentAlerts.length" style="
-      text-align: center;
-      padding: 40px;
-      color: #a0aec0;
-    ">
-      <div class="loading-spinner" style="
-        width: 40px;
-        height: 40px;
-        border: 3px solid rgba(102, 126, 234, 0.1);
-        border-top: 3px solid #667eea;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 16px;
-      "></div>
+    <div v-if="alertsLoading && !recentAlerts.length" class="loading-container">
+      <div class="loading-spinner"></div>
       <p>正在加载安全数据...</p>
     </div>
     
     <a-row :gutter="[24, 24]">
       <a-col :xs="24" :sm="12" :lg="6">
-        <div class="stat-card">
-          <div class="stat-icon" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+        <div class="stat-card glass-panel">
+          <div class="stat-icon icon-online">
             <UserOutlined />
           </div>
           <div class="stat-content">
             <div class="stat-title">在线司机</div>
-            <div class="stat-value" style="color: #43e97b;">{{ stats?.online_drivers || 0 }}</div>
+            <div class="stat-value text-online">{{ stats?.online_drivers || 0 }}</div>
           </div>
         </div>
       </a-col>
       <a-col :xs="24" :sm="12" :lg="6">
-        <div class="stat-card">
-          <div class="stat-icon" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        <div class="stat-card glass-panel">
+          <div class="stat-icon icon-active">
             <CarOutlined />
           </div>
           <div class="stat-content">
             <div class="stat-title">活跃车辆</div>
-            <div class="stat-value" style="color: #4facfe;">{{ stats?.active_vehicles || 0 }}</div>
+            <div class="stat-value text-active">{{ stats?.active_vehicles || 0 }}</div>
           </div>
         </div>
       </a-col>
       <a-col :xs="24" :sm="12" :lg="6">
-        <div class="stat-card">
-          <div class="stat-icon" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+        <div class="stat-card glass-panel">
+          <div class="stat-icon icon-warning">
             <WarningOutlined />
           </div>
           <div class="stat-content">
             <div class="stat-title">今日预警</div>
-            <div class="stat-value" style="color: #fa709a;">{{ stats?.today_alerts || 0 }}</div>
+            <div class="stat-value text-warning">{{ stats?.today_alerts || 0 }}</div>
           </div>
         </div>
       </a-col>
       <a-col :xs="24" :sm="12" :lg="6">
-        <div class="stat-card">
-          <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);">
+        <div class="stat-card glass-panel">
+          <div class="stat-icon icon-emergency">
             <AlertOutlined />
           </div>
           <div class="stat-content">
             <div class="stat-title">紧急报警</div>
-            <div class="stat-value" style="color: #ff6b6b;">{{ stats?.emergency_alerts || 0 }}</div>
+            <div class="stat-value text-emergency">{{ stats?.emergency_alerts || 0 }}</div>
           </div>
         </div>
       </a-col>
     </a-row>
     
-    <a-row :gutter="[24, 24]" style="margin-top: 24px;">
+    <a-row :gutter="[24, 24]" class="mt-lg">
       <a-col :xs="24" :lg="16">
-        <div class="glass-card">
-          <div class="card-header">
-            <h3 class="card-title">实时地图</h3>
-            <div class="card-actions">
+        <div class="glass-panel full-height">
+          <div class="panel-header">
+            <h3 class="panel-title">实时地图</h3>
+            <div class="panel-actions">
               <a-button type="text" size="small">
                 <template #icon>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -100,9 +79,9 @@
             </div>
           </div>
           <div class="map-container">
-            <div class="map-placeholder">
-              <div class="map-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+            <div class="placeholder-content">
+              <div class="placeholder-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                   <circle cx="12" cy="10" r="3"></circle>
                 </svg>
@@ -114,10 +93,10 @@
         </div>
       </a-col>
       <a-col :xs="24" :lg="8">
-        <div class="glass-card">
-          <div class="card-header">
-            <h3 class="card-title">最近预警</h3>
-            <a-badge :count="recentAlerts?.length || 0" :offset="[8, 0]">
+        <div class="glass-panel full-height">
+          <div class="panel-header">
+            <h3 class="panel-title">最近预警</h3>
+            <a-badge :count="recentAlerts?.length || 0" :offset="[8, 0]" class="custom-badge">
               <WarningOutlined />
             </a-badge>
           </div>
@@ -133,8 +112,8 @@
                   </div>
                   <div class="alert-content">
                     <div class="alert-title">{{ item?.alert_type || '未知类型' }}</div>
-                  <div class="alert-desc">{{ item?.description || '暂无描述' }}</div>
-                  <div class="alert-time">{{ item?.created_at || '' }}</div>
+                    <div class="alert-desc">{{ item?.description || '暂无描述' }}</div>
+                    <div class="alert-time">{{ item?.created_at || '' }}</div>
                   </div>
                   <div class="alert-severity" :class="item?.severity">
                     {{ getSeverityText(item?.severity) }}
@@ -144,7 +123,7 @@
               <template #empty>
                 <div class="empty-state">
                   <div class="empty-icon">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#a0aec0" stroke-width="2">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                       <circle cx="12" cy="12" r="10"></circle>
                       <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -160,12 +139,12 @@
       </a-col>
     </a-row>
     
-    <a-row :gutter="[24, 24]" style="margin-top: 24px;">
+    <a-row :gutter="[24, 24]" class="mt-lg">
       <a-col :span="24">
-        <div class="glass-card">
-          <div class="card-header">
-            <h3 class="card-title">驾驶行为统计</h3>
-            <div class="card-actions">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">驾驶行为统计</h3>
+            <div class="panel-actions">
               <a-button type="text" size="small">
                 <template #icon>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -177,9 +156,9 @@
             </div>
           </div>
           <div class="chart-container">
-            <div class="chart-placeholder">
-              <div class="chart-icon">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2">
+            <div class="placeholder-content">
+              <div class="placeholder-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M3 3v18h18"></path>
                   <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
                 </svg>
@@ -309,29 +288,60 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.safety-dashboard {
-  padding: 24px;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+.page-container {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.page-header {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  margin: 0;
+  font-size: var(--font-size-md);
+  font-weight: 500;
+}
+
+.mt-lg {
+  margin-top: var(--spacing-lg);
+}
+
+.full-height {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: all 0.3s ease;
-  animation: slideInUp 0.6s ease-out;
+  height: 100%;
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
@@ -346,13 +356,16 @@ onMounted(() => {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.stat-content {
-  flex: 1;
-}
+.icon-online { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+.icon-active { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.icon-warning { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.icon-emergency { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%); }
+
+.stat-content { flex: 1; }
 
 .stat-title {
   font-size: 14px;
-  color: #718096;
+  color: var(--color-text-secondary);
   font-weight: 500;
   margin-bottom: 4px;
 }
@@ -363,17 +376,12 @@ onMounted(() => {
   line-height: 1;
 }
 
-.glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  animation: slideInUp 0.8s ease-out;
-}
+.text-online { color: #43e97b; }
+.text-active { color: #4facfe; }
+.text-warning { color: #fa709a; }
+.text-emergency { color: #ff6b6b; }
 
-.card-header {
+.panel-header {
   padding: 24px 24px 16px;
   display: flex;
   justify-content: space-between;
@@ -382,49 +390,47 @@ onMounted(() => {
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
 }
 
-.card-title {
+.panel-title {
   margin: 0;
   font-size: 20px;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-text-primary);
 }
 
-.card-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.map-container {
-  height: 400px;
+.map-container, .chart-container {
+  flex: 1;
+  min-height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border-radius: 0 0 16px 16px;
   position: relative;
   overflow: hidden;
 }
 
-.map-placeholder {
+.chart-container { min-height: 300px; }
+
+.placeholder-content {
   text-align: center;
-  color: #a0aec0;
+  color: var(--color-text-tertiary);
 }
 
-.map-icon {
+.placeholder-icon {
   margin-bottom: 16px;
   animation: pulse 2s infinite;
+  color: var(--color-primary-500);
 }
 
-.map-placeholder p {
+.placeholder-content p {
   font-size: 18px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: #4a5568;
+  color: var(--color-text-secondary);
 }
 
-.map-placeholder span {
+.placeholder-content span {
   font-size: 14px;
-  color: #718096;
+  color: var(--color-text-tertiary);
 }
 
 .alerts-list {
@@ -451,10 +457,6 @@ onMounted(() => {
   transform: translateX(4px);
 }
 
-.alert-item:last-child {
-  margin-bottom: 0;
-}
-
 .alert-avatar {
   width: 40px;
   height: 40px;
@@ -475,7 +477,7 @@ onMounted(() => {
 .alert-title {
   font-size: 14px;
   font-weight: 600;
-  color: #2d3748;
+  color: var(--color-text-primary);
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -484,7 +486,7 @@ onMounted(() => {
 
 .alert-desc {
   font-size: 12px;
-  color: #718096;
+  color: var(--color-text-secondary);
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -493,7 +495,7 @@ onMounted(() => {
 
 .alert-time {
   font-size: 12px;
-  color: #a0aec0;
+  color: var(--color-text-tertiary);
 }
 
 .alert-severity {
@@ -504,96 +506,43 @@ onMounted(() => {
   text-transform: uppercase;
 }
 
-.alert-severity.low {
-  background: rgba(67, 233, 123, 0.1);
-  color: #43e97b;
-}
-
-.alert-severity.medium {
-  background: rgba(254, 225, 64, 0.1);
-  color: #fee140;
-}
-
-.alert-severity.high {
-  background: rgba(250, 112, 154, 0.1);
-  color: #fa709a;
-}
-
-.alert-severity.critical {
-  background: rgba(255, 107, 107, 0.1);
-  color: #ff6b6b;
-}
+.alert-severity.low { background: rgba(67, 233, 123, 0.1); color: #43e97b; }
+.alert-severity.medium { background: rgba(254, 225, 64, 0.1); color: #fee140; }
+.alert-severity.high { background: rgba(250, 112, 154, 0.1); color: #fa709a; }
+.alert-severity.critical { background: rgba(255, 107, 107, 0.1); color: #ff6b6b; }
 
 .empty-state {
   text-align: center;
   padding: 40px 20px;
-  color: #a0aec0;
+  color: var(--color-text-tertiary);
 }
 
 .empty-icon {
   margin-bottom: 16px;
+  color: var(--color-text-tertiary);
 }
 
 .empty-state p {
   font-size: 16px;
   font-weight: 600;
   margin: 0 0 8px 0;
-  color: #718096;
+  color: var(--color-text-secondary);
 }
 
-.empty-state span {
-  font-size: 14px;
-}
-
-.chart-container {
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-  border-radius: 0 0 16px 16px;
-}
-
-.chart-placeholder {
+.loading-container {
   text-align: center;
-  color: #a0aec0;
+  padding: 40px;
+  color: var(--color-text-tertiary);
 }
 
-.chart-icon {
-  margin-bottom: 16px;
-  animation: pulse 2s infinite;
-}
-
-.chart-placeholder p {
-  font-size: 18px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  color: #4a5568;
-}
-
-.chart-placeholder span {
-  font-size: 14px;
-  color: #718096;
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(102, 126, 234, 0.1);
+  border-top: 3px solid var(--color-primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
 }
 
 @keyframes spin {
@@ -601,9 +550,12 @@ onMounted(() => {
   100% { transform: rotate(360deg); }
 }
 
-:deep(.ant-list-empty-text) {
-  padding: 0;
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
+
+:deep(.ant-list-empty-text) { padding: 0; }
 
 :deep(.ant-badge-count) {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);

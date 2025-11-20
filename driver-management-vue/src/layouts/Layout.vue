@@ -205,21 +205,25 @@ const onBreakpoint = (broken: boolean) => {
 .enterprise-layout {
   display: flex;
   min-height: 100vh;
-  background-color: var(--color-bg-secondary);
+  background-color: var(--color-bg-body);
   font-family: var(--font-family);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.1) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(15, 23, 42, 0.1) 0px, transparent 50%);
 }
 
 /* 侧边栏样式 */
 .sidebar {
   width: var(--layout-sidebar-width);
-  background-color: var(--color-bg-container);
-  border-right: 1px solid var(--color-border-light);
+  background-color: var(--color-bg-sidebar);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
-  transition: width var(--duration-base) var(--ease-in-out);
+  transition: width var(--transition-base);
   position: fixed;
   height: 100vh;
   z-index: var(--z-index-fixed);
+  box-shadow: var(--shadow-xl);
 }
 
 .sidebar--collapsed {
@@ -232,20 +236,23 @@ const onBreakpoint = (broken: boolean) => {
   align-items: center;
   justify-content: center;
   padding: 0 var(--spacing-lg);
-  border-bottom: 1px solid var(--color-border-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   gap: var(--spacing-sm);
+  background: transparent; /* Removed darker background */
 }
 
 .logo-icon {
   font-size: var(--font-size-xl);
   flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.5));
 }
 
 .logo-text {
   font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-primary);
+  font-weight: 700;
+  color: var(--color-text-inverse);
   white-space: nowrap;
+  letter-spacing: -0.025em;
 }
 
 .sidebar__nav {
@@ -262,16 +269,20 @@ const onBreakpoint = (broken: boolean) => {
 .sidebar-menu__item {
   margin: var(--spacing-xs) 0;
   border-radius: var(--radius-base);
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: all var(--transition-fast);
+  color: var(--color-text-disabled);
+  font-weight: 500; /* Added weight */
 }
 
 .sidebar-menu__item:hover {
-  background-color: var(--color-gray-100);
+  background-color: rgba(255, 255, 255, 0.1); /* Increased opacity */
+  color: var(--color-text-inverse);
 }
 
 .sidebar-menu__item.ant-menu-item-selected {
-  background-color: var(--color-primary-50);
-  color: var(--color-primary-600);
+  background: var(--color-accent-600); /* Solid accent color */
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); /* Matching shadow */
 }
 
 .sidebar-menu__item.ant-menu-item-selected::after {
@@ -280,7 +291,7 @@ const onBreakpoint = (broken: boolean) => {
 
 .sidebar__divider {
   height: 1px;
-  background-color: var(--color-border-light);
+  background-color: rgba(255, 255, 255, 0.1);
   margin: var(--spacing-lg) var(--spacing-md);
 }
 
@@ -288,7 +299,7 @@ const onBreakpoint = (broken: boolean) => {
 .main-container {
   flex: 1;
   margin-left: var(--layout-sidebar-width);
-  transition: margin-left var(--duration-base) var(--ease-in-out);
+  transition: margin-left var(--transition-base);
   display: flex;
   flex-direction: column;
 }
@@ -300,13 +311,18 @@ const onBreakpoint = (broken: boolean) => {
 /* 头部样式 */
 .header {
   height: var(--layout-header-height);
-  background-color: var(--color-bg-container);
-  border-bottom: 1px solid var(--color-border-light);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: var(--glass-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--spacing-lg);
-  box-shadow: var(--shadow-1);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-index-sticky);
+  transition: all var(--transition-base);
 }
 
 .header__left {
@@ -322,7 +338,7 @@ const onBreakpoint = (broken: boolean) => {
   border-radius: var(--radius-base);
   cursor: pointer;
   color: var(--color-text-secondary);
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -338,6 +354,7 @@ const onBreakpoint = (broken: boolean) => {
   font-weight: 600;
   color: var(--color-text-primary);
   margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .header__right {
@@ -351,74 +368,91 @@ const onBreakpoint = (broken: boolean) => {
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-xs) var(--spacing-sm);
-  border-radius: var(--radius-md);
-  background-color: var(--color-gray-50);
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.5);
   border: 1px solid var(--color-border-light);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.user-info:hover {
+  background-color: white;
+  box-shadow: var(--shadow-sm);
 }
 
 .user-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: var(--color-primary-500);
+  background: linear-gradient(135deg, var(--color-primary-600) 0%, var(--color-primary-800) 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--font-size-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .user-details {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 0;
+  padding-right: var(--spacing-xs);
 }
 
 .user-name {
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--color-text-primary);
   line-height: 1.2;
 }
 
+.user-role {
+  display: flex;
+  align-items: center;
+}
+
 .role-tag {
-  font-size: var(--font-size-xs);
-  padding: 2px 6px;
-  border-radius: var(--radius-xs);
-  font-weight: 500;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
   line-height: 1.2;
   display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .role-tag--admin {
-  background-color: var(--color-error);
-  color: white;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--color-error);
 }
 
 .role-tag--staff {
-  background-color: var(--color-info);
-  color: white;
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--color-info);
 }
 
 .logout-btn {
   background: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid transparent;
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-base);
   cursor: pointer;
   color: var(--color-text-secondary);
-  transition: all var(--duration-fast) var(--ease-out);
+  transition: all var(--transition-fast);
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
   font-size: var(--font-size-sm);
+  font-weight: 500;
 }
 
 .logout-btn:hover {
-  background-color: var(--color-gray-50);
+  background-color: rgba(239, 68, 68, 0.05);
   color: var(--color-error);
-  border-color: var(--color-error);
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 /* 内容区域样式 */
@@ -431,6 +465,12 @@ const onBreakpoint = (broken: boolean) => {
 .content-wrapper {
   max-width: var(--layout-content-max-width);
   margin: 0 auto;
+  animation: fadeIn var(--transition-base);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* 响应式设计 */

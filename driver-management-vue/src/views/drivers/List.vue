@@ -1,42 +1,14 @@
 <template>
-  <div style="padding: 24px">
+  <div class="page-container">
     <!-- Glassmorphism Header -->
-    <div style="
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    ">
-      <div style="display: flex; justify-content: space-between; align-items: center">
-        <div>
-          <h1 style="
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-          ">司机管理</h1>
-          <p style="color: #6b7280; margin: 8px 0 0 0; font-size: 14px;">管理所有司机信息和状态</p>
+    <div class="page-header glass-panel">
+      <div class="header-content">
+        <div class="header-title-wrapper">
+          <h1 class="page-title text-gradient">司机管理</h1>
+          <p class="page-subtitle">管理所有司机信息和状态</p>
         </div>
         <router-link to="/drivers/new">
-          <a-button 
-            type="primary" 
-            size="large"
-            style="
-              background: linear-gradient(135deg, #667eea, #764ba2);
-              border: none;
-              border-radius: 12px;
-              height: 44px;
-              padding: 0 24px;
-              font-weight: 600;
-              box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
-            "
-          >
+          <a-button type="primary" size="large" class="action-btn">
             <template #icon><PlusOutlined /></template>
             新增司机
           </a-button>
@@ -45,36 +17,18 @@
     </div>
 
     <!-- Glassmorphism Search Card -->
-    <div style="
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 24px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    ">
-      <a-space style="width: 100%" wrap>
+    <div class="search-card glass-panel">
+      <a-space class="search-space" wrap>
         <a-input
           v-model:value="searchKeyword"
           placeholder="搜索姓名、电话、线路"
-          style="
-            width: 280px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.7);
-          "
+          class="custom-input"
         >
-          <template #prefix><SearchOutlined style="color: #9ca3af" /></template>
+          <template #prefix><SearchOutlined class="input-icon" /></template>
         </a-input>
         <a-select 
           v-model:value="selectedStatus" 
-          style="
-            width: 160px;
-            border-radius: 12px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background: rgba(255, 255, 255, 0.7);
-          " 
+          class="custom-select"
           allowClear 
           placeholder="状态筛选"
         >
@@ -82,18 +36,7 @@
           <a-select-option value="inactive">非活跃</a-select-option>
           <a-select-option value="blocked">已封禁</a-select-option>
         </a-select>
-        <a-button 
-          type="primary" 
-          @click="handleSearch"
-          style="
-            border-radius: 12px;
-            height: 40px;
-            padding: 0 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border: none;
-            font-weight: 600;
-          "
-        >
+        <a-button type="primary" @click="handleSearch" class="search-btn">
           <template #icon><SearchOutlined /></template>
           搜索
         </a-button>
@@ -101,26 +44,19 @@
     </div>
 
     <!-- Glassmorphism Table Card -->
-    <div style="
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    ">
+    <div class="table-card glass-panel">
       <a-table 
         :dataSource="drivers" 
         :columns="columns" 
         :rowKey="'id'" 
         :pagination="false"
-        style="background: transparent;"
+        class="custom-table"
       >
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'status'">
             <a-tag 
               :color="statusColor(record.status)"
-              style="border-radius: 20px; padding: 4px 12px; font-weight: 500;"
+              class="status-tag"
             >
               {{ getStatusText(record.status) }}
             </a-tag>
@@ -128,29 +64,12 @@
           <template v-else-if="column.key === 'actions'">
             <a-space>
               <router-link :to="`/drivers/${record.id}`">
-                <a-button 
-                  type="text" 
-                  style="
-                    color: #667eea;
-                    border-radius: 8px;
-                    padding: 4px 12px;
-                    font-weight: 500;
-                  "
-                >
+                <a-button type="text" class="action-link view">
                   <template #icon><EyeOutlined /></template>
                   查看
                 </a-button>
               </router-link>
-              <a-button 
-                type="text" 
-                @click="handleEdit(record.id)"
-                style="
-                  color: #10b981;
-                  border-radius: 8px;
-                  padding: 4px 12px;
-                  font-weight: 500;
-                "
-              >
+              <a-button type="text" @click="handleEdit(record.id)" class="action-link edit">
                 <template #icon><EditOutlined /></template>
                 编辑
               </a-button>
@@ -159,17 +78,9 @@
                 @confirm="handleDelete(record.id)"
                 okText="确认"
                 cancelText="取消"
-                :okButtonProps="{ style: { backgroundColor: '#ef4444', borderColor: '#ef4444' } }"
+                :okButtonProps="{ danger: true }"
               >
-                <a-button 
-                  danger 
-                  type="text"
-                  style="
-                    border-radius: 8px;
-                    padding: 4px 12px;
-                    font-weight: 500;
-                  "
-                >
+                <a-button danger type="text" class="action-link delete">
                   <template #icon><DeleteOutlined /></template>
                   删除
                 </a-button>
@@ -179,23 +90,15 @@
         </template>
       </a-table>
 
-      <div style="
-        padding: 24px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: rgba(255, 255, 255, 0.5);
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-      ">
-        <div style="color: #6b7280; font-size: 14px;">
-          共 <span style="font-weight: 600; color: #374151;">{{ total }}</span> 条记录，当前第 <span style="font-weight: 600; color: #374151;">{{ currentPage }}</span> 页
+      <div class="pagination-wrapper">
+        <div class="pagination-info">
+          共 <span class="highlight">{{ total }}</span> 条记录，当前第 <span class="highlight">{{ currentPage }}</span> 页
         </div>
         <a-pagination
           :current="currentPage"
           :total="total"
           :pageSize="pageSize"
           @change="handlePageChange"
-          style="margin: 0;"
           :showSizeChanger="false"
           :showQuickJumper="true"
         />
@@ -320,3 +223,130 @@ const statusColor = (status: string) => {
   }
 }
 </script>
+
+<style scoped>
+.page-container {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.page-header {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  color: var(--color-text-secondary);
+  margin: var(--spacing-xs) 0 0 0;
+  font-size: var(--font-size-sm);
+}
+
+.action-btn {
+  border-radius: var(--radius-base);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  height: 44px;
+  padding: 0 24px;
+}
+
+.search-card {
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+}
+
+.search-space {
+  width: 100%;
+}
+
+.custom-input {
+  width: 280px;
+  border-radius: var(--radius-base);
+}
+
+.custom-select {
+  width: 160px;
+}
+
+:deep(.ant-select-selector) {
+  border-radius: var(--radius-base) !important;
+}
+
+.search-btn {
+  border-radius: var(--radius-base);
+  height: 32px;
+  font-weight: 600;
+}
+
+.table-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.custom-table {
+  background: transparent;
+}
+
+:deep(.ant-table) {
+  background: transparent;
+}
+
+:deep(.ant-table-thead > tr > th) {
+  background: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.status-tag {
+  border-radius: var(--radius-full);
+  padding: 2px 10px;
+  font-weight: 500;
+}
+
+.action-link {
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.action-link.view { color: var(--color-info); }
+.action-link.edit { color: var(--color-success); }
+.action-link.delete { color: var(--color-error); }
+
+.action-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.pagination-wrapper {
+  padding: var(--spacing-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pagination-info {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.highlight {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+</style>
